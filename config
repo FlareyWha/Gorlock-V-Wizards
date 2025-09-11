@@ -5,17 +5,13 @@
 	logallrefupdates = true
 	symlinks = false
 	ignorecase = true
+[submodule]
+	active = .
 [remote "origin"]
 	url = https://git.sg.digipen.edu/projects/csd1401f25_thehardestthing
 	fetch = +refs/heads/*:refs/remotes/origin/*
-	pushurl = https://github.com/FlareyWha/CS1401.git
-	pushurl = https://git.sg.digipen.edu/projects/csd1401f25_thehardestthing
 [branch "main"]
 	remote = origin
 	merge = refs/heads/main
-[remote "github"]
-	url = https://github.com/FlareyWha/CS1401.git
-	fetch = +refs/heads/*:refs/remotes/github/*
-[remote "digipenGit"]
-	url = https://git.sg.digipen.edu/projects/csd1401f25_thehardestthing
-	fetch = +refs/heads/*:refs/remotes/digipenGit/*
+[lfs]
+	repositoryformatversion = 0
