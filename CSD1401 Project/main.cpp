@@ -1,9 +1,13 @@
 #include "cprocessing.h"
+#include "Singleton.h"
 
 CP_Image logo;
+Singleton* singleton;
 
 void game_init(void)
 {
+	singleton = Singleton::getInstance();
+
 	logo = CP_Image_Load("Assets/DigiPen_Singapore_WEB_RED.png");
 	CP_Settings_ImageMode(CP_POSITION_CORNER);
 	CP_Settings_ImageWrapMode(CP_IMAGE_WRAP_CLAMP);
@@ -25,6 +29,7 @@ void game_update(void)
 void game_exit(void)
 {
 	CP_Image_Free(logo);
+	delete singleton;
 }
 
 
