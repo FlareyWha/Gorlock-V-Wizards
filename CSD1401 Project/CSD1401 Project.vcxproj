@@ -12,12 +12,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseTower.cpp" />
+    <ClCompile Include="CSVManager.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Singleton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseTower.h" />
+    <ClInclude Include="CSVManager.h" />
     <ClInclude Include="Singleton.h" />
   </ItemGroup>
   <ItemGroup>
