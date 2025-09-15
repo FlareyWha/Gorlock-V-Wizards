@@ -1,12 +1,17 @@
 #include "cprocessing.h"
 #include "Singleton.h"
+#include "BaseTower.h"
 
 CP_Image logo;
 Singleton* singleton;
 
+BaseTower tower;
+
 void game_init(void)
 {
 	singleton = Singleton::getInstance();
+
+	tower.setImage(CP_Image_Load("Assets/kenney_tiny-battle/Tiles/tile_0000.png"));
 
 	logo = CP_Image_Load("Assets/DigiPen_Singapore_WEB_RED.png");
 	CP_Settings_ImageMode(CP_POSITION_CORNER);
@@ -18,7 +23,7 @@ void game_init(void)
 void game_update(void)
 {
 	CP_Graphics_ClearBackground(CP_Color_Create(0, 0, 0, 255));
-	CP_Image_Draw(logo, 0.f, 0.f, CP_Image_GetWidth(logo), CP_Image_GetHeight(logo), 255);
+	CP_Image_Draw(tower.getImage(), 0.f, 0.f, CP_Image_GetWidth(tower.getImage()), CP_Image_GetHeight(tower.getImage()), 255);
 	if (CP_Input_KeyDown(KEY_Q))
 	{
 		CP_Engine_Terminate();
