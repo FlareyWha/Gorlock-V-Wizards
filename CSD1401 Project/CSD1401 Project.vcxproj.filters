@@ -1,38 +1,60 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Singleton.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="GUI\GUI.cpp">
+      <Filter>Source Files\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="BaseTower.cpp">
-    <ClCompile Include="GUI.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Towers\BaseTower.cpp">
+      <Filter>Source Files\Towers</Filter>
+    </ClCompile>
+    <ClCompile Include="System\CSVManager.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Singleton.cpp">
+      <Filter>Source Files\System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Singleton.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="GUI\GUI.h">
+      <Filter>Header Files\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="BaseTower.h">
-    <ClInclude Include="GUI.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Towers\BaseTower.h">
+      <Filter>Header Files\Towers</Filter>
     </ClInclude>
+    <ClInclude Include="System\CSVManager.h">
+      <Filter>Header Files\System</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Singleton.h">
+      <Filter>Header Files\System</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{99a7ebe1-6610-497e-8ea8-a7c09401aadf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{01e167de-7d9e-470e-827c-a6a41e3561f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\System">
+      <UniqueIdentifier>{fad2c33f-5f61-4e4c-8cf6-d066e1ccbde6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GUI">
+      <UniqueIdentifier>{f9434ed5-846c-43fa-9418-db0590ae7b3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Towers">
+      <UniqueIdentifier>{4413b133-aaba-4f83-b2ea-1a9b2ac92395}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GUI">
+      <UniqueIdentifier>{f0b1e964-0698-4b39-b683-b479aad5120d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\System">
+      <UniqueIdentifier>{f7f644ea-12b7-4bfb-ab2b-313702f02550}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Towers">
+      <UniqueIdentifier>{93cd9c24-0355-42ee-a017-eb27dc677266}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

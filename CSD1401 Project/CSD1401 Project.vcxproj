@@ -11,19 +11,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BaseTower.cpp" />
-    <ClCompile Include="CSVManager.cpp" />
-    <ClCompile Include="GUI.cpp" />
+    <ClCompile Include="GUI\GUI.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Singleton.cpp" />
+    <ClCompile Include="System\CSVManager.cpp" />
+    <ClCompile Include="System\Singleton.cpp" />
+    <ClCompile Include="Towers\BaseTower.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BaseTower.h" />
-    <ClInclude Include="CSVManager.h" />
-    <ClInclude Include="Singleton.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="GUI.h" />
+    <ClInclude Include="GUI\GUI.h" />
+    <ClInclude Include="System\CSVManager.h" />
+    <ClInclude Include="System\Singleton.h" />
+    <ClInclude Include="Towers\BaseTower.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
