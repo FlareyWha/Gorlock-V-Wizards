@@ -13,6 +13,7 @@ static class CSVManager
 {
 private:
 	static const char* MAP_FILE_PATH;
+
 public:
 	CSVManager();
 

@@ -2,9 +2,11 @@
 #include <sstream>
 #include <fstream>
 
+const char* CSVManager::MAP_FILE_PATH = "./Assets/Maps/";
+
 CSVManager::CSVManager()
 {
-	MAP_FILE_PATH = "./Assets/Maps/";
+	
 }
 
 CSVManager::~CSVManager()
