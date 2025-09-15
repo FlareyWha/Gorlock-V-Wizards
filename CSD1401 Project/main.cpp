@@ -1,8 +1,8 @@
 #include "cprocessing.h"
-#include "Singleton.h"
-#include "BaseTower.h"
+#include "System/Singleton.h"
+#include "Towers/BaseTower.h"
 
-#include "GUI.h"
+#include "GUI/GUI.h"
 CP_Image logo;
 Singleton* singleton;
 
