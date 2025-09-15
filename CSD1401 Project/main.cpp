@@ -2,6 +2,7 @@
 #include "Singleton.h"
 #include "BaseTower.h"
 
+#include "GUI.h"
 CP_Image logo;
 Singleton* singleton;
 
@@ -9,6 +10,7 @@ BaseTower tower;
 
 float degrees = 0.0f;
 
+GUI gui;
 void game_init(void)
 {
 	singleton = Singleton::getInstance();
@@ -17,9 +19,15 @@ void game_init(void)
 
 	logo = CP_Image_Load("Assets/DigiPen_Singapore_WEB_RED.png");
 	CP_Settings_ImageMode(CP_POSITION_CENTER);
+	//logo = CP_Image_Load("Assets/DigiPen_Singapore_WEB_RED.png");
+	CP_Settings_ImageMode(CP_POSITION_CORNER);
 	CP_Settings_ImageWrapMode(CP_IMAGE_WRAP_CLAMP);
 
 	CP_System_SetWindowSize(1600, 900);
+	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255));
+
+	gui.guiInit();
+
 }
 
 void game_update(void)
