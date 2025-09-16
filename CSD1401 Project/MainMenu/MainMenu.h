@@ -14,8 +14,14 @@ protected:
 	
 private:
 	CP_Image StartButton;
+	float buttonX = 0;
+	float buttonY = 0;
+	float buttonWidth = 250;
+	float buttonHeight = 45;
+
 public:
-	void StartButtonInit(void);
-	CP_Image GetStartButton() const;
+	void StartButtonInit();
+	void StartButtonDraw();
+	bool isButtonClicked();
 };
 

@@ -32,6 +32,7 @@ void game_init(void)
 
 void game_update(void)
 {
+
 	degrees = CP_Math_Degrees(atan2(CP_Input_GetMouseWorldY() - CP_System_GetWindowHeight() / 2,
 		CP_Input_GetMouseWorldX() - CP_System_GetWindowWidth() / 2));
 
@@ -39,8 +40,9 @@ void game_update(void)
 	//CP_Image_Draw(tower.getImage(), 0.f, 0.f, CP_Image_GetWidth(tower.getImage()), CP_Image_GetHeight(tower.getImage()), 255);
 	CP_Image_DrawAdvanced(tower.getImage(), CP_System_GetWindowWidth() / 2, CP_System_GetWindowHeight() / 2,
 		CP_Image_GetWidth(tower.getImage()) * 10, CP_Image_GetHeight(tower.getImage()) * 10, 255, degrees);
-	
-	CP_Image_Draw(menu.GetStartButton(), 400, 300, 200, 80, 255);
+
+	menu.StartButtonDraw();
+	menu.isButtonClicked();
 	
 
 	if (CP_Input_KeyDown(KEY_Q))
