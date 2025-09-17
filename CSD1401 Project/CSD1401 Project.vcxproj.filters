@@ -16,6 +16,9 @@
     <ClCompile Include="System\Singleton.cpp">
       <Filter>Source Files\System</Filter>
     </ClCompile>
+    <ClCompile Include="System\Map.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GUI\GUI.h">
@@ -28,6 +31,12 @@
       <Filter>Header Files\System</Filter>
     </ClInclude>
     <ClInclude Include="System\Singleton.h">
+      <Filter>Header Files\System</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Map.h">
+      <Filter>Header Files\System</Filter>
+    </ClInclude>
+    <ClInclude Include="System\SingletonTemplate.h">
       <Filter>Header Files\System</Filter>
     </ClInclude>
   </ItemGroup>

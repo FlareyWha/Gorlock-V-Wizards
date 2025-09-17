@@ -1,20 +1,19 @@
 #include "cprocessing.h"
-#include "System/Singleton.h"
 #include "Towers/BaseTower.h"
+#include "System/Map.h"
 
 #include "GUI/GUI.h"
 CP_Image logo;
-Singleton* singleton;
 
 BaseTower tower;
+
+Map* map;
 
 float degrees = 0.0f;
 
 GUI gui;
 void game_init(void)
 {
-	singleton = Singleton::getInstance();
-
 	tower.setImage(CP_Image_Load("Assets/kenney_tiny-battle/Tiles/tile_0152.png"));
 
 	logo = CP_Image_Load("Assets/DigiPen_Singapore_WEB_RED.png");
@@ -28,6 +27,7 @@ void game_init(void)
 
 	gui.guiInit();
 
+	map = Map::GetInstance();
 }
 
 void game_update(void)
@@ -50,7 +50,8 @@ void game_update(void)
 void game_exit(void)
 {
 	CP_Image_Free(logo);
-	delete singleton;
+
+	map->DestroyInstance();
 }
 
 
