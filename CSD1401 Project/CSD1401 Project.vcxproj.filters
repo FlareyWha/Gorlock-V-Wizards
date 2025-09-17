@@ -19,6 +19,9 @@
     <ClCompile Include="System\Map.cpp">
       <Filter>Source Files\System</Filter>
     </ClCompile>
+    <ClCompile Include="MainMenu\MainMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GUI\GUI.h">
@@ -39,6 +42,7 @@
     <ClInclude Include="System\SingletonTemplate.h">
       <Filter>Header Files\System</Filter>
     </ClInclude>
+    <ClInclude Include="MainMenu\MainMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
