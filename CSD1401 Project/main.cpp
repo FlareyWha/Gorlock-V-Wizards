@@ -1,9 +1,9 @@
 #include "cprocessing.h"
 #include "Towers/BaseTower.h"
 #include "System/Map.h"
-#include "GUI/GUI.h"
 #include "MainMenu/MainMenu.h"
 
+#include "GUI/game.h"
 CP_Image logo;
 BaseTower tower;
 
@@ -11,7 +11,6 @@ Map* map;
 
 float degrees = 0.0f;
 MainMenu menu;
-GUI gui;
 void game_init(void)
 {
 	tower.setImage(CP_Image_Load("Assets/kenney_tiny-battle/Tiles/tile_0152.png"));
@@ -25,22 +24,22 @@ void game_init(void)
 	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255));
 	
 	// Initialize Main Menu
-	menu.StartButtonInit();
-	gui.guiInit();
+	//menu.StartButtonInit();
+	gameInit();
 
 	map = Map::GetInstance();
 }
 
 void game_update(void)
 {
-
+	CP_Graphics_ClearBackground(CP_Color_Create(0, 0, 0, 255));
+	gameUpdate();
 	degrees = CP_Math_Degrees(atan2(CP_Input_GetMouseWorldY() - CP_System_GetWindowHeight() / 2,
 		CP_Input_GetMouseWorldX() - CP_System_GetWindowWidth() / 2));
 
-	CP_Graphics_ClearBackground(CP_Color_Create(0, 0, 0, 255));
 	//CP_Image_Draw(tower.getImage(), 0.f, 0.f, CP_Image_GetWidth(tower.getImage()), CP_Image_GetHeight(tower.getImage()), 255);
-	CP_Image_DrawAdvanced(tower.getImage(), CP_System_GetWindowWidth() / 2, CP_System_GetWindowHeight() / 2,
-		CP_Image_GetWidth(tower.getImage()) * 10, CP_Image_GetHeight(tower.getImage()) * 10, 255, degrees);
+	/*CP_Image_DrawAdvanced(tower.getImage(), CP_System_GetWindowWidth() / 2, CP_System_GetWindowHeight() / 2,
+		CP_Image_GetWidth(tower.getImage()) * 10, CP_Image_GetHeight(tower.getImage()) * 10, 255, degrees);*/
 
 	menu.StartButtonDraw();
 	menu.isButtonClicked();

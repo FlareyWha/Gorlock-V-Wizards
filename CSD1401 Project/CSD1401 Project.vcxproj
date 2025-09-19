@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GUI\GUI.cpp" />
+    <ClCompile Include="GUI\Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu\MainMenu.cpp" />
     <ClCompile Include="System\CSVManager.cpp" />
@@ -20,7 +20,7 @@
     <ClCompile Include="Towers\BaseTower.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GUI\GUI.h" />
+    <ClInclude Include="GUI\Game.h" />
     <ClInclude Include="MainMenu\MainMenu.h" />
     <ClInclude Include="System\CSVManager.h" />
     <ClInclude Include="System\Map.h" />
