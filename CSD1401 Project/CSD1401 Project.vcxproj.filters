@@ -4,9 +4,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GUI\GUI.cpp">
-      <Filter>Source Files\GUI</Filter>
-    </ClCompile>
     <ClCompile Include="Towers\BaseTower.cpp">
       <Filter>Source Files\Towers</Filter>
     </ClCompile>
@@ -22,11 +19,11 @@
     <ClCompile Include="MainMenu\MainMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GUI\Game.cpp" />
+    <ClCompile Include="Scenes\Settings\Settings.cpp" />
+    <ClCompile Include="Scenes\MainMenu\NewMainMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GUI\GUI.h">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
     <ClInclude Include="Towers\BaseTower.h">
       <Filter>Header Files\Towers</Filter>
     </ClInclude>
@@ -43,6 +40,9 @@
       <Filter>Header Files\System</Filter>
     </ClInclude>
     <ClInclude Include="MainMenu\MainMenu.h" />
+    <ClInclude Include="GUI\Game.h" />
+    <ClInclude Include="Scenes\Settings\Settings.h" />
+    <ClInclude Include="Scenes\MainMenu\NewMainMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
