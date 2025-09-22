@@ -4,8 +4,7 @@
 #include "MainMenu/MainMenu.h"
 #include "Scenes/Settings/Settings.h"
 #include "Scenes/MainMenu/NewMainMenu.h"
-
-#include "GUI/game.h"
+#include "Scenes/Game/Game.h"
 CP_Image logo;
 BaseTower tower;
 
@@ -63,7 +62,7 @@ void game_update(void)
 	}
 	else if (CP_Input_KeyDown(KEY_2))
 	{
-		CP_Engine_SetNextGameState(gameInit, gameUpdate, gameExit);
+		//CP_Engine_SetNextGameState(gameInit, gameUpdate, gameExit);
 	}
 	else if (CP_Input_KeyDown(KEY_3))
 	{

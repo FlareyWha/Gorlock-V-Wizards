@@ -1,6 +1,6 @@
 #include "cprocessing.h"
 #include "Settings.h"
-#include "../../GUI/Game.h"
+#include "../Game/Game.h"
 
 CP_Font myFont;
 
