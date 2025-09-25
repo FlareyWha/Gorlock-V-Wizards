@@ -2,6 +2,8 @@
 #include "cprocessing.h"
 #include <iostream>
 #include <string>
+#include "Game.h"
+
 /*!
 @file       Game.cpp
 @author     Chew Zavier(c.zavier)

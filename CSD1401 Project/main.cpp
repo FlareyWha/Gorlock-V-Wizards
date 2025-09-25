@@ -1,7 +1,6 @@
 #include "cprocessing.h"
 #include "Towers/BaseTower.h"
 #include "System/Map.h"
-#include "MainMenu/MainMenu.h"
 #include "Scenes/Settings/Settings.h"
 #include "Scenes/MainMenu/NewMainMenu.h"
 #include "Scenes/Game/Game.h"
@@ -11,7 +10,7 @@ BaseTower tower;
 Map* map;
 
 float degrees = 0.0f;
-MainMenu menu;
+NewMainMenu menu;
 CP_Font mainFont;
 void game_init(void)
 {
