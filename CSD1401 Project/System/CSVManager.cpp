@@ -7,8 +7,10 @@
 #include "CSVManager.h"
 #include <sstream>
 #include <fstream>
+#include <stdexcept> // runtime_error
+#include <iostream>
 
-const char* CSVManager::MAP_FILE_PATH = "./Assets/Maps/";
+const char* CSVManager::MAP_FILE_PATH = "Assets/Maps/";
 
 CSVManager::CSVManager()
 {
@@ -31,42 +33,56 @@ bool CSVManager::write(std::string fileName, const int TILE_ROW_NUM, const int T
 {
 	bool writeSucessful = false;
 
-	//Opens the file at the location it is in
-	std::ofstream file;
-	file.open(MAP_FILE_PATH + fileName);
+	//Creates an output filestream and opens the file
+	std::string filePath = MAP_FILE_PATH + fileName + ".csv";
+	std::fstream file(filePath, std::fstream::out | std::fstream::trunc);
 
-	//Checks if the number of columns is correct
-	if (data.size() == TILE_COLUMN_NUM)
+	// Make sure the file is open
+	try {
+		if (!file.is_open())
+			throw std::runtime_error("Could not open file");
+	}
+	catch (std::runtime_error e)
 	{
-		//Sets the iterator for the row to the beginning of x vector
-		std::vector<std::vector<int>>::iterator rowIterator = data.begin();
+		//cout << "Runtime error: " << e.what();
+		return false;
+	}
 
-		//Checks if the number of rows is correct
-		if ((*rowIterator).size() == TILE_ROW_NUM)
+	if (file.good())
+	{
+		//Checks if the number of columns is correct
+		if (data.size() == TILE_COLUMN_NUM)
 		{
-			//Writes the values into the file
-			for (rowIterator = data.begin(); rowIterator != data.end(); rowIterator++)
+			//Sets the iterator for the row to the beginning of x vector
+			std::vector<std::vector<int>>::iterator rowIterator = data.begin();
+
+			//Checks if the number of rows is correct
+			if ((*rowIterator).size() == TILE_ROW_NUM)
 			{
-				//Set iterator for the column
-				std::vector<int>::iterator columnIterator;
-
-				//Loop through the column values
-				for (columnIterator = (*rowIterator).begin(); columnIterator != (*rowIterator).end(); columnIterator++)
+				//Writes the values into the file
+				for (rowIterator = data.begin(); rowIterator != data.end(); rowIterator++)
 				{
-					//Insert column value into file
-					file << *columnIterator;
+					//Set iterator for the column
+					std::vector<int>::iterator columnIterator;
 
-					//Use a comma token to split the values
-					if (columnIterator != (*rowIterator).end())
-						file << ',';
+					//Loop through the column values
+					for (columnIterator = (*rowIterator).begin(); columnIterator != (*rowIterator).end(); columnIterator++)
+					{
+						//Insert column value into file
+						file << *columnIterator;
+
+						//Use a comma token to split the values
+						if (columnIterator != (*rowIterator).end())
+							file << ',';
+					}
+
+					//Adds endline to file so that it starts from next row
+					file << std::endl;
 				}
-
-				//Adds endline to file so that it starts from next row
-				file << std::endl;
 			}
-		}
 
-		writeSucessful = true;
+			writeSucessful = true;
+		}
 	}
 
 
@@ -88,9 +104,20 @@ std::vector<std::vector<int>> CSVManager::read(std::string fileName, const int T
 	//Double vector to store the tile data
 	std::vector<std::vector<int>> rowValues;
 
-	//Creates an input filestream and opens the file
-	std::ifstream file;
-	file.open(MAP_FILE_PATH + fileName);
+	//Creates an output filestream and opens the file
+	std::string filePath = MAP_FILE_PATH + fileName + ".csv";
+	std::ifstream file(filePath);
+
+	// Make sure the file is open
+	try {
+		if (!file.is_open())
+			throw std::runtime_error("Could not open file");
+	}
+	catch (std::runtime_error e)
+	{
+		//cout << "Runtime error: " << e.what();
+		return rowValues;
+	}
 
 	std::string line;
 	int value = 0;

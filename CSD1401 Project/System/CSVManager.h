@@ -15,8 +15,10 @@ private:
 	static const char* MAP_FILE_PATH;
 
 public:
+	//Constructor
 	CSVManager();
 
+	//Destructor
 	~CSVManager();
 
 	/**
