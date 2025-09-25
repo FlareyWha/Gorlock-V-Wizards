@@ -4,6 +4,8 @@
 #include "Scenes/Settings/Settings.h"
 #include "Scenes/MainMenu/NewMainMenu.h"
 #include "Scenes/Game/Game.h"
+#include "Scenes/MapEditor/MapEditor.h"
+
 CP_Image logo;
 BaseTower tower;
 
@@ -50,6 +52,7 @@ void game_update(void)
 	CP_Font_DrawText("Press 1 for main menu", 100, 200);
 	CP_Font_DrawText("Press 2 for game scene", 100, 250);
 	CP_Font_DrawText("Press 3 for settings scene", 100, 300);
+	CP_Font_DrawText("Press 4 for map editor scene", 100, 350);
 
 	if (CP_Input_KeyDown(KEY_Q))
 	{
@@ -66,6 +69,10 @@ void game_update(void)
 	else if (CP_Input_KeyDown(KEY_3))
 	{
 		CP_Engine_SetNextGameState(settingsInit, settingsUpdate, settingsExit);
+	}
+	else if (CP_Input_KeyDown(KEY_4))
+	{
+		CP_Engine_SetNextGameState(mapEditorInit, mapEditorUpdate, mapEditorExit);
 	}
 }
 

@@ -158,7 +158,6 @@ std::vector<std::vector<int>> CSVManager::read(std::string fileName, const int T
 	//Check if the rows are correct
 	if (rowValues.size() != TILE_ROW_NUM)
 	{
-
 		readResult = false;
 	}
 
