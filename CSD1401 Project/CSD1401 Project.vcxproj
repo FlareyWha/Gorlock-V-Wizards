@@ -14,6 +14,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Scenes\Game\Game.cpp" />
     <ClCompile Include="Scenes\MainMenu\NewMainMenu.cpp" />
+    <ClCompile Include="Scenes\MapEditor\MapEditor.cpp" />
     <ClCompile Include="Scenes\Settings\Settings.cpp" />
     <ClCompile Include="System\CSVManager.cpp" />
     <ClCompile Include="System\Map.cpp" />
@@ -23,6 +24,7 @@
   <ItemGroup>
     <ClInclude Include="Scenes\Game\Game.h" />
     <ClInclude Include="Scenes\MainMenu\NewMainMenu.h" />
+    <ClInclude Include="Scenes\MapEditor\MapEditor.h" />
     <ClInclude Include="Scenes\Settings\Settings.h" />
     <ClInclude Include="System\CSVManager.h" />
     <ClInclude Include="System\Map.h" />

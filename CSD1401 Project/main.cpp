@@ -9,7 +9,7 @@
 CP_Image logo;
 BaseTower tower;
 
-Map* map;
+//Map* map;
 
 float degrees = 0.0f;
 NewMainMenu menu;
@@ -31,7 +31,7 @@ void game_init(void)
 	// Initialize Main Menu
 	//menu.StartButtonInit();
 
-	map = Map::GetInstance();
+	//map = Map::GetInstance();
 }
 
 void game_update(void)
@@ -80,7 +80,7 @@ void game_exit(void)
 {
 	CP_Image_Free(logo);
 
-	map->DestroyInstance();
+	//map->DestroyInstance();
 }
 
 
@@ -90,6 +90,6 @@ int main(void)
 {
 	//CP_Engine_SetNextGameState(splash_screen_init, splash_screen_update, splash_screen_exit);
 	CP_Engine_SetNextGameState(game_init, game_update, game_exit);
-	CP_Engine_Run(0);
+	CP_Engine_Run(1);
 	return 0;
 }
