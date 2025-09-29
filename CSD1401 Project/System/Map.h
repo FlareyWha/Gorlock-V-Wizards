@@ -67,7 +67,7 @@ public:
 	bool loadMap(std::string fileName);
 	bool saveMap(std::string fileName);
 
-	bool renderMap(void);
+	void renderMap(void);
 
 	void resetMap(bool clear);
 	void clearMap(bool clear);
