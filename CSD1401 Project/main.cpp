@@ -5,6 +5,7 @@
 #include "Scenes/MainMenu/NewMainMenu.h"
 #include "Scenes/Game/Game.h"
 #include "Scenes/MapEditor/MapEditor.h"
+#include "System/SceneManager.h"
 
 CP_Image logo;
 BaseTower tower;
@@ -14,6 +15,8 @@ Map* map;
 float degrees = 0.0f;
 NewMainMenu menu;
 CP_Font mainFont;
+SceneManager* sceneManager;
+
 void game_init(void)
 {
 	tower.setImage(CP_Image_Load("Assets/kenney_tiny-battle/Tiles/tile_0152.png"));
@@ -27,6 +30,8 @@ void game_init(void)
 	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255));
 
 	mainFont = CP_Font_Load("./Assets/Fonts/KenneyFonts/Kenney Mini.ttf");
+
+	sceneManager = SceneManager::GetInstance();
 	
 	// Initialize Main Menu
 	//menu.StartButtonInit();
@@ -61,25 +66,26 @@ void game_update(void)
 	}
 	else if (CP_Input_KeyDown(KEY_1))
 	{
-		CP_Engine_SetNextGameState(mainMenuInit, mainMenuUpdate, mainMenuExit);
+		sceneManager->ChangeScenes(Scenes::MAIN_MENU_SCENE);
 	}
 	else if (CP_Input_KeyDown(KEY_2))
 	{
-		CP_Engine_SetNextGameState(gameInit, gameUpdate, gameExit);
+		sceneManager->ChangeScenes(Scenes::GAME_SCENE);
 	}
 	else if (CP_Input_KeyDown(KEY_3))
 	{
-		CP_Engine_SetNextGameState(settingsInit, settingsUpdate, settingsExit);
+		sceneManager->ChangeScenes(Scenes::SETTINGS_SCENE);
 	}
 	else if (CP_Input_KeyDown(KEY_4))
 	{
-		CP_Engine_SetNextGameState(mapEditorInit, mapEditorUpdate, mapEditorExit);
+		sceneManager->ChangeScenes(Scenes::MAP_EDITOR_SCENE);
 	}
 }
 
 void game_exit(void)
 {
 	CP_Image_Free(logo);
+	sceneManager->DestroyInstance();
 
 	map->resetMap(false);
 	map->DestroyInstance(false);

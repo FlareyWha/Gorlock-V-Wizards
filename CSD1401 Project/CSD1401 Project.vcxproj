@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="System\SceneManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Scenes\Game\Game.cpp" />
     <ClCompile Include="Scenes\MainMenu\NewMainMenu.cpp" />
@@ -22,7 +23,9 @@
     <ClCompile Include="Towers\BaseTower.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="System\SceneManager.h" />
     <ClInclude Include="Scenes\Game\Game.h" />
+    <ClInclude Include="MainMenu\MainMenu.h" />
     <ClInclude Include="Scenes\MainMenu\NewMainMenu.h" />
     <ClInclude Include="Scenes\MapEditor\MapEditor.h" />
     <ClInclude Include="Scenes\Settings\Settings.h" />
