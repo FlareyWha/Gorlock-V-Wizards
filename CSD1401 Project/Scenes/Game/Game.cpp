@@ -2,8 +2,10 @@
 #include "cprocessing.h"
 #include <iostream>
 #include <string>
+#include <vector>
 #include "Game.h"
 #include "../../System/Map.h"
+#include "../../Enemies/BasicEnemy.h"
 
 /*!
 @file       Game.cpp
@@ -17,6 +19,7 @@ const char* FILE_PATH = "./Assets/Fonts/KenneyFonts/Kenney Mini.ttf";
 float fontSize = 12.0f;
 
 Map* gameMap;
+std::vector<BaseEnemy*> enemiesList;
 
 void gameInit(void)
 {	
@@ -46,12 +49,27 @@ void gameUpdate(void)
 	//drawText("hoorah",CP_Input_GetMouseX(), CP_Input_GetMouseY());
 
 	gameMap->renderMap();
+
+	if (CP_Input_KeyReleased(KEY_SPACE))
+	{
+		enemiesList.push_back(new BasicEnemy(CP_Vector_Set(24.0f, 24.0f)));
+	}
+
+	for (BaseEnemy* enemy : enemiesList)
+	{
+		enemy->Move(gameMap);
+		enemy->Render();
+	}
 }
 
 void gameExit(void)
 {
 	CP_Font_Free(font);
 	gameMap->resetMap(true);
+	for (BaseEnemy* enemy : enemiesList)
+	{
+		delete enemy;
+	}
 }
 
 void drawRect(float posX, float posY, float rectWidth, float rectHeight, float angle, float cornerRadius, CP_Color rectColor)

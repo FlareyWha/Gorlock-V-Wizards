@@ -4,7 +4,6 @@
 
 Map* mapEditorMap;
 
-
 void mapEditorInit(void)
 {
 	mapEditorMap = Map::GetInstance();

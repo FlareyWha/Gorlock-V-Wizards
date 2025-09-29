@@ -118,7 +118,7 @@ void Map::loadMapTileImages(void)
 
 Tile Map::getTile(float xPos, float yPos)
 {
-	int rowPos = 0, int columnPos = 0;
+	int rowPos = 0, columnPos = 0;
 
 	rowPos = floor(xPos / TILE_WIDTH);
 	columnPos = floor(yPos / TILE_HEIGHT);
