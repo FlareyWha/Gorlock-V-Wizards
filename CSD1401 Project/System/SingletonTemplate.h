@@ -48,7 +48,7 @@ public:
 	 @param void
 	 @return void
 	 */
-	static void DestroyInstance(bool destroy)
+	static void DestroyInstance(bool destroy = false)
 	{
 		//Checks if there is a current instance of the singleton
 		if (destroy && instance)

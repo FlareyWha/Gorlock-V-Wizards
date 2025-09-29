@@ -37,7 +37,6 @@ void game_init(void)
 	//menu.StartButtonInit();
 
 	map = Map::GetInstance();
-	map->loadMapTileImages();
 }
 
 void game_update(void)

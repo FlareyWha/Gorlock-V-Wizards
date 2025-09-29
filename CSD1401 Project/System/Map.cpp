@@ -9,15 +9,23 @@
 #include "cprocessing.h"
 #include <vector>
 #include <string>
-#include <iostream>
 
 const char* Map::TILE_ASSETS_FILE_PATH = "Assets/Tiles/";
 
+/*!
+@brief Constructor. Makes it set the map array to empty
+*//*______________________________________________________________*/
 Map::Map()
 {
 	resetMap(false);
+	loadMapTileImages();
 }
 
+/*!
+@brief	Gets the image file path based on the tileType of the tile
+@param	TILE_TYPE tileType - type of the tile based off the enum TILE_TYPE
+@return string - filePath of the file to get
+*//*______________________________________________________________*/
 std::string Map::getImageFilePath(TILE_TYPE tileType)
 {
 	std::string filePath = TILE_ASSETS_FILE_PATH;
@@ -91,7 +99,12 @@ std::string Map::getImageFilePath(TILE_TYPE tileType)
 	return filePath;
 }
 
-bool Map::loadMapTileImages()
+/*!
+@brief	Load all the map tile images and inserts them into the imageMap
+@param	void
+@return void
+*//*______________________________________________________________*/
+void Map::loadMapTileImages(void)
 {
 	tileTypesVector = { GROUND, GRASS, FLOWER, HORIZONTAL_LEFT_ROAD, HORIZONTAL_MIDDLE_ROAD, HORIZONTAL_RIGHT_ROAD, VERTICAL_LEFT_ROAD, VERTICAL_MIDDLE_ROAD, VERTICAL_RIGHT_ROAD, CORNER_TOP_LEFT_ROAD, CORNER_TOP_RIGHT_ROAD, CORNER_BOTTOM_LEFT_ROAD, CORNER_BOTTOM_RIGHT_ROAD, JUNCTION_MIDDLE_TOP_ROAD, JUNCTION_MIDDLE_BOTTOM_ROAD, JUNCTION_MIDDLE_LEFT_ROAD, JUNCTION_MIDDLE_RIGHT_ROAD, JUNCTION_MIDDLE_ROAD, STARTPOINT, ENDPOINT };
 
@@ -100,50 +113,42 @@ bool Map::loadMapTileImages()
 		CP_Image tempImage = CP_Image_Load(getImageFilePath(tileTypesVector[i]).c_str());
 		imageMap.insert({ tileTypesVector[i], tempImage });
 	}
-
-	return true;
 }
 
+/*!
+@brief	Loads the map using CSVManager based off the fileName,
+		stores this into in the map array
+@param	string fileName - name of the file
+@return bool
+*//*______________________________________________________________*/
 bool Map::loadMap(std::string fileName)
 {
 	//Get the map data from reading the file
 	std::vector<std::vector<int>> mapData = CSVManager::read(fileName, NUM_COLUMN, NUM_ROW);
 
-	std::vector<std::vector<int>>::iterator rowIterator = mapData.begin();
-
-	
-	map = new Tile* [NUM_ROW];
-
-	for (int i = 0; i < NUM_ROW; i++)
-	{
-		map[i] = new Tile [NUM_COLUMN];
-
-		for (int j = 0; j < NUM_COLUMN; j++)
-		{
-			map[i][j].tileType = NONE;
-			map[i][j].pos = CP_Vector_Zero();
-		}
-	}
+	//Reset the map
+	resetMap(true);
 
 	//Nested for loop to store the tile data read from file
 	for (int i = 0; i < NUM_ROW; i++)
 	{
-		//std::vector<int>::iterator columnIterator = (*rowIterator).begin();
-
 		for (int j = 0; j < NUM_COLUMN; j++)
 		{
-			std::cout << mapData[j][i] << std::endl;
-
+			//Save the data into the map array from the mapData recieved from reading the csv file.
+			//mapData must be reversed cus the vector is gae
 			map[i][j].tileType = static_cast<TILE_TYPE>(mapData[j][i]);
 			map[i][j].pos = CP_Vector_Set((TILE_WIDTH * 0.5f) + TILE_WIDTH * i, (TILE_HEIGHT * 0.5f) + TILE_HEIGHT * j);
 		}
-
-		//rowIterator++;
 	}
 
 	return true;
 }
 
+/*!
+@brief	Saves the map by using CSVManager to write to csv
+@param	string fileName - name of the file
+@return bool
+*//*______________________________________________________________*/
 bool Map::saveMap(std::string fileName)
 {
 	std::vector<std::vector<int>> test;
@@ -165,7 +170,12 @@ bool Map::saveMap(std::string fileName)
 	return false;
 }
 
-bool Map::renderMap()
+/*!
+@brief	Render the map by using the data from the map array
+@param	void
+@return void
+*//*______________________________________________________________*/
+void Map::renderMap(void)
 {
 	//Render the map
 	for (int i = 0; i < NUM_ROW; i++)
@@ -175,14 +185,19 @@ bool Map::renderMap()
 			CP_Image_Draw(imageMap[map[i][j].tileType], map[i][j].pos.x, map[i][j].pos.y, TILE_WIDTH, TILE_HEIGHT, 255);
 		}
 	}
-
-	return false;
 }
 
+/*!
+@brief	Resets the map by clearing it then initialising it with
+		empty values
+@param	bool clear - whether to clear the map or not (used when first initialising the map)
+@return void
+*//*______________________________________________________________*/
 void Map::resetMap(bool clear)
 {
 	clearMap(clear);
 
+	//Resets the map with new blank data
 	map = new Tile * [NUM_ROW];
 
 	for (int i = 0; i < NUM_ROW; i++)
@@ -197,6 +212,11 @@ void Map::resetMap(bool clear)
 	}
 }
 
+/*!
+@brief	Clears the map to prevent memory leak
+@param	bool clear - whether to clear the map or not (used when first initialising the map)
+@return void
+*//*______________________________________________________________*/
 void Map::clearMap(bool clear)
 {
 	//Clear the map

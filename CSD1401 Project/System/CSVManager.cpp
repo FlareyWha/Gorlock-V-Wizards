@@ -41,7 +41,9 @@ bool CSVManager::write(std::string fileName, const int TILE_ROW_NUM, const int T
 	try 
 	{
 		if (!file.is_open())
+		{
 			throw std::runtime_error("Could not open file");
+		}
 	}
 	catch (std::runtime_error e)
 	{
@@ -49,6 +51,7 @@ bool CSVManager::write(std::string fileName, const int TILE_ROW_NUM, const int T
 		return false;
 	}
 
+	//Checks if file is good
 	if (file.good())
 	{
 		//Checks if the number of columns is correct
@@ -113,7 +116,9 @@ std::vector<std::vector<int>> CSVManager::read(std::string fileName, const int T
 	try 
 	{
 		if (!file.is_open())
+		{
 			throw std::runtime_error("Could not open file");
+		}
 	}
 	catch (std::runtime_error e)
 	{
@@ -139,14 +144,16 @@ std::vector<std::vector<int>> CSVManager::read(std::string fileName, const int T
 			//Add the current column value to the vector
 			columnValues.push_back(value);
 
-			//If value is a comma, ignore it 
+			//If value is a comma, tab or whitespace, ignore it 
 			if (ss.peek() == '\t' || ss.peek() == ' ' || ss.peek() == ',')
 				ss.ignore();
 		}
 
 		//Push the whole column into the data vector
 		if (columnValues.size() == TILE_COLUMN_NUM)
+		{
 			rowValues.push_back(columnValues);
+		}
 		else
 		{
 			columnValues.clear();

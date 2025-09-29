@@ -62,12 +62,12 @@ public:
 	Map();
 
 	std::string getImageFilePath(TILE_TYPE tileType);
-	bool loadMapTileImages();
+	void loadMapTileImages(void);
 
 	bool loadMap(std::string fileName);
 	bool saveMap(std::string fileName);
 
-	bool renderMap();
+	bool renderMap(void);
 
 	void resetMap(bool clear);
 	void clearMap(bool clear);
