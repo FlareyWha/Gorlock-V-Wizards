@@ -49,10 +49,10 @@ class Map : public SingletonTemplate<Map>
 
 private:
 	static const char* TILE_ASSETS_FILE_PATH;
-	const int TILE_WIDTH = 16;
-	const int TILE_HEIGHT = 16;
-	const int NUM_TILES_ROW = 32;
-	const int NUM_TILES_COLUMN = 32;
+	const int TILE_WIDTH = 48;
+	const int TILE_HEIGHT = 48;
+	const int NUM_COLUMN = 18;
+	const int NUM_ROW = 26;
 
 	Tile** map;
 

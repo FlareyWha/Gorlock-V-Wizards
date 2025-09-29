@@ -38,7 +38,8 @@ bool CSVManager::write(std::string fileName, const int TILE_ROW_NUM, const int T
 	std::fstream file(filePath, std::fstream::out | std::fstream::trunc);
 
 	// Make sure the file is open
-	try {
+	try 
+	{
 		if (!file.is_open())
 			throw std::runtime_error("Could not open file");
 	}
@@ -73,7 +74,7 @@ bool CSVManager::write(std::string fileName, const int TILE_ROW_NUM, const int T
 
 						//Use a comma token to split the values
 						if (columnIterator != (*rowIterator).end())
-							file << ',';
+							file << ' ';
 					}
 
 					//Adds endline to file so that it starts from next row
@@ -109,7 +110,8 @@ std::vector<std::vector<int>> CSVManager::read(std::string fileName, const int T
 	std::ifstream file(filePath);
 
 	// Make sure the file is open
-	try {
+	try 
+	{
 		if (!file.is_open())
 			throw std::runtime_error("Could not open file");
 	}
@@ -138,7 +140,7 @@ std::vector<std::vector<int>> CSVManager::read(std::string fileName, const int T
 			columnValues.push_back(value);
 
 			//If value is a comma, ignore it 
-			if (ss.peek() == ',')
+			if (ss.peek() == '\t' || ss.peek() == ' ' || ss.peek() == ',')
 				ss.ignore();
 		}
 

@@ -102,18 +102,18 @@ bool Map::loadMapTileImages()
 bool Map::loadMap(std::string fileName)
 {
 	//Get the map data from reading the file
-	std::vector<std::vector<int>> mapData = CSVManager::read(fileName, 32, 32);
+	std::vector<std::vector<int>> mapData = CSVManager::read(fileName, NUM_COLUMN, NUM_ROW);
 
 	std::vector<std::vector<int>>::iterator rowIterator = mapData.begin();
 
 	
-	map = new Tile* [NUM_TILES_ROW];
+	map = new Tile* [NUM_ROW];
 
-	for (int i = 0; i < NUM_TILES_ROW; i++)
+	for (int i = 0; i < NUM_ROW; i++)
 	{
-		map[i] = new Tile [NUM_TILES_COLUMN];
+		map[i] = new Tile [NUM_COLUMN];
 
-		for (int j = 0; j < NUM_TILES_COLUMN; j++)
+		for (int j = 0; j < NUM_COLUMN; j++)
 		{
 			map[i][j].tileType = NONE;
 			map[i][j].pos = CP_Vector_Zero();
@@ -121,20 +121,19 @@ bool Map::loadMap(std::string fileName)
 	}
 
 	//Nested for loop to store the tile data read from file
-	for (int i = 0; i < NUM_TILES_ROW; i++)
+	for (int i = 0; i < NUM_ROW; i++)
 	{
-		std::vector<int>::iterator columnIterator = (*rowIterator).begin();
+		//std::vector<int>::iterator columnIterator = (*rowIterator).begin();
 
-		for (int j = 0; j < NUM_TILES_COLUMN; j++)
+		for (int j = 0; j < NUM_COLUMN; j++)
 		{
-			std::cout << mapData[i][j] << std::endl;
+			std::cout << mapData[j][i] << std::endl;
 
-			map[i][j].tileType = static_cast<TILE_TYPE>(*columnIterator);
-			map[i][j].pos = CP_Vector_Set(16 + 32 * i, 16+ 32 * j);
-			columnIterator++;
+			map[i][j].tileType = static_cast<TILE_TYPE>(mapData[j][i]);
+			map[i][j].pos = CP_Vector_Set((TILE_WIDTH * 0.5f) + TILE_WIDTH * i, (TILE_HEIGHT * 0.5f) + TILE_HEIGHT * j);
 		}
 
-		rowIterator++;
+		//rowIterator++;
 	}
 
 	return true;
@@ -163,11 +162,12 @@ bool Map::saveMap(std::string fileName)
 
 bool Map::renderMap()
 {
-	for (int i = 0; i < NUM_TILES_ROW; i++)
+	//Render the map
+	for (int i = 0; i < NUM_ROW; i++)
 	{
-		for (int j = 0; j < NUM_TILES_COLUMN; j++)
+		for (int j = 0; j < NUM_COLUMN; j++)
 		{
-			CP_Image_Draw(imageMap[map[i][j].tileType], map[i][j].pos.x, map[i][j].pos.y, 32, 32, 255);
+			CP_Image_Draw(imageMap[map[i][j].tileType], map[i][j].pos.x, map[i][j].pos.y, TILE_WIDTH, TILE_HEIGHT, 255);
 		}
 	}
 
@@ -176,7 +176,7 @@ bool Map::renderMap()
 
 bool Map::clearMap()
 {
-	for (int i = 0; i < NUM_TILES_ROW; i++)
+	for (int i = 0; i < NUM_ROW; i++)
 	{
 		delete map[i];
 	}
