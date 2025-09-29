@@ -9,7 +9,7 @@
 CP_Image logo;
 BaseTower tower;
 
-//Map* map;
+Map* map;
 
 float degrees = 0.0f;
 NewMainMenu menu;
@@ -31,7 +31,8 @@ void game_init(void)
 	// Initialize Main Menu
 	//menu.StartButtonInit();
 
-	//map = Map::GetInstance();
+	map = Map::GetInstance();
+	map->loadMapTileImages();
 }
 
 void game_update(void)
@@ -64,7 +65,7 @@ void game_update(void)
 	}
 	else if (CP_Input_KeyDown(KEY_2))
 	{
-		//CP_Engine_SetNextGameState(gameInit, gameUpdate, gameExit);
+		CP_Engine_SetNextGameState(gameInit, gameUpdate, gameExit);
 	}
 	else if (CP_Input_KeyDown(KEY_3))
 	{
@@ -80,7 +81,8 @@ void game_exit(void)
 {
 	CP_Image_Free(logo);
 
-	//map->DestroyInstance();
+	map->clearMap(false);
+	map->DestroyInstance(false);
 }
 
 
