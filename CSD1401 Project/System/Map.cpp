@@ -15,18 +15,7 @@ const char* Map::TILE_ASSETS_FILE_PATH = "Assets/Tiles/";
 
 Map::Map()
 {
-	map = new Tile * [NUM_ROW];
-
-	for (int i = 0; i < NUM_ROW; i++)
-	{
-		map[i] = new Tile[NUM_COLUMN];
-
-		for (int j = 0; j < NUM_COLUMN; j++)
-		{
-			map[i][j].tileType = NONE;
-			map[i][j].pos = CP_Vector_Zero();
-		}
-	}
+	resetMap(false);
 }
 
 std::string Map::getImageFilePath(TILE_TYPE tileType)
@@ -190,8 +179,27 @@ bool Map::renderMap()
 	return false;
 }
 
-bool Map::clearMap(bool clear)
+void Map::resetMap(bool clear)
 {
+	clearMap(clear);
+
+	map = new Tile * [NUM_ROW];
+
+	for (int i = 0; i < NUM_ROW; i++)
+	{
+		map[i] = new Tile[NUM_COLUMN];
+
+		for (int j = 0; j < NUM_COLUMN; j++)
+		{
+			map[i][j].tileType = NONE;
+			map[i][j].pos = CP_Vector_Zero();
+		}
+	}
+}
+
+void Map::clearMap(bool clear)
+{
+	//Clear the map
 	if (clear)
 	{
 		for (int i = 0; i < NUM_ROW; i++)
@@ -200,9 +208,5 @@ bool Map::clearMap(bool clear)
 		}
 
 		delete map;
-
-		return true;
 	}
-
-	return false;
 }

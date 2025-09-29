@@ -81,7 +81,7 @@ void game_exit(void)
 {
 	CP_Image_Free(logo);
 
-	map->clearMap(false);
+	map->resetMap(false);
 	map->DestroyInstance(false);
 }
 

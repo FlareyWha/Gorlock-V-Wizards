@@ -51,7 +51,7 @@ void gameUpdate(void)
 void gameExit(void)
 {
 	CP_Font_Free(font);
-	gameMap->clearMap(true);
+	gameMap->resetMap(true);
 }
 
 void drawRect(float posX, float posY, float rectWidth, float rectHeight, float angle, float cornerRadius, CP_Color rectColor)

@@ -69,7 +69,8 @@ public:
 
 	bool renderMap();
 
-	bool clearMap(bool clear);
+	void resetMap(bool clear);
+	void clearMap(bool clear);
 
 	std::map<TILE_TYPE, CP_Image> imageMap;
 };

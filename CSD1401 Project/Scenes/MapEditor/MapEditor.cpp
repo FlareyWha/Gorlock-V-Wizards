@@ -25,6 +25,6 @@ void mapEditorUpdate(void)
 
 void mapEditorExit(void)
 {
-	mapEditorMap->clearMap(true);
+	mapEditorMap->resetMap(true);
 	//map->DestroyInstance();
 }
