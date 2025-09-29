@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include "Game.h"
+#include "../../System/Map.h"
 
 /*!
 @file       Game.cpp
@@ -15,6 +16,8 @@ int health = 10;
 const char* FILE_PATH = "./Assets/Fonts/KenneyFonts/Kenney Mini.ttf";
 float fontSize = 12.0f;
 
+Map* gameMap;
+
 void gameInit(void)
 {	
 	font = CP_Font_Load(FILE_PATH);
@@ -25,6 +28,10 @@ void gameInit(void)
 	CP_Font_Set(font);
 
 	CP_Settings_TextSize(fontSize);
+
+	gameMap = Map::GetInstance();
+	gameMap->loadMap("Map1");
+
 	//CP_Font_DrawText("YIBBBEEE", 10, 10);
 }
 
@@ -37,11 +44,14 @@ void gameUpdate(void)
 		drawText("Health" + health, 100, 100);
 	}
 	//drawText("hoorah",CP_Input_GetMouseX(), CP_Input_GetMouseY());
+
+	gameMap->renderMap();
 }
 
 void gameExit(void)
 {
 	CP_Font_Free(font);
+	gameMap->clearMap(true);
 }
 
 void drawRect(float posX, float posY, float rectWidth, float rectHeight, float angle, float cornerRadius, CP_Color rectColor)

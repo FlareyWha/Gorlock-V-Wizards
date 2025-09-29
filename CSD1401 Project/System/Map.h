@@ -59,6 +59,8 @@ private:
 	std::vector<TILE_TYPE> tileTypesVector;
 
 public:
+	Map();
+
 	std::string getImageFilePath(TILE_TYPE tileType);
 	bool loadMapTileImages();
 
@@ -67,7 +69,7 @@ public:
 
 	bool renderMap();
 
-	bool clearMap();
+	bool clearMap(bool clear);
 
 	std::map<TILE_TYPE, CP_Image> imageMap;
 };
