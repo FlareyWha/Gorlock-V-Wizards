@@ -64,6 +64,9 @@ public:
 	std::string getImageFilePath(TILE_TYPE tileType);
 	void loadMapTileImages(void);
 
+	Tile getTile(float xPos, float yPos);
+	
+
 	bool loadMap(std::string fileName);
 	bool saveMap(std::string fileName);
 

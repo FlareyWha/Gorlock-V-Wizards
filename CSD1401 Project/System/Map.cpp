@@ -9,6 +9,7 @@
 #include "cprocessing.h"
 #include <vector>
 #include <string>
+#include <cmath>
 
 const char* Map::TILE_ASSETS_FILE_PATH = "Assets/Tiles/";
 
@@ -113,6 +114,18 @@ void Map::loadMapTileImages(void)
 		CP_Image tempImage = CP_Image_Load(getImageFilePath(tileTypesVector[i]).c_str());
 		imageMap.insert({ tileTypesVector[i], tempImage });
 	}
+}
+
+Tile Map::getTile(float xPos, float yPos)
+{
+	int rowPos = 0, int columnPos = 0;
+
+	rowPos = floor(xPos / TILE_WIDTH);
+	columnPos = floor(yPos / TILE_HEIGHT);
+
+	Tile tile = map[rowPos][columnPos];
+
+	return tile;
 }
 
 /*!
