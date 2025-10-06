@@ -58,11 +58,15 @@ private:
 
 	std::vector<TILE_TYPE> tileTypesVector;
 
-public:
-	Map();
-
 	std::string getImageFilePath(TILE_TYPE tileType);
 	void loadMapTileImages(void);
+
+	std::map<TILE_TYPE, CP_Image> imageMap;
+
+protected:
+	Map();
+
+public:
 
 	Tile getTile(float xPos, float yPos);
 	Tile** getMap(void);
@@ -78,5 +82,5 @@ public:
 	void resetMap(bool clear);
 	void clearMap(bool clear);
 
-	std::map<TILE_TYPE, CP_Image> imageMap;
+	void freeImages(void);
 };

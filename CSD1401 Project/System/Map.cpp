@@ -129,6 +129,9 @@ Tile Map::getTile(float xPos, float yPos)
 	rowPos = floor(xPos / TILE_WIDTH);
 	columnPos = floor(yPos / TILE_HEIGHT);
 
+	rowPos = rowPos > TILE_WIDTH ? TILE_WIDTH : rowPos;
+	columnPos = columnPos > TILE_HEIGHT ? TILE_HEIGHT : columnPos;
+
 	Tile tile = map[rowPos][columnPos];
 
 	return tile;
@@ -263,4 +266,20 @@ void Map::clearMap(bool clear)
 
 		delete map;
 	}
+}
+
+/*!
+@brief	Frees all the images and clears the vectors (used when program is shutting down)
+@param	void
+@return void
+*//*______________________________________________________________*/
+void Map::freeImages(void)
+{
+	for (int i = 0; i < tileTypesVector.size(); i++)
+	{
+		CP_Image_Free(imageMap[tileTypesVector[i]]);
+	}
+
+	imageMap.clear();
+	tileTypesVector.clear();
 }
