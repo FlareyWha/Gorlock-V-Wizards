@@ -59,6 +59,8 @@ void game_update(void)
 	CP_Font_DrawText("Press 3 for settings scene", 100, 300);
 	CP_Font_DrawText("Press 4 for map editor scene", 100, 350);
 
+	sceneManager->ChangeScenes(Scenes::GAME_SCENE);
+
 	if (CP_Input_KeyDown(KEY_Q))
 	{
 		CP_Engine_Terminate();

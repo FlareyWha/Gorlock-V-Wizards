@@ -116,6 +116,12 @@ void Map::loadMapTileImages(void)
 	}
 }
 
+/*!
+@brief	Gets a tile based on the x & y postion given
+@param	xPos - x position
+@param	yPos - y position
+@return Tile
+*//*______________________________________________________________*/
 Tile Map::getTile(float xPos, float yPos)
 {
 	int rowPos = 0, columnPos = 0;

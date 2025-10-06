@@ -75,9 +75,9 @@ bool CSVManager::write(std::string fileName, const int TILE_ROW_NUM, const int T
 						//Insert column value into file
 						file << *columnIterator;
 
-						//Use a comma token to split the values
+						//Use a tab token to split the values
 						if (columnIterator != (*rowIterator).end())
-							file << ' ';
+							file << '\t';
 					}
 
 					//Adds endline to file so that it starts from next row

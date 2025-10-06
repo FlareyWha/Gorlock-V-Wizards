@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="Enemies\BasicEnemy.cpp" />
     <ClCompile Include="Enemies\BaseEnemy.cpp" />
+    <ClCompile Include="Towers\FireTower.cpp" />
     <ClCompile Include="System\SceneManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Scenes\Game\Game.cpp" />
@@ -27,6 +28,7 @@
   <ItemGroup>
     <ClInclude Include="Enemies\BasicEnemy.h" />
     <ClInclude Include="Enemies\BaseEnemy.h" />
+    <ClInclude Include="Towers\FireTower.h" />
     <ClInclude Include="System\SceneManager.h" />
     <ClInclude Include="Scenes\Game\Game.h" />
     <ClInclude Include="MainMenu\MainMenu.h" />
