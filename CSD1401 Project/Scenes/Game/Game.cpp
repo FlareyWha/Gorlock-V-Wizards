@@ -6,6 +6,7 @@
 #include "Game.h"
 #include "../../System/Map.h"
 #include "../../Enemies/BasicEnemy.h"
+#include "../../Towers/FireTower.h"
 
 /*!
 @file       Game.cpp
@@ -20,6 +21,7 @@ float fontSize = 12.0f;
 
 Map* gameMap;
 std::vector<BaseEnemy*> enemiesList;
+std::vector<BaseTower*> towerList;
 
 void gameInit(void)
 {	
@@ -55,10 +57,49 @@ void gameUpdate(void)
 		enemiesList.push_back(new BasicEnemy(CP_Vector_Set(24.0f, 24.0f)));
 	}
 
+	if (CP_Input_MouseClicked())
+	{
+		if (gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).tileType < TILE_TYPE::HORIZONTAL_LEFT_ROAD
+			|| gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).tileType > TILE_TYPE::JUNCTION_MIDDLE_ROAD)
+		{
+			CP_Vector tempPos = gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).pos;
+			bool notOverlapping = true;
+
+			if (towerList.empty())
+			{
+				towerList.push_back(new FireTower(tempPos));
+				std::cout << "spawn 1st item" << std::endl;
+			}
+			else
+			{
+				for (BaseTower* tower : towerList)
+				{
+					float distance = CP_Vector_Distance(tower->getPosition(), tempPos);
+					if (distance == 0)
+					{
+						notOverlapping = false;
+					}
+				}
+
+				if (notOverlapping)
+				{
+					towerList.push_back(new FireTower(tempPos));
+					std::cout << "spawn" << std::endl;
+				}
+			}
+			
+		}
+	}
+
 	for (BaseEnemy* enemy : enemiesList)
 	{
 		enemy->Move(gameMap);
 		enemy->Render();
+	}
+
+	for (BaseTower* tower : towerList)
+	{
+		tower->Render();
 	}
 }
 

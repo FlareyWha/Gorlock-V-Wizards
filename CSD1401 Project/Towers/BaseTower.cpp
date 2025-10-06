@@ -10,36 +10,14 @@
 // Constructor
 BaseTower::BaseTower()
 {
-	//towerSprite = CP_Image_Load("Assets/kenney_tiny-battle/Tiles/tile_0068.png");
+	towerSprite = CP_Image_Load("Assets/kenney_tiny-battle/Tiles/tile_0068.png");
 	attackSpeed = 1;
-	xPos = 0;
-	yPos = 0;
+	position = CP_Vector_Set(0, 0);
 }
 
-/*!
-@brief      Gets the X position of the tower on the grid
-
-This function returns the current X Position of the tower on the map
-
-@param      void
-@return     int
-*//*______________________________________________________________*/
-int BaseTower::getXPos()
+CP_Vector BaseTower::getPosition()
 {
-	return xPos;
-}
-
-/*!
-@brief      Gets the Y position of the tower on the grid
-
-This function returns the current Y Position of the tower on the map
-
-@param      void
-@return     int
-*//*______________________________________________________________*/
-int BaseTower::getYPos()
-{
-	return yPos;
+	return position;
 }
 
 /*!
@@ -91,8 +69,7 @@ This function sets the current X and Y position on the map to specific coordinat
 *//*______________________________________________________________*/
 void BaseTower::setPos(int xPosition, int yPosition)
 {
-	xPos = xPosition;
-	yPos = yPosition;
+	position = CP_Vector_Set(xPosition, yPosition);
 }
 
 /*!
@@ -122,4 +99,9 @@ void BaseTower::Init()
 void BaseTower::Update()
 {
 
+}
+
+void BaseTower::Render()
+{
+	CP_Image_Draw(towerSprite, position.x, position.y, spriteSize, spriteSize, 255);
 }

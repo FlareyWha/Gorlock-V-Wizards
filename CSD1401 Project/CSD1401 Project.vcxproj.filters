@@ -19,13 +19,14 @@
     <ClCompile Include="Scenes\Settings\Settings.cpp" />
     <ClCompile Include="Scenes\MainMenu\NewMainMenu.cpp" />
     <ClCompile Include="Scenes\Game\Game.cpp" />
-    <ClCompile Include="MainMenu\MainMenu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Scenes\Game\Game.cpp" />
     <ClCompile Include="Scenes\Settings\Settings.cpp" />
     <ClCompile Include="Scenes\MainMenu\NewMainMenu.cpp" />
     <ClCompile Include="System\SceneManager.cpp" />
+    <ClCompile Include="Enemies\BasicEnemy.cpp" />
+    <ClCompile Include="Enemies\BaseEnemy.cpp" />
+    <ClCompile Include="Scenes\MapEditor\MapEditor.cpp" />
+    <ClCompile Include="Towers\FireTower.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Towers\BaseTower.h">
@@ -51,6 +52,10 @@
     <ClInclude Include="Scenes\Settings\Settings.h" />
     <ClInclude Include="Scenes\MainMenu\NewMainMenu.h" />
     <ClInclude Include="System\SceneManager.h" />
+    <ClInclude Include="Enemies\BasicEnemy.h" />
+    <ClInclude Include="Enemies\BaseEnemy.h" />
+    <ClInclude Include="Scenes\MapEditor\MapEditor.h" />
+    <ClInclude Include="Towers\FireTower.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
