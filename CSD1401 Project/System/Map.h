@@ -82,5 +82,5 @@ public:
 	void resetMap(bool clear);
 	void clearMap(bool clear);
 
-	void freeImages(void);
+	void freeImages(bool free);
 };

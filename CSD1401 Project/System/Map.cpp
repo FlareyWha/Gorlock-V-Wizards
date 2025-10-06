@@ -273,13 +273,16 @@ void Map::clearMap(bool clear)
 @param	void
 @return void
 *//*______________________________________________________________*/
-void Map::freeImages(void)
+void Map::freeImages(bool free)
 {
-	for (int i = 0; i < tileTypesVector.size(); i++)
+	if (free)
 	{
-		CP_Image_Free(imageMap[tileTypesVector[i]]);
-	}
+		for (int i = 0; i < tileTypesVector.size(); i++)
+		{
+			CP_Image_Free(imageMap[tileTypesVector[i]]);
+		}
 
-	imageMap.clear();
-	tileTypesVector.clear();
+		imageMap.clear();
+		tileTypesVector.clear();
+	}
 }
