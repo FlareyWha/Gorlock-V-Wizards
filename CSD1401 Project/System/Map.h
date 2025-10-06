@@ -82,5 +82,12 @@ public:
 	void resetMap(bool clear);
 	void clearMap(bool clear);
 
+<<<<<<< Updated upstream
 	void freeImages(bool free);
+=======
+	CP_Vector getDimensions();
+	int getTileSize();
+
+	std::map<TILE_TYPE, CP_Image> imageMap;
+>>>>>>> Stashed changes
 };

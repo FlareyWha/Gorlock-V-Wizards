@@ -20,6 +20,8 @@ const char* FILE_PATH = "./Assets/Fonts/KenneyFonts/Kenney Mini.ttf";
 float fontSize = 12.0f;
 
 Map* gameMap;
+CP_Vector mapSize;
+
 std::vector<BaseEnemy*> enemiesList;
 std::vector<BaseTower*> towerList;
 
@@ -37,6 +39,7 @@ void gameInit(void)
 	gameMap = Map::GetInstance();
 	gameMap->loadMap("Map2");
 
+	mapSize = gameMap->getDimensions();
 	//CP_Font_DrawText("YIBBBEEE", 10, 10);
 }
 
@@ -57,10 +60,11 @@ void gameUpdate(void)
 		enemiesList.push_back(new BasicEnemy(CP_Vector_Set(24.0f, 24.0f)));
 	}
 
-	if (CP_Input_MouseClicked())
+	if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT) && (CP_Input_GetMouseX() >= 0 && CP_Input_GetMouseX() <= gameMap->getTileSize() * mapSize.x)
+								&& (CP_Input_GetMouseY() >= 0 && CP_Input_GetMouseY() <= gameMap->getTileSize() * mapSize.y))
 	{
-		if (gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).tileType < TILE_TYPE::HORIZONTAL_LEFT_ROAD
-			|| gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).tileType > TILE_TYPE::JUNCTION_MIDDLE_ROAD)
+		if (gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).tileType >= TILE_TYPE::GROUND
+			&& gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).tileType <= TILE_TYPE::GRASS)
 		{
 			CP_Vector tempPos = gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).pos;
 			bool notOverlapping = true;
