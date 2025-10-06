@@ -1,5 +1,6 @@
 #include "BaseEnemy.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 int BaseEnemy::GetHealth(void)
 {
@@ -61,75 +62,66 @@ void BaseEnemy::SetDirectionVector(CP_Vector direction)
     this->directionVector = direction;
 }
 
-Direction BaseEnemy::GetPrevDirection(void)
+void BaseEnemy::AddToPath(CP_Vector newPoint)
 {
-    return prevDirection;
+    path.push(newPoint);
 }
 
-void BaseEnemy::SetPrevDirection(Direction direction)
+void BaseEnemy::SetPath(Map* map, CP_Vector pos, CP_Vector oldPos)
 {
-    this->prevDirection = direction;
-}
-
-void BaseEnemy::Move(Map* map)
-{
-    // Check tiles around enemy
-    Tile tiles[9] = {};
-    int tileId = 0;
-    for (float y = -spriteSize; y <= spriteSize; y += spriteSize)
+    TILE_TYPE tileType = TILE_TYPE::NONE;
+    for (int i = 0; i < 4; ++i)
     {
-        for (float x = -spriteSize; x <= spriteSize; x += spriteSize)
+        switch (i)
         {
-            float tilePosX = location.x - 24.0f + x;
-            float tilePosY = location.y - 24.0f + y;
-            if (!(tilePosX < 0 || tilePosY < 0))
-                tiles[tileId] = map->getTile(tilePosX, tilePosY);
-            
-            printf("%d ", tiles[tileId].tileType);
-
-            ++tileId;
-        }
-        printf("\n");
-    }
-    printf("\n");
-    
-    // Move enemy to tile
-    for (int i = 0; i < 9; ++i)
-    {
-        TILE_TYPE type = tiles[i].tileType;
-        if (type > 100 && type <= 200)
-        {
-            switch (i)
+        case 0: // Up
+            (pos.y - spriteSize) >= 0 ? tileType = map->getTile(pos.x, pos.y - spriteSize).tileType : tileType;
+            if (((tileType > 100 && tileType <= 200) || tileType == 202) && CP_Vector_Distance(CP_Vector_Set(pos.x, pos.y - spriteSize), oldPos) != 0)
             {
-            case 1:     // Up
-                if (prevDirection == DOWN)
-                    continue;
-                SetDirectionVector(0, -1);
-                SetPrevDirection(DOWN);
-                break;
-            case 3:     // Left
-                if (prevDirection == RIGHT)
-                    continue;
-                SetDirectionVector(-1, 0);
-                SetPrevDirection(RIGHT);
-                break;
-            case 5:     // Right
-                if (prevDirection == LEFT)
-                    continue;
-                SetDirectionVector(1, 0);
-                SetPrevDirection(LEFT);
-                break;
-            case 7:     // Down
-                if (prevDirection == UP)
-                    continue;
-                SetDirectionVector(0, 1);
-                SetPrevDirection(UP);
-                break;
+                path.push(CP_Vector_Set(pos.x, pos.y - spriteSize));
+                SetPath(map, CP_Vector_Set(pos.x, pos.y - spriteSize), pos);
             }
+            break;
+        case 1: // Left
+            (pos.x - spriteSize) >= 0 ? tileType = map->getTile(pos.x - spriteSize, pos.y).tileType : tileType;
+            if (((tileType > 100 && tileType <= 200) || tileType == 202) && CP_Vector_Distance(CP_Vector_Set(pos.x - spriteSize, pos.y), oldPos) != 0)
+            {
+                path.push(CP_Vector_Set(pos.x - spriteSize, pos.y));
+                SetPath(map, CP_Vector_Set(pos.x - spriteSize, pos.y), pos);
+            }
+            break;
+        case 2: // Down
+            tileType = map->getTile(pos.x, pos.y + spriteSize).tileType;
+            if (((tileType > 100 && tileType <= 200) || tileType == 202) && CP_Vector_Distance(CP_Vector_Set(pos.x, pos.y + spriteSize), oldPos) != 0)
+            {
+                path.push(CP_Vector_Set(pos.x, pos.y + spriteSize));
+                SetPath(map, CP_Vector_Set(pos.x, pos.y + spriteSize), pos);
+            }
+            break;
+        case 3: // Right
+            tileType = map->getTile(pos.x + spriteSize, pos.y).tileType;
+            if (((tileType > 100 && tileType <= 200) || tileType == 202) && CP_Vector_Distance(CP_Vector_Set(pos.x + spriteSize, pos.y), oldPos) != 0)
+            {
+                path.push(CP_Vector_Set(pos.x + spriteSize, pos.y));
+                SetPath(map, CP_Vector_Set(pos.x + spriteSize, pos.y), pos);
+            }
+            break;
         }
     }
+}
+
+void BaseEnemy::Move()
+{
+    if (path.empty()) return;
+
+    // Move toward next location in queue
+    SetDirectionVector(CP_Vector_Normalize(CP_Vector_Set(path.front().x - location.x, path.front().y - location.y)));
 
     location = CP_Vector_Add(location, CP_Vector_Scale(directionVector, speed * CP_System_GetDt()));
+
+    // Remove location from queue when reached
+    if (CP_Vector_Distance(location, path.front()) <= spriteSize * 0.5f)
+        path.pop();
 }
 
 void BaseEnemy::Render(void)

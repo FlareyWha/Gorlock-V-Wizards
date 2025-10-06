@@ -128,6 +128,21 @@ Tile Map::getTile(float xPos, float yPos)
 	return tile;
 }
 
+Tile** Map::getMap(void)
+{
+	return this->map;
+}
+
+int Map::getNumCol(void)
+{
+	return NUM_COLUMN;
+}
+
+int Map::getNumRow(void)
+{
+	return NUM_ROW;
+}
+
 /*!
 @brief	Loads the map using CSVManager based off the fileName,
 		stores this into in the map array

@@ -49,8 +49,8 @@ class Map : public SingletonTemplate<Map>
 
 private:
 	static const char* TILE_ASSETS_FILE_PATH;
-	const int TILE_WIDTH = 48;
-	const int TILE_HEIGHT = 48;
+	const int TILE_WIDTH = 50;
+	const int TILE_HEIGHT = 50;
 	const int NUM_COLUMN = 18;
 	const int NUM_ROW = 26;
 
@@ -65,7 +65,10 @@ public:
 	void loadMapTileImages(void);
 
 	Tile getTile(float xPos, float yPos);
-	
+	Tile** getMap(void);
+	int getNumCol(void);
+	int getNumRow(void);
+
 
 	bool loadMap(std::string fileName);
 	bool saveMap(std::string fileName);

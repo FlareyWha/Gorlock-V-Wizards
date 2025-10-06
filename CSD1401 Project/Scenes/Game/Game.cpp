@@ -33,14 +33,14 @@ void gameInit(void)
 	CP_Settings_TextSize(fontSize);
 
 	gameMap = Map::GetInstance();
-	gameMap->loadMap("Map1");
+	gameMap->loadMap("Map2");
 
 	//CP_Font_DrawText("YIBBBEEE", 10, 10);
 }
 
 void gameUpdate(void)
 {
-	CP_Graphics_ClearBackground(CP_Color_Create(100, 101, 101, 255));
+	CP_Graphics_ClearBackground(CP_Color_Create(132, 198, 105, 255));
 	if (CP_Input_MouseTriggered(MOUSE_BUTTON_1))
 	{
 		health--;
@@ -55,9 +55,10 @@ void gameUpdate(void)
 		enemiesList.push_back(new BasicEnemy(CP_Vector_Set(24.0f, 24.0f)));
 	}
 
-	for (BaseEnemy* enemy : enemiesList)
+	for (int i = 0; i < enemiesList.size(); ++i)
 	{
-		enemy->Move(gameMap);
+		BaseEnemy* enemy = enemiesList.at(i);
+		enemy->Move();
 		enemy->Render();
 	}
 }

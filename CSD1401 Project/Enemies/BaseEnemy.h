@@ -1,14 +1,7 @@
 #pragma once
 #include "cprocessing.h"
 #include "../../System/Map.h"
-
-enum Direction
-{
-	UP = 0,
-	LEFT,
-	RIGHT,
-	DOWN
-};
+#include <queue>
 
 class BaseEnemy
 {
@@ -17,8 +10,8 @@ private:
 	float speed;
 	CP_Image sprite;
 	CP_Vector location, directionVector;
-	float spriteSize = 48.0f;
-	Direction prevDirection;
+	float spriteSize = 50.0f;
+	std::queue<CP_Vector> path;
 public:
 	int GetHealth(void);
 	void SetHealth(int health);
@@ -32,10 +25,10 @@ public:
 	CP_Vector GetDirectionVector(void);
 	void SetDirectionVector(float x, float y);
 	void SetDirectionVector(CP_Vector direction);
-	Direction GetPrevDirection(void);
-	void SetPrevDirection(Direction direction);
+	void AddToPath(CP_Vector newPoint);
+	void SetPath(Map* map, CP_Vector pos, CP_Vector oldPos);
 
-	void Move(Map* map);
+	void Move();
 	void Render(void);
 };
 
