@@ -268,7 +268,6 @@ void Map::clearMap(bool clear)
 	}
 }
 
-<<<<<<< Updated upstream
 /*!
 @brief	Frees all the images and clears the vectors (used when program is shutting down)
 @param	void
@@ -286,7 +285,8 @@ void Map::freeImages(bool free)
 		imageMap.clear();
 		tileTypesVector.clear();
 	}
-=======
+}
+
 CP_Vector Map::getDimensions()
 {
 	return CP_Vector_Set(NUM_ROW, NUM_COLUMN);
@@ -295,5 +295,4 @@ CP_Vector Map::getDimensions()
 int Map::getTileSize()
 {
 	return TILE_WIDTH;
->>>>>>> Stashed changes
 }

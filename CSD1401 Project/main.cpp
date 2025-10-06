@@ -89,7 +89,7 @@ void game_exit(void)
 	sceneManager->DestroyInstance();
 
 	map->resetMap(false);
-	map->freeImages(false);
+	//map->freeImages(false);
 	map->DestroyInstance(false);
 }
 
