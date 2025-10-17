@@ -6,6 +6,7 @@
 #include "Scenes/Game/Game.h"
 #include "Scenes/MapEditor/MapEditor.h"
 #include "System/SceneManager.h"
+#include "System/SoundManager.h"
 
 CP_Image logo;
 BaseTower tower;
@@ -16,6 +17,7 @@ float degrees = 0.0f;
 NewMainMenu menu;
 CP_Font mainFont;
 SceneManager* sceneManager;
+SoundManager* soundManager;
 
 void game_init(void)
 {
@@ -32,11 +34,14 @@ void game_init(void)
 	mainFont = CP_Font_Load("./Assets/Fonts/KenneyFonts/Kenney Mini.ttf");
 
 	sceneManager = SceneManager::GetInstance();
+	soundManager = SoundManager::GetInstance();
 	
 	// Initialize Main Menu
 	//menu.StartButtonInit();
 
 	map = Map::GetInstance();
+
+	soundManager->playBGM(TEST_BGM);
 }
 
 void game_update(void)
@@ -59,7 +64,9 @@ void game_update(void)
 	CP_Font_DrawText("Press 3 for settings scene", 100, 300);
 	CP_Font_DrawText("Press 4 for map editor scene", 100, 350);
 
-	sceneManager->ChangeScenes(Scenes::GAME_SCENE);
+	//sceneManager->ChangeScenes(Scenes::GAME_SCENE);
+
+	//soundManager->playBGM(TEST_BGM);
 
 	if (CP_Input_KeyDown(KEY_Q))
 	{
@@ -81,6 +88,10 @@ void game_update(void)
 	{
 		sceneManager->ChangeScenes(Scenes::MAP_EDITOR_SCENE);
 	}
+	else if (CP_Input_KeyTriggered(KEY_5))
+	{
+		soundManager->playSFX(TEST_SFX);
+	}
 }
 
 void game_exit(void)
@@ -88,12 +99,11 @@ void game_exit(void)
 	CP_Image_Free(logo);
 	sceneManager->DestroyInstance();
 
+	//This stuff below should move to anywhere that terminates the game
 	map->resetMap(false);
 	//map->freeImages(false);
 	map->DestroyInstance(false);
 }
-
-
 
 
 int main(void)

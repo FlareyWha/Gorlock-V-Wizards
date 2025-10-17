@@ -1,7 +1,8 @@
 /*!
-@file       Map.c
+@file       Map.cpp
 @author     Yap Yu Xuan Daevon (yuxuandaevon.yap)
-@brief      This file contains definitions of functions used for the map
+@brief      This file contains definitions of functions	
+			used for the map class
 *//*_______________________________________________________________________*/
 
 #include "Map.h"
@@ -10,11 +11,12 @@
 #include <vector>
 #include <string>
 #include <cmath>
+#include <iostream>
 
 const char* Map::TILE_ASSETS_FILE_PATH = "Assets/Tiles/";
 
 /*!
-@brief Constructor. Makes it set the map array to empty
+@brief Constructor. Makes it set the map array to empty and loads all map tile images
 *//*______________________________________________________________*/
 Map::Map()
 {
@@ -129,8 +131,28 @@ Tile Map::getTile(float xPos, float yPos)
 	rowPos = floor(xPos / TILE_WIDTH);
 	columnPos = floor(yPos / TILE_HEIGHT);
 
-	rowPos = rowPos > TILE_WIDTH ? TILE_WIDTH : rowPos;
-	columnPos = columnPos > TILE_HEIGHT ? TILE_HEIGHT : columnPos;
+	std::cout << rowPos << std::endl;
+
+  	//rowPos = rowPos >= NUM_ROW ? NUM_ROW - 1 : rowPos;
+	//columnPos = columnPos >= NUM_COLUMN - 1 ? NUM_COLUMN : columnPos;
+
+	if (rowPos >= NUM_ROW)
+	{
+		rowPos = NUM_ROW - 1;
+	}
+	else if (rowPos < 0)
+	{
+		rowPos = 0;
+	}
+
+	if (columnPos >= NUM_COLUMN)
+	{
+		columnPos = NUM_COLUMN - 1;
+	}
+	else if (columnPos < 0)
+	{
+		columnPos = 0;
+	}
 
 	Tile tile = map[rowPos][columnPos];
 
