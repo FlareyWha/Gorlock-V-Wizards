@@ -27,6 +27,8 @@
     <ClCompile Include="Enemies\BaseEnemy.cpp" />
     <ClCompile Include="Scenes\MapEditor\MapEditor.cpp" />
     <ClCompile Include="Towers\FireTower.cpp" />
+    <ClCompile Include="System\SoundManager.cpp" />
+    <ClCompile Include="System\SettingsManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Towers\BaseTower.h">
@@ -56,6 +58,8 @@
     <ClInclude Include="Enemies\BaseEnemy.h" />
     <ClInclude Include="Scenes\MapEditor\MapEditor.h" />
     <ClInclude Include="Towers\FireTower.h" />
+    <ClInclude Include="System\SoundManager.h" />
+    <ClInclude Include="System\SettingsManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

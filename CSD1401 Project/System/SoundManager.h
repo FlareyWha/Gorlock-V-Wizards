@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include "cprocessing.h"
+#include "SettingsManager.h"
 
 enum SFX_TYPE
 {
@@ -24,6 +25,8 @@ class SoundManager : public SingletonTemplate<SoundManager>
 	friend class SingletonTemplate<SoundManager>;
 
 private:
+	SettingsManager* settingsManager;
+
 	static const char* SFX_ASSETS_FILE_PATH;
 	static const char* BGM_ASSETS_FILE_PATH;
 

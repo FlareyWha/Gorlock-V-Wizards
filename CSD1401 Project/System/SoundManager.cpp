@@ -7,6 +7,7 @@
 
 #include "SoundManager.h"
 #include "cprocessing.h"
+#include "SettingsManager.h"
 
 const char* SoundManager::SFX_ASSETS_FILE_PATH = "Assets/Sounds/SFX/";
 const char* SoundManager::BGM_ASSETS_FILE_PATH = "Assets/Sounds/BGM/";
@@ -16,6 +17,7 @@ const char* SoundManager::BGM_ASSETS_FILE_PATH = "Assets/Sounds/BGM/";
 *//*______________________________________________________________*/
 SoundManager::SoundManager()
 {
+	settingsManager = SettingsManager::GetInstance();
 	loadAllSounds();
 }
 
@@ -94,7 +96,7 @@ void SoundManager::loadAllSounds(void)
 void SoundManager::playSFX(SFX_TYPE sfxType)
 {
 	//Change volume with settings sfx volume when created
-	CP_Sound_PlayAdvanced(sfxMap[sfxType], 1.0f, 1.0f, FALSE, CP_SOUND_GROUP_1);
+	CP_Sound_PlayAdvanced(sfxMap[sfxType], settingsManager->getSFXVolumeLerp(), 1.0f, FALSE, CP_SOUND_GROUP_1);
 }
 
 /*!
@@ -105,7 +107,7 @@ void SoundManager::playSFX(SFX_TYPE sfxType)
 void SoundManager::playBGM(BGM_TYPE bgmType)
 {
 	//Change volume with settings bgm volume when created
-	CP_Sound_PlayAdvanced(bgmMap[bgmType], 1.0f, 1.0f, TRUE, CP_SOUND_GROUP_0);
+	CP_Sound_PlayAdvanced(bgmMap[bgmType], settingsManager->getBGMVolumeLerp(), 1.0f, TRUE, CP_SOUND_GROUP_0);
 }
 
 /*!

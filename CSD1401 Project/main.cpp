@@ -7,6 +7,9 @@
 #include "Scenes/MapEditor/MapEditor.h"
 #include "System/SceneManager.h"
 #include "System/SoundManager.h"
+#include "System/SettingsManager.h"
+
+SettingsManager* settingsManager;
 
 CP_Image logo;
 BaseTower tower;
@@ -34,6 +37,7 @@ void game_init(void)
 	mainFont = CP_Font_Load("./Assets/Fonts/KenneyFonts/Kenney Mini.ttf");
 
 	sceneManager = SceneManager::GetInstance();
+	settingsManager = SettingsManager::GetInstance();
 	soundManager = SoundManager::GetInstance();
 	
 	// Initialize Main Menu
