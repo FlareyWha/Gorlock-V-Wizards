@@ -40,9 +40,9 @@ void SettingsManager::setSFXVolume(int newVolume)
 }
 
 /*!
-@brief	Gets the SFX volume and returns it
+@brief	Gets the BGM volume and returns it
 @param	void
-@return int - the sfxVolume
+@return int - the bgmVolume
 *//*______________________________________________________________*/
 int SettingsManager::getBGMVolume(void)
 {
@@ -50,9 +50,9 @@ int SettingsManager::getBGMVolume(void)
 }
 
 /*!
-@brief	Gets the SFX volume in lerped float from (0.0f to 1.0f) and returns it
+@brief	Gets the BGM volume in lerped float from (0.0f to 1.0f) and returns it
 @param	void
-@return float - the sfxVolume in lerped float form
+@return float - the bgmVolume in lerped float form
 *//*______________________________________________________________*/
 float SettingsManager::getBGMVolumeLerp(void)
 {
@@ -61,7 +61,7 @@ float SettingsManager::getBGMVolumeLerp(void)
 }
 
 /*!
-@brief	Sets a new SFX volume
+@brief	Sets a new BGM volume
 @param	int newVolume - the new volume to set
 @return void
 *//*______________________________________________________________*/
