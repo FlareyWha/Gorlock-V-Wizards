@@ -95,7 +95,6 @@ void SoundManager::loadAllSounds(void)
 *//*______________________________________________________________*/
 void SoundManager::playSFX(SFX_TYPE sfxType)
 {
-	//Change volume with settings sfx volume when created
 	CP_Sound_PlayAdvanced(sfxMap[sfxType], settingsManager->getSFXVolumeLerp(), 1.0f, FALSE, CP_SOUND_GROUP_1);
 }
 
@@ -106,7 +105,6 @@ void SoundManager::playSFX(SFX_TYPE sfxType)
 *//*______________________________________________________________*/
 void SoundManager::playBGM(BGM_TYPE bgmType)
 {
-	//Change volume with settings bgm volume when created
 	CP_Sound_PlayAdvanced(bgmMap[bgmType], settingsManager->getBGMVolumeLerp(), 1.0f, TRUE, CP_SOUND_GROUP_0);
 }
 

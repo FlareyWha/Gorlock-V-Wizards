@@ -1,33 +1,70 @@
+/*!
+@file       SettingsManager.cpp
+@author     Yap Yu Xuan Daevon (yuxuandaevon.yap)
+@brief      This file contains definitions of functions
+			used for the SettingsManager class
+*//*_______________________________________________________________________*/
+
 #include "SettingsManager.h"
 #include "cprocessing.h"
 
+/*!
+@brief	Gets the SFX volume and returns it
+@param	void
+@return int - the sfxVolume
+*//*______________________________________________________________*/
 int SettingsManager::getSFXVolume(void)
 {
 	return sfxVolume;
 }
 
+/*!
+@brief	Gets the SFX volume in lerped float from (0.0f to 1.0f) and returns it
+@param	void
+@return float - the sfxVolume in lerped float form
+*//*______________________________________________________________*/
 float SettingsManager::getSFXVolumeLerp(void)
 {
 	float volumeFloat = CP_Math_LerpFloat(0.0f, 100.0f, sfxVolume);
 	return volumeFloat;
 }
 
+/*!
+@brief	Sets a new SFX volume
+@param	int newVolume - the new volume to set
+@return void
+*//*______________________________________________________________*/
 void SettingsManager::setSFXVolume(int newVolume)
 {
 	sfxVolume = newVolume;
 }
 
+/*!
+@brief	Gets the SFX volume and returns it
+@param	void
+@return int - the sfxVolume
+*//*______________________________________________________________*/
 int SettingsManager::getBGMVolume(void)
 {
 	return bgmVolume;
 }
 
+/*!
+@brief	Gets the SFX volume in lerped float from (0.0f to 1.0f) and returns it
+@param	void
+@return float - the sfxVolume in lerped float form
+*//*______________________________________________________________*/
 float SettingsManager::getBGMVolumeLerp(void)
 {
 	float volumeFloat = CP_Math_LerpFloat(0.0f, 100.0f, bgmVolume);
 	return volumeFloat;
 }
 
+/*!
+@brief	Sets a new SFX volume
+@param	int newVolume - the new volume to set
+@return void
+*//*______________________________________________________________*/
 void SettingsManager::setBGMVolume(int newVolume)
 {
 	bgmVolume = newVolume;

@@ -1,3 +1,10 @@
+/*!
+@file       Map.h
+@author     Yap Yu Xuan Daevon (yuxuandaevon.yap)
+@brief      This file contains declaration of functions and variables
+			used for the SettingsManager class
+*//*_______________________________________________________________________*/
+
 #pragma once
 #include "SingletonTemplate.h"
 

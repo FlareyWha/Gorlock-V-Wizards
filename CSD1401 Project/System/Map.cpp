@@ -2,7 +2,7 @@
 @file       Map.cpp
 @author     Yap Yu Xuan Daevon (yuxuandaevon.yap)
 @brief      This file contains definitions of functions	
-			used for the map class
+			used for the Map class
 *//*_______________________________________________________________________*/
 
 #include "Map.h"
