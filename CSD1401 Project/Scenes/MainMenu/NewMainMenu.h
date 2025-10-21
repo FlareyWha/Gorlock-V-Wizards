@@ -19,6 +19,10 @@ private:
 	float buttonY2 = 0;
 	float buttonY3 = 0;
 
+	float buttonTargetX = 0;
+	float buttonCurrentX = 0;
+	float buttonSpeed = 1.0f; // pixels per second
+
 public:
 	void ButtonInit();
 	void ButtonDraw();
