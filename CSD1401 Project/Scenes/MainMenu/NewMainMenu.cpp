@@ -24,8 +24,11 @@ void NewMainMenu::ButtonInit(void)
 	float windowWidth = CP_System_GetWindowWidth();
 	float windowHeight = CP_System_GetWindowHeight();
 	//Buttons X position
+	buttonTopY = -windowHeight;
+	buttonBottomY = windowHeight + buttonY1;
 	buttonTargetX = windowWidth / 2;
-	buttonCurrentX = windowWidth + buttonWidth; // Start off-screen (right)
+	buttonRightX = windowWidth + buttonWidth; // Start off-screen (right)
+	buttonLeftX = -buttonWidth;
 	//Buttons Y position
 	buttonY1 = windowHeight / 2;
 	buttonY2 = buttonY1 + 130;
@@ -37,24 +40,39 @@ void NewMainMenu::ButtonDraw()
 {
 	// Move buttons toward the center smoothly
 	float dt = CP_System_GetDt(); // time since last frame
-	float distance = buttonTargetX - buttonCurrentX;
+	float distanceRight = buttonTargetX - buttonRightX;
+	float distanceLeft = buttonTargetX - buttonLeftX;
+	float distanceTop = buttonY1 - buttonTopY;
+	float distanceBottom = buttonY3 - buttonBottomY;
 
 	// simple easing (slide)
-	if (fabs(distance) > 1.0f)
-		buttonCurrentX += distance * 5.0f * dt; // adjust 5.0f for smoothness
+	if (fabs(distanceRight) > 1.0f && fabs(distanceTop) > 1.0f) {
+		buttonTopY += distanceTop * 2.5f * dt;
+		buttonRightX += distanceRight * 1.0f * dt;
+	}
+	
+	if (fabs(distanceRight) > 1.0f && fabs(distanceBottom) > 1.0f){
+		buttonBottomY += distanceBottom * 2.5f * dt;
+		buttonRightX += distanceRight * 1.0f * dt;
+	}
+
+	
+	if (fabs(distanceLeft) > 1.0f) {
+		buttonLeftX += distanceLeft * 2.0f * dt;
+	}
 
 	CP_Settings_ImageMode(CP_POSITION_CENTER);
 	CP_Settings_TextAlignment(center, vertical);
 
 	// Draw buttons at the animated X position
-	CP_Image_Draw(Button, buttonCurrentX, buttonY1, buttonWidth, buttonHeight, 255);
-	CP_Font_DrawText("Start", buttonCurrentX, buttonY1);
+	CP_Image_Draw(Button, buttonRightX, buttonTopY, buttonWidth, buttonHeight, 255);
+	CP_Font_DrawText("Start", buttonRightX, buttonTopY);
 
-	CP_Image_Draw(Button, buttonCurrentX, buttonY2, buttonWidth, buttonHeight, 255);
-	CP_Font_DrawText("Settings", buttonCurrentX, buttonY2);
+	CP_Image_Draw(Button, buttonLeftX, buttonY2, buttonWidth, buttonHeight, 255);
+	CP_Font_DrawText("Settings", buttonLeftX, buttonY2);
 
-	CP_Image_Draw(Button, buttonCurrentX, buttonY3, buttonWidth, buttonHeight, 255);
-	CP_Font_DrawText("Quit", buttonCurrentX, buttonY3);
+	CP_Image_Draw(Button, buttonRightX, buttonBottomY, buttonWidth, buttonHeight, 255);
+	CP_Font_DrawText("Quit", buttonRightX, buttonBottomY);
 }
 
 bool NewMainMenu::isButtonClicked()
@@ -67,15 +85,15 @@ bool NewMainMenu::isButtonClicked()
 			mouseY >= by - buttonHeight / 2 && mouseY <= by + buttonHeight / 2;
 		};
 
-	if (withinButton(buttonCurrentX, buttonY1) && CP_Input_MouseClicked())
+	if (withinButton(buttonRightX, buttonTopY) && CP_Input_MouseClicked())
 	{
 		scene->ChangeScenes(Scenes::GAME_SCENE); 
 	}
-	else if (withinButton(buttonCurrentX, buttonY2) && CP_Input_MouseClicked()) 
+	else if (withinButton(buttonLeftX, buttonY2) && CP_Input_MouseClicked())
 	{
 		scene->ChangeScenes(Scenes::SETTINGS_SCENE);
 	}
-	else if (withinButton(buttonCurrentX, buttonY3) && CP_Input_MouseClicked()) {
+	else if (withinButton(buttonRightX, buttonBottomY) && CP_Input_MouseClicked()) {
 		CP_Engine_Terminate();
 	}
 

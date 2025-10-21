@@ -20,8 +20,10 @@ private:
 	float buttonY3 = 0;
 
 	float buttonTargetX = 0;
-	float buttonCurrentX = 0;
-	float buttonSpeed = 1.0f; // pixels per second
+	float buttonRightX = 0;
+	float buttonLeftX = 0;
+	float buttonTopY = 0;
+	float buttonBottomY = 0;
 
 public:
 	void ButtonInit();
