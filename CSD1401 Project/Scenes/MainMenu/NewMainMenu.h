@@ -8,15 +8,20 @@ class NewMainMenu
 protected:
 
 private:
-	CP_Image StartButton;
-	float buttonX = 0;
-	float buttonY = 0;
+	CP_Image Button;
+	CP_Font mainMenuFont;
+	float buttonX1 = 0;
+	float buttonY1 = 0;
+
 	float buttonWidth = 250;
-	float buttonHeight = 45;
+	float buttonHeight = 60;
+
+	float buttonY2 = 0;
+	float buttonY3 = 0;
 
 public:
-	void StartButtonInit();
-	void StartButtonDraw();
+	void ButtonInit();
+	void ButtonDraw();
 	bool isButtonClicked();
 };
 
