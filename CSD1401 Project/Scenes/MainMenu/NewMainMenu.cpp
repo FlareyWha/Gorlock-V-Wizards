@@ -47,12 +47,12 @@ void NewMainMenu::ButtonDraw()
 
 	// simple easing (slide)
 	if (fabs(distanceRight) > 1.0f && fabs(distanceTop) > 1.0f) {
-		buttonTopY += distanceTop * 2.5f * dt;
+		buttonTopY += distanceTop * 2.3f * dt;
 		buttonRightX += distanceRight * 1.0f * dt;
 	}
 	
 	if (fabs(distanceRight) > 1.0f && fabs(distanceBottom) > 1.0f){
-		buttonBottomY += distanceBottom * 2.5f * dt;
+		buttonBottomY += distanceBottom * 1.0f * dt;
 		buttonRightX += distanceRight * 1.0f * dt;
 	}
 
