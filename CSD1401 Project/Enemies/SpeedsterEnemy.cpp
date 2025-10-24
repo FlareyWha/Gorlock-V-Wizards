@@ -6,6 +6,7 @@ SpeedsterEnemy::SpeedsterEnemy(CP_Vector location)
 	SetHealth(5);
 	SetSpeed(200.0f);
 	SetSprite(CP_Image_Load("Assets/Enemies/Speedster.png"));
+	SetSpriteLeft(CP_Image_Load("Assets/Enemies/Speedster_Left.png"));
 	SetPath(Map::GetInstance(), location, location);
 }
 

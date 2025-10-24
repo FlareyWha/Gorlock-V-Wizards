@@ -99,10 +99,16 @@ void gameUpdate(void)
 		}
 	}
 
-	for (BaseEnemy* enemy : enemiesList)
+	for (int i = 0; i < enemiesList.size(); ++i)
 	{
+		BaseEnemy* enemy = enemiesList[i];
 		enemy->Move();
 		enemy->Render();
+		if (gameMap->getTile(enemy->GetLocation().x, enemy->GetLocation().y).tileType == TILE_TYPE::ENDPOINT)
+		{
+			enemiesList.erase(enemiesList.begin() + i);
+			delete enemy;
+		}
 	}
 
 	for (BaseTower* tower : towerList)

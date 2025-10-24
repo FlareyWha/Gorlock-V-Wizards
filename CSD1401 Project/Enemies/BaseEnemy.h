@@ -8,7 +8,7 @@ class BaseEnemy
 private:
 	int health;
 	float speed;
-	CP_Image sprite;
+	CP_Image sprite, spriteLeft;
 	CP_Vector location, directionVector;
 	float spriteSize = 50.0f;
 	std::queue<CP_Vector> path;
@@ -19,6 +19,8 @@ public:
 	void SetSpeed(float speed);
 	CP_Image GetSprite(void);
 	void SetSprite(CP_Image sprite);
+	CP_Image GetSpriteLeft(void);
+	void SetSpriteLeft(CP_Image sprite);
 	CP_Vector GetLocation(void);
 	void SetLocation(float x, float y);
 	void SetLocation(CP_Vector location);
