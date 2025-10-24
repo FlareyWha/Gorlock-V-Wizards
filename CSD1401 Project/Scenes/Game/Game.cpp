@@ -67,11 +67,47 @@ void Game::gainMoneys(int moneyAmt)
 
 void Game::drawHeart(float x, float y)
 {
-	CP_Image_Draw(game.emptyHeartImage, x, y, CP_Image_GetWidth(game.emptyHeartImage) * imageScaling, CP_Image_GetHeight(game.emptyHeartImage) * imageScaling, 155);
-	double heartSize = (double)game.getHealth() / (double)game.getMaxHealth();
-	CP_Image_Draw(game.healthImage, x, y, CP_Image_GetWidth(game.healthImage) * imageScaling * heartSize,CP_Image_GetHeight(game.healthImage) * imageScaling *heartSize,255);
-	std::string health = "Health: " + std::to_string(game.getHealth());
-	game.drawText(health.c_str(), CP_System_GetWindowWidth() / 2, 100);
+	switch (game.getHealth())
+	{
+	case(3):
+		startOfTimer = 1.75f;
+		break;
+	case(2):
+		startOfTimer = 1.0f;
+		break;
+	case(1):
+		startOfTimer = 0.75f;
+		break;
+	default:
+		startOfTimer = 1.75f;
+		break;
+	}
+	
+	if (timer > 0)
+	{
+		timer += -1 * CP_System_GetDt();
+	}
+	else
+	{
+		heartBeatTimer += -1 * CP_System_GetDt();
+		if (heartBeatTimer > 0)
+		{
+			heartOpacity = 255;
+			heartBeatScale = 1.25f;
+		}
+		else
+		{
+			heartOpacity = 155;
+			heartBeatTimer = heartBeatStart;
+			timer = startOfTimer;
+			heartBeatScale = 1.0f;
+		}
+	}
+
+	CP_Image_Draw(game.emptyHeartImage, x, y, CP_Image_GetWidth(game.emptyHeartImage) * imageScaling, CP_Image_GetHeight(game.emptyHeartImage) * imageScaling, 255);
+	double heartSize = (double)game.getHealth() / (double)game.getMaxHealth() * heartBeatScale;
+	
+	CP_Image_Draw(game.healthImage, x, y, CP_Image_GetWidth(game.healthImage) * imageScaling * heartSize,CP_Image_GetHeight(game.healthImage) * imageScaling *heartSize,heartOpacity);
 }
 
 int Game::getHealth()
@@ -95,6 +131,7 @@ void Game::takeDamage(int hp)
 	health -= hp;
 	//CP_Image_Draw(game.healthImage, CP_System_GetWindowWidth() / 2.0, 100, 128, 128, 255);
 	health = CP_Math_ClampInt(health, 0, game.getMaxHealth());
+	game.tookDamage = true;
 }
 
 void gameInit(void)
@@ -194,6 +231,7 @@ void gameUpdate(void)
 		BaseEnemy* enemy = enemiesList[i];
 		if (gameMap->getTile(enemy->GetLocation().x, enemy->GetLocation().y).tileType == TILE_TYPE::ENDPOINT)
 		{
+			game.takeDamage(1);
 			enemiesList.erase(enemiesList.begin() + i);
 			delete enemy;
 		}
