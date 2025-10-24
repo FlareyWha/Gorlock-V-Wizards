@@ -9,6 +9,7 @@
 #include "../../Enemies/TankEnemy.h"
 #include "../../Enemies/SpeedsterEnemy.h"
 #include "../../Towers/FireTower.h"
+#include "../../Projectiles/BaseProjectile.h"
 
 /*!
 @file       Game.cpp
@@ -25,6 +26,7 @@ CP_Vector mapSize;
 
 std::vector<BaseEnemy*> enemiesList;
 std::vector<BaseTower*> towerList;
+std::vector<BaseProjectile*> projectileList;
 
 Game game;
 void Game::drawRect(float posX, float posY, float rectWidth, float rectHeight, float angle, float cornerRadius, CP_Color rectColor)
@@ -147,6 +149,7 @@ void gameUpdate(void)
 	if (CP_Input_KeyReleased(KEY_3))
 		enemiesList.push_back(new SpeedsterEnemy(CP_Vector_Set(24.0f, 24.0f)));
 
+
 	if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT) && (CP_Input_GetMouseX() >= 0 && CP_Input_GetMouseX() <= gameMap->getTileSize() * mapSize.x)
 								&& (CP_Input_GetMouseY() >= 0 && CP_Input_GetMouseY() <= gameMap->getTileSize() * mapSize.y))
 	{
@@ -182,6 +185,17 @@ void gameUpdate(void)
 		}
 	}
 
+	if (CP_Input_KeyReleased(KEY_SPACE))
+	{
+		if (towerList.size())
+		{
+			for (BaseTower* tower : towerList)
+			{
+				CP_Vector direction = CP_Vector_Normalize(CP_Vector_Set(CP_Input_GetMouseWorldX() - tower->getPosition().x,CP_Input_GetMouseWorldY() - tower->getPosition().y));
+				projectileList.push_back(new BaseProjectile(tower->getPosition(), direction));
+			}
+		}
+	}
 	for (int i = 0; i < enemiesList.size(); ++i)
 	{
 		BaseEnemy* enemy = enemiesList[i];
@@ -214,6 +228,22 @@ void gameUpdate(void)
 	
 	std::string money = "Money: " + std::to_string(game.getMoneys());
 	game.drawText(money.c_str(), CP_System_GetWindowWidth()/2.0, 300);
+
+	for (BaseProjectile* proj : projectileList)
+	{
+		proj->Update();
+		proj->Render();
+	}
+
+	for (int i = 0; i < projectileList.size(); i++)
+	{
+		if (projectileList[i]->GetLifespan() <= 0.f)
+		{
+			BaseProjectile* proj = projectileList[i];
+			projectileList.erase(projectileList.begin() + i);
+			delete proj;
+		}
+	}
 }
 
 void gameExit(void)

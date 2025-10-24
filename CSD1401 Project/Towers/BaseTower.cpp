@@ -6,6 +6,7 @@
 
 #include "BaseTower.h"
 #include "cprocessing.h"
+#include "../Projectiles/BaseProjectile.h"
 
 // Constructor
 BaseTower::BaseTower()
@@ -89,6 +90,8 @@ void BaseTower::setImage(CP_Image inputImage)
 void BaseTower::AttackEnemy(void)
 {
 	OutputDebugString("attacking enemy now\n");
+
+	
 }
 
 // zzzzzz
