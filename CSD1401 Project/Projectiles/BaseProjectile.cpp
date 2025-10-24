@@ -5,7 +5,7 @@
 BaseProjectile::BaseProjectile(CP_Vector position, CP_Vector direction)
 {
 	damage = 1.f;
-	projectileSpeed = 50.f;
+	projectileSpeed = 75.f;
 	this->position = position;
 	this->direction = direction;
 	
@@ -20,7 +20,6 @@ void BaseProjectile::Init()
 void BaseProjectile::Update()
 {
 	lifespan -= 1.f * CP_System_GetDt();
-	std::cout << lifespan << std::endl;
 	position = CP_Vector_Add(position, CP_Vector_Scale(direction, projectileSpeed * CP_System_GetDt()));
 }
 

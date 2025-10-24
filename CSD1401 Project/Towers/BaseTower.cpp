@@ -89,9 +89,7 @@ void BaseTower::setImage(CP_Image inputImage)
 // testing for now
 void BaseTower::AttackEnemy(void)
 {
-	OutputDebugString("attacking enemy now\n");
 
-	
 }
 
 // zzzzzz

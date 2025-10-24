@@ -199,7 +199,6 @@ void gameUpdate(void)
 			if (towerList.empty())
 			{
 				towerList.push_back(new FireTower(tempPos));
-				std::cout << "spawn 1st item" << std::endl;
 			}
 			else
 			{
@@ -215,14 +214,13 @@ void gameUpdate(void)
 				if (notOverlapping)
 				{
 					towerList.push_back(new FireTower(tempPos));
-					std::cout << "spawn" << std::endl;
 				}
 			}
 			
 		}
 	}
 
-	if (CP_Input_KeyReleased(KEY_SPACE))
+	if (CP_Input_KeyDown(KEY_SPACE))
 	{
 		if (towerList.size())
 		{
