@@ -187,6 +187,11 @@ void gameUpdate(void)
 		BaseEnemy* enemy = enemiesList[i];
 		enemy->Move();
 		enemy->Render();
+	}
+
+	for (int i = 0; i < enemiesList.size(); ++i)
+	{
+		BaseEnemy* enemy = enemiesList[i];
 		if (gameMap->getTile(enemy->GetLocation().x, enemy->GetLocation().y).tileType == TILE_TYPE::ENDPOINT)
 		{
 			enemiesList.erase(enemiesList.begin() + i);
