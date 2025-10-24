@@ -14,6 +14,7 @@
     <ClCompile Include="Enemies\BasicEnemy.cpp" />
     <ClCompile Include="Enemies\BaseEnemy.cpp" />
     <ClCompile Include="Enemies\TankEnemy.cpp" />
+    <ClCompile Include="Enemies\SpeedsterEnemy.cpp" />
     <ClCompile Include="System\SettingsManager.cpp" />
     <ClCompile Include="Towers\FireTower.cpp" />
     <ClCompile Include="System\SceneManager.cpp" />
@@ -32,6 +33,7 @@
   <ItemGroup>
     <ClInclude Include="Enemies\BasicEnemy.h" />
     <ClInclude Include="Enemies\BaseEnemy.h" />
+    <ClInclude Include="Enemies\SpeedsterEnemy.h" />
     <ClInclude Include="Enemies\TankEnemy.h" />
     <ClInclude Include="System\SettingsManager.h" />
     <ClInclude Include="Towers\FireTower.h" />
