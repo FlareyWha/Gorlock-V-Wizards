@@ -26,6 +26,7 @@
     <ClCompile Include="System\Singleton.cpp" />
     <ClCompile Include="System\SoundManager.cpp" />
     <ClCompile Include="Towers\BaseTower.cpp" />
+    <ClCompile Include="Utils\Slider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enemies\BasicEnemy.h" />
@@ -44,6 +45,7 @@
     <ClInclude Include="System\SingletonTemplate.h" />
     <ClInclude Include="System\SoundManager.h" />
     <ClInclude Include="Towers\BaseTower.h" />
+    <ClInclude Include="Utils\Slider.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
