@@ -29,6 +29,7 @@
     <ClCompile Include="System\SoundManager.cpp" />
     <ClCompile Include="Towers\BaseTower.cpp" />
     <ClCompile Include="Utils\Slider.cpp" />
+    <ClCompile Include="Utils\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enemies\BasicEnemy.h" />
@@ -50,6 +51,7 @@
     <ClInclude Include="System\SoundManager.h" />
     <ClInclude Include="Towers\BaseTower.h" />
     <ClInclude Include="Utils\Slider.h" />
+    <ClInclude Include="Utils\Utils.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

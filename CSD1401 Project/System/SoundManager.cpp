@@ -119,6 +119,17 @@ void SoundManager::stopBGM(void)
 	CP_Sound_StopGroup(CP_SOUND_GROUP_0);
 }
 
+void SoundManager::refreshBGMVolume(float bgmVolume)
+{
+
+	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_0, bgmVolume);
+}
+
+void SoundManager::refreshSFXVolume(float sfxVolume)
+{
+	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_1, sfxVolume);
+}
+
 /*!
 @brief	Frees all sounds from maps, and clears all vectors and maps.
 @param	void

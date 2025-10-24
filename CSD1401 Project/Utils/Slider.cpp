@@ -6,6 +6,14 @@ Slider::Slider()
 	loadImages();
 	trackerPosition = thumbPosition = CP_Vector_Zero();
 	sliderValue = 0;
+
+	trackerWidth = 400;
+	trackerHeight = 25;
+
+	thumbWidth = 40;
+	thumbHeight = 50;
+
+	updateThumbPositionBasedOnValue();
 }
 
 Slider::Slider(CP_Vector position, float value)
@@ -13,6 +21,14 @@ Slider::Slider(CP_Vector position, float value)
 	loadImages();
 	trackerPosition = thumbPosition = position;
 	sliderValue = value;
+
+	trackerWidth = 400;
+	trackerHeight = 25;
+
+	thumbWidth = 40;
+	thumbHeight = 50;
+
+	updateThumbPositionBasedOnValue();
 }
 
 Slider::~Slider()
@@ -35,7 +51,7 @@ void Slider::updateThumbPositionBasedOnPosition(CP_Vector newPosition)
 
 	clampThumbPosition();
 
-	sliderValue = 100 - thumbPosition.x - (trackerPosition.x - trackerWidth / 2) / trackerWidth;
+	sliderValue = (((thumbPosition.x - trackerWidth / 2) -  trackerWidth) / trackerWidth) * 100;
 }
 
 void Slider::updateThumbPositionBasedOnValue(void)
@@ -49,7 +65,7 @@ void Slider::updateThumbPositionBasedOnValue(void)
 
 void Slider::clampThumbPosition(void)
 {
-	CP_Math_ClampFloat(thumbPosition.x, trackerPosition.x - trackerWidth / 2, trackerPosition.x + trackerWidth / 2);
+	thumbPosition.x = CP_Math_ClampFloat(thumbPosition.x, trackerPosition.x - trackerWidth / 2, trackerPosition.x + trackerWidth / 2);
 
 	thumbPosition.y = trackerPosition.y;
 }
@@ -57,6 +73,21 @@ void Slider::clampThumbPosition(void)
 float Slider::getSliderValue(void)
 {
 	return sliderValue;
+}
+
+CP_Vector Slider::getThumbPosition(void)
+{
+	return thumbPosition;
+}
+
+float Slider::getThumbWidth(void)
+{
+	return thumbWidth;
+}
+
+float Slider::getThumbHeight(void)
+{
+	return thumbHeight;
 }
 
 void Slider::renderSlider(CP_POSITION_MODE previousMode)

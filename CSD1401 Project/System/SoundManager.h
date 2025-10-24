@@ -56,5 +56,8 @@ public:
 
 	void stopBGM(void);
 
+	void refreshBGMVolume(float bgmVolume);
+	void refreshSFXVolume(float sfxVolume);
+
 	void freeAllSounds(void);
 };

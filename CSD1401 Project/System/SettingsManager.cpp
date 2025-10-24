@@ -25,7 +25,7 @@ int SettingsManager::getSFXVolume(void)
 *//*______________________________________________________________*/
 float SettingsManager::getSFXVolumeLerp(void)
 {
-	float volumeFloat = CP_Math_LerpFloat(0.0f, 100.0f, sfxVolume);
+	float volumeFloat = sfxVolume / 100.f;
 	return volumeFloat;
 }
 
@@ -56,7 +56,9 @@ int SettingsManager::getBGMVolume(void)
 *//*______________________________________________________________*/
 float SettingsManager::getBGMVolumeLerp(void)
 {
-	float volumeFloat = CP_Math_LerpFloat(0.0f, 100.0f, bgmVolume);
+	//float volumeFloat = CP_Math_LerpFloat(0.0f, 100.0f, bgmVolume);
+
+	float volumeFloat = bgmVolume / 100.f;
 	return volumeFloat;
 }
 

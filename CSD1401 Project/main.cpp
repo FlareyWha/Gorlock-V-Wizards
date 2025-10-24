@@ -29,14 +29,14 @@ void game_init(void)
 
 	sceneManager = SceneManager::GetInstance();
 	settingsManager = SettingsManager::GetInstance();
-	//soundManager = SoundManager::GetInstance();
+	soundManager = SoundManager::GetInstance();
 	
 	// Initialize Main Menu
 	//menu.StartButtonInit();
 	sceneManager->ChangeScenes(Scenes::MAIN_MENU_SCENE);
 	//map = Map::GetInstance();
 
-	//soundManager->playBGM(TEST_BGM);
+	soundManager->playBGM(TEST_BGM);
 }
 
 void game_update(void)
@@ -84,6 +84,10 @@ void game_update(void)
 		soundManager->playSFX(TEST_SFX);
 	}
 	*/
+	if (CP_Input_KeyTriggered(KEY_5))
+	{
+		soundManager->playSFX(TEST_SFX);
+	}
 }
 
 void game_exit(void)
