@@ -28,12 +28,20 @@ public:
 	void gainMoneys(int moneyAmt);
 
 	void drawHeart(float x,float y);
-
+	bool tookDamage = false;
 	int getHealth();
 	int getMaxHealth();
 	void setMaxHealth(int max);
 	void setHealth(int hp);
 	void takeDamage(int hp);
+
+	int heartOpacity = 155;
+	float heartBeatStart = 0.25f;
+	float heartBeatTimer = heartBeatStart;
+	float heartBeatScale = 1.0f;
+	float startOfTimer = 1.75f;
+	float timer = startOfTimer;
+
 	CP_Image healthImage;
 	CP_Image emptyHeartImage;
 	CP_Image fireTowerImage;

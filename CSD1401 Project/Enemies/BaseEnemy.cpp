@@ -32,6 +32,16 @@ void BaseEnemy::SetSprite(CP_Image sprite)
     this->sprite = sprite;
 }
 
+CP_Image BaseEnemy::GetSpriteLeft(void)
+{
+    return spriteLeft;
+}
+
+void BaseEnemy::SetSpriteLeft(CP_Image sprite)
+{
+    this->spriteLeft = sprite;
+}
+
 CP_Vector BaseEnemy::GetLocation(void)
 {
     return location;
@@ -120,11 +130,14 @@ void BaseEnemy::Move()
     location = CP_Vector_Add(location, CP_Vector_Scale(directionVector, speed * CP_System_GetDt()));
 
     // Remove location from queue when reached
-    if (CP_Vector_Distance(location, path.front()) <= spriteSize * 0.5f)
+    if (CP_Vector_Distance(location, path.front()) <= spriteSize * 0.25f)
         path.pop();
 }
 
 void BaseEnemy::Render(void)
 {
-    CP_Image_Draw(sprite, location.x, location.y, spriteSize, spriteSize, 255);
+    if (directionVector.x > 0)
+        CP_Image_Draw(sprite, location.x, location.y, spriteSize, spriteSize, 255);
+    else if (directionVector.x < 0)
+        CP_Image_Draw(spriteLeft, location.x, location.y, spriteSize, spriteSize, 255);
 }

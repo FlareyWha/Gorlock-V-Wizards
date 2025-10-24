@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Projectiles\BaseProjectile.cpp" />
     <ClCompile Include="Enemies\BasicEnemy.cpp" />
     <ClCompile Include="Enemies\BaseEnemy.cpp" />
     <ClCompile Include="Enemies\TankEnemy.cpp" />
@@ -32,6 +33,7 @@
     <ClCompile Include="Utils\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Projectiles\BaseProjectile.h" />
     <ClInclude Include="Enemies\BasicEnemy.h" />
     <ClInclude Include="Enemies\BaseEnemy.h" />
     <ClInclude Include="Enemies\SpeedsterEnemy.h" />

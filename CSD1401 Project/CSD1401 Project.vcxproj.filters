@@ -30,6 +30,9 @@
     <ClCompile Include="System\SoundManager.cpp" />
     <ClCompile Include="System\SettingsManager.cpp" />
     <ClCompile Include="Utils\Slider.cpp" />
+    <ClCompile Include="Enemies\TankEnemy.cpp" />
+    <ClCompile Include="Enemies\SpeedsterEnemy.cpp" />
+    <ClCompile Include="Projectiles\BaseProjectile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Towers\BaseTower.h">
@@ -62,6 +65,9 @@
     <ClInclude Include="System\SoundManager.h" />
     <ClInclude Include="System\SettingsManager.h" />
     <ClInclude Include="Utils\Slider.h" />
+    <ClInclude Include="Enemies\SpeedsterEnemy.h" />
+    <ClInclude Include="Enemies\TankEnemy.h" />
+    <ClInclude Include="Projectiles\BaseProjectile.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
