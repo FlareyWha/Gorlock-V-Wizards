@@ -6,6 +6,7 @@
 #include "Game.h"
 #include "../../System/Map.h"
 #include "../../Enemies/BasicEnemy.h"
+#include "../../Enemies/TankEnemy.h"
 #include "../../Towers/FireTower.h"
 
 /*!
@@ -55,10 +56,10 @@ void gameUpdate(void)
 
 	gameMap->renderMap();
 
-	if (CP_Input_KeyReleased(KEY_SPACE))
-	{
+	if (CP_Input_KeyReleased(KEY_1))
 		enemiesList.push_back(new BasicEnemy(CP_Vector_Set(24.0f, 24.0f)));
-	}
+	else if (CP_Input_KeyReleased(KEY_2))
+		enemiesList.push_back(new TankEnemy(CP_Vector_Set(24.0f, 24.0f)));
 
 	if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT) && (CP_Input_GetMouseX() >= 0 && CP_Input_GetMouseX() <= gameMap->getTileSize() * mapSize.x)
 								&& (CP_Input_GetMouseY() >= 0 && CP_Input_GetMouseY() <= gameMap->getTileSize() * mapSize.y))
