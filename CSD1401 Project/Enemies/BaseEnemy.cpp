@@ -9,7 +9,17 @@ int BaseEnemy::GetHealth(void)
 
 void BaseEnemy::SetHealth(int health)
 {
-    this->health = health;
+    health >= 0 ? this->health = health : this->health = 0;
+}
+
+int BaseEnemy::GetMaxHealth(void)
+{
+    return maxHealth;
+}
+
+void BaseEnemy::SetMaxHealth(int health)
+{
+    this->maxHealth = health;
 }
 
 float BaseEnemy::GetSpeed(void)
@@ -96,4 +106,8 @@ void BaseEnemy::Render(void)
         CP_Image_Draw(sprite, location.x, location.y, spriteSize, spriteSize, 255);
     else if (directionVector.x < 0)
         CP_Image_Draw(spriteLeft, location.x, location.y, spriteSize, spriteSize, 255);
+
+    CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
+    CP_Graphics_DrawRect(location.x, location.y - spriteSize * 0.5f, (float)health / (float)maxHealth * 50.f, 10.f);
+    CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 }

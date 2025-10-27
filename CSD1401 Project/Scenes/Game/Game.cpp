@@ -191,6 +191,11 @@ void gameUpdate(void)
 		enemiesList.push_back(new TankEnemy(game.getSpawnLocation()));
 	if (CP_Input_KeyReleased(KEY_3))
 		enemiesList.push_back(new SpeedsterEnemy(game.getSpawnLocation()));
+	if (CP_Input_KeyReleased(KEY_4))
+	{
+		for (BaseEnemy* enemy : enemiesList)
+			enemy->SetHealth(enemy->GetHealth() - 1);
+	}
 
 
 	if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT) && (CP_Input_GetMouseX() >= 0 && CP_Input_GetMouseX() <= gameMap->getTileSize() * mapSize.x)
@@ -250,6 +255,11 @@ void gameUpdate(void)
 		if (gameMap->getTile(enemy->GetLocation().x, enemy->GetLocation().y).tileType == TILE_TYPE::ENDPOINT)
 		{
 			game.takeDamage(1);
+			enemiesList.erase(enemiesList.begin() + i);
+			delete enemy;
+		}
+		else if (enemy->GetHealth() == 0)
+		{
 			enemiesList.erase(enemiesList.begin() + i);
 			delete enemy;
 		}

@@ -6,7 +6,7 @@
 class BaseEnemy
 {
 private:
-	int health;
+	int health, maxHealth;
 	float speed;
 	CP_Image sprite, spriteLeft;
 	CP_Vector location, directionVector;
@@ -15,6 +15,8 @@ private:
 public:
 	int GetHealth(void);
 	void SetHealth(int health);
+	int GetMaxHealth(void);
+	void SetMaxHealth(int health);
 	float GetSpeed(void);
 	void SetSpeed(float speed);
 	CP_Image GetSprite(void);
