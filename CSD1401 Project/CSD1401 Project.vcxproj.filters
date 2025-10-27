@@ -33,6 +33,8 @@
     <ClCompile Include="Enemies\TankEnemy.cpp" />
     <ClCompile Include="Enemies\SpeedsterEnemy.cpp" />
     <ClCompile Include="Projectiles\BaseProjectile.cpp" />
+    <ClCompile Include="Utils\Utils.cpp" />
+    <ClCompile Include="Utils\Button.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Towers\BaseTower.h">
@@ -68,6 +70,8 @@
     <ClInclude Include="Enemies\SpeedsterEnemy.h" />
     <ClInclude Include="Enemies\TankEnemy.h" />
     <ClInclude Include="Projectiles\BaseProjectile.h" />
+    <ClInclude Include="Utils\Utils.h" />
+    <ClInclude Include="Utils\Button.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

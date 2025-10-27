@@ -25,6 +25,11 @@ private:
 	float buttonTopY = 0;
 	float buttonBottomY = 0;
 
+	float distanceRight = buttonTargetX - buttonRightX;
+	float distanceLeft = buttonTargetX - buttonLeftX;
+	float distanceTop = buttonY1 - buttonTopY;
+	float distanceBottom = buttonY3 - buttonBottomY;
+
 public:
 	void ButtonInit();
 	void ButtonDraw();

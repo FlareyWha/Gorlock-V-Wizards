@@ -8,8 +8,10 @@
 #include "../../System/SceneManager.h"
 #include "../../System/SoundManager.h"
 #include "../../System/SettingsManager.h"
+#include "../../Utils/Button.h"
 
 CP_Font mainMenuFont;
+Button1 testbut;
 Map* map;
 SceneManager* scene;
 NewMainMenu menu;
@@ -39,7 +41,7 @@ void NewMainMenu::ButtonInit(void)
 void NewMainMenu::ButtonDraw()
 {
 	// Move buttons toward the center smoothly
-	float dt = CP_System_GetDt(); // time since last frame
+	float dt = CP_System_GetDt();
 	float distanceRight = buttonTargetX - buttonRightX;
 	float distanceLeft = buttonTargetX - buttonLeftX;
 	float distanceTop = buttonY1 - buttonTopY;
@@ -65,7 +67,9 @@ void NewMainMenu::ButtonDraw()
 	CP_Settings_TextAlignment(center, vertical);
 
 	// Draw buttons at the animated X position
-	CP_Image_Draw(Button, buttonRightX, buttonTopY, buttonWidth, buttonHeight, 255);
+	//CP_Image_Draw(Button, buttonRightX, buttonY1, buttonWidth, buttonHeight, 255);
+	testbut.buttoninit(buttonRightX, buttonTopY);
+	testbut.Buttondraw();
 	CP_Font_DrawText("Start", buttonRightX, buttonTopY);
 
 	CP_Image_Draw(Button, buttonLeftX, buttonY2, buttonWidth, buttonHeight, 255);

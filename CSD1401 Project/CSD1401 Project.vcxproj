@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Utils\Button.cpp" />
     <ClCompile Include="Projectiles\BaseProjectile.cpp" />
     <ClCompile Include="Enemies\BasicEnemy.cpp" />
     <ClCompile Include="Enemies\BaseEnemy.cpp" />
@@ -33,6 +34,7 @@
     <ClCompile Include="Utils\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Utils\Button.h" />
     <ClInclude Include="Projectiles\BaseProjectile.h" />
     <ClInclude Include="Enemies\BasicEnemy.h" />
     <ClInclude Include="Enemies\BaseEnemy.h" />
