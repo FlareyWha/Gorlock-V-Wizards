@@ -10,6 +10,7 @@
 #include "../../Enemies/SpeedsterEnemy.h"
 #include "../../Towers/FireTower.h"
 #include "../../Projectiles/BaseProjectile.h"
+#include "../../Utils/Utils.h"
 
 /*!
 @file       Game.cpp
@@ -226,7 +227,7 @@ void gameUpdate(void)
 		}
 	}
 
-	if (CP_Input_KeyDown(KEY_SPACE))
+	if (CP_Input_KeyTriggered(KEY_SPACE))
 	{
 		if (towerList.size())
 		{
@@ -250,7 +251,7 @@ void gameUpdate(void)
 		}
 		else
 		{
-			enemy->Move();
+			enemy->Move(gameMap);
 			enemy->Render();
 		}
 	}
@@ -282,6 +283,23 @@ void gameUpdate(void)
 			projectileList.erase(projectileList.begin() + i);
 			delete proj;
 		}
+		else
+		{
+			for (int j = 0; j < enemiesList.size(); j++)
+			{
+				BaseEnemy* enemy = enemiesList[j];
+				if (areCirclesIntersecting(projectileList[i]->GetLocation(), 15.f, enemy->GetLocation(), 25.f))
+				{
+					BaseProjectile* proj = projectileList[i];
+					projectileList.erase(projectileList.begin() + i);
+					delete proj;
+
+					enemiesList.erase(enemiesList.begin() + j);
+					delete enemy;
+				}
+			}
+		}
+
 	}
 }
 
