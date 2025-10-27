@@ -15,6 +15,7 @@ private:
 	int moneys = 0;
 
 	float imageScaling = 8.0f;
+	CP_Vector spawnLocation = CP_Vector_Set(24.0f, 24.0f);
 public:
 	void drawRect(float posX, float posY, float rectWidth, float rectHeight, float angle = 0.0f, float cornerRadius = 0.0f, CP_Color rectColor = { 100,100,100,255 });
 	void drawText(const char* text, float xPos, float yPos);
@@ -34,6 +35,8 @@ public:
 	void setMaxHealth(int max);
 	void setHealth(int hp);
 	void takeDamage(int hp);
+
+	CP_Vector getSpawnLocation();
 
 	int heartOpacity = 155;
 	float heartBeatStart = 0.25f;

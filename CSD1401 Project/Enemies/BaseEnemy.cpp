@@ -72,66 +72,22 @@ void BaseEnemy::SetDirectionVector(CP_Vector direction)
     this->directionVector = direction;
 }
 
-void BaseEnemy::AddToPath(CP_Vector newPoint)
+void BaseEnemy::Move(Map* map)
 {
-    path.push(newPoint);
-}
+    std::vector<CP_Vector> path = map->getPath();
 
-void BaseEnemy::SetPath(Map* map, CP_Vector pos, CP_Vector oldPos)
-{
-    TILE_TYPE tileType = TILE_TYPE::NONE;
-    for (int i = 0; i < 4; ++i)
-    {
-        switch (i)
-        {
-        case 0: // Up
-            (pos.y - spriteSize) >= 0 ? tileType = map->getTile(pos.x, pos.y - spriteSize).tileType : tileType;
-            if (((tileType > 100 && tileType <= 200) || tileType == 202) && CP_Vector_Distance(CP_Vector_Set(pos.x, pos.y - spriteSize), oldPos) != 0)
-            {
-                path.push(CP_Vector_Set(pos.x, pos.y - spriteSize));
-                SetPath(map, CP_Vector_Set(pos.x, pos.y - spriteSize), pos);
-            }
-            break;
-        case 1: // Left
-            (pos.x - spriteSize) >= 0 ? tileType = map->getTile(pos.x - spriteSize, pos.y).tileType : tileType;
-            if (((tileType > 100 && tileType <= 200) || tileType == 202) && CP_Vector_Distance(CP_Vector_Set(pos.x - spriteSize, pos.y), oldPos) != 0)
-            {
-                path.push(CP_Vector_Set(pos.x - spriteSize, pos.y));
-                SetPath(map, CP_Vector_Set(pos.x - spriteSize, pos.y), pos);
-            }
-            break;
-        case 2: // Down
-            tileType = map->getTile(pos.x, pos.y + spriteSize).tileType;
-            if (((tileType > 100 && tileType <= 200) || tileType == 202) && CP_Vector_Distance(CP_Vector_Set(pos.x, pos.y + spriteSize), oldPos) != 0)
-            {
-                path.push(CP_Vector_Set(pos.x, pos.y + spriteSize));
-                SetPath(map, CP_Vector_Set(pos.x, pos.y + spriteSize), pos);
-            }
-            break;
-        case 3: // Right
-            tileType = map->getTile(pos.x + spriteSize, pos.y).tileType;
-            if (((tileType > 100 && tileType <= 200) || tileType == 202) && CP_Vector_Distance(CP_Vector_Set(pos.x + spriteSize, pos.y), oldPos) != 0)
-            {
-                path.push(CP_Vector_Set(pos.x + spriteSize, pos.y));
-                SetPath(map, CP_Vector_Set(pos.x + spriteSize, pos.y), pos);
-            }
-            break;
-        }
-    }
-}
 
-void BaseEnemy::Move()
-{
-    if (path.empty()) return;
+
+    if (path.size() == pathId) return;
 
     // Move toward next location in queue
-    SetDirectionVector(CP_Vector_Normalize(CP_Vector_Set(path.front().x - location.x, path.front().y - location.y)));
+    SetDirectionVector(CP_Vector_Normalize(CP_Vector_Set(path[pathId].x - location.x, path[pathId].y - location.y)));
 
     location = CP_Vector_Add(location, CP_Vector_Scale(directionVector, speed * CP_System_GetDt()));
 
     // Remove location from queue when reached
-    if (CP_Vector_Distance(location, path.front()) <= spriteSize * 0.25f)
-        path.pop();
+    if (CP_Vector_Distance(location, path[pathId]) <= spriteSize * 0.25f)
+        ++pathId;
 }
 
 void BaseEnemy::Render(void)

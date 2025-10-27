@@ -136,6 +136,11 @@ void Game::takeDamage(int hp)
 	game.tookDamage = true;
 }
 
+CP_Vector Game::getSpawnLocation()
+{
+	return spawnLocation;
+}
+
 void gameInit(void)
 {	
 	font = CP_Font_Load(FILE_PATH);
@@ -151,6 +156,7 @@ void gameInit(void)
 	gameMap->loadMap("Map2");
 
 	mapSize = gameMap->getDimensions();
+	gameMap->createPath(game.getSpawnLocation(), game.getSpawnLocation());
 
 	game.healthImage = CP_Image_Load("./Assets/pixelplatformer/UI/full_heart.png");
 	game.emptyHeartImage = CP_Image_Load("./Assets/pixelplatformer/UI/empty_heart.png");
@@ -180,11 +186,11 @@ void gameUpdate(void)
 	}
 
 	if (CP_Input_KeyReleased(KEY_1))
-		enemiesList.push_back(new BasicEnemy(CP_Vector_Set(24.0f, 24.0f)));
+		enemiesList.push_back(new BasicEnemy(game.getSpawnLocation()));
 	if (CP_Input_KeyReleased(KEY_2))
-		enemiesList.push_back(new TankEnemy(CP_Vector_Set(24.0f, 24.0f)));
+		enemiesList.push_back(new TankEnemy(game.getSpawnLocation()));
 	if (CP_Input_KeyReleased(KEY_3))
-		enemiesList.push_back(new SpeedsterEnemy(CP_Vector_Set(24.0f, 24.0f)));
+		enemiesList.push_back(new SpeedsterEnemy(game.getSpawnLocation()));
 
 
 	if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT) && (CP_Input_GetMouseX() >= 0 && CP_Input_GetMouseX() <= gameMap->getTileSize() * mapSize.x)
@@ -234,7 +240,7 @@ void gameUpdate(void)
 	for (int i = 0; i < enemiesList.size(); ++i)
 	{
 		BaseEnemy* enemy = enemiesList[i];
-		enemy->Move();
+		enemy->Move(gameMap);
 		enemy->Render();
 	}
 

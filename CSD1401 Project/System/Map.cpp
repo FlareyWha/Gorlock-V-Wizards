@@ -269,6 +269,8 @@ void Map::resetMap(bool clear)
 			map[i][j].pos = CP_Vector_Zero();
 		}
 	}
+
+	while (!path.empty()) path.pop_back();
 }
 
 /*!
@@ -317,4 +319,52 @@ CP_Vector Map::getDimensions()
 int Map::getTileSize()
 {
 	return TILE_WIDTH;
+}
+
+void Map::createPath(CP_Vector pos, CP_Vector oldPos)
+{
+	TILE_TYPE tileType = TILE_TYPE::NONE;
+	for (int i = 0; i < 4; ++i)
+	{
+		switch (i)
+		{
+		case 0: // Up
+			(pos.y - TILE_HEIGHT) >= 0 ? tileType = getTile(pos.x, pos.y - TILE_HEIGHT).tileType : tileType;
+			if (((tileType > 100 && tileType <= 200) || tileType == 202) && CP_Vector_Distance(CP_Vector_Set(pos.x, pos.y - TILE_HEIGHT), oldPos) != 0)
+			{
+				path.push_back(CP_Vector_Set(pos.x, pos.y - TILE_HEIGHT));
+				createPath(CP_Vector_Set(pos.x, pos.y - TILE_HEIGHT), pos);
+			}
+			break;
+		case 1: // Left
+			(pos.x - TILE_WIDTH) >= 0 ? tileType = getTile(pos.x - TILE_WIDTH, pos.y).tileType : tileType;
+			if (((tileType > 100 && tileType <= 200) || tileType == 202) && CP_Vector_Distance(CP_Vector_Set(pos.x - TILE_WIDTH, pos.y), oldPos) != 0)
+			{
+				path.push_back(CP_Vector_Set(pos.x - TILE_WIDTH, pos.y));
+				createPath(CP_Vector_Set(pos.x - TILE_WIDTH, pos.y), pos);
+			}
+			break;
+		case 2: // Down
+			tileType = getTile(pos.x, pos.y + TILE_HEIGHT).tileType;
+			if (((tileType > 100 && tileType <= 200) || tileType == 202) && CP_Vector_Distance(CP_Vector_Set(pos.x, pos.y + TILE_HEIGHT), oldPos) != 0)
+			{
+				path.push_back(CP_Vector_Set(pos.x, pos.y + TILE_HEIGHT));
+				createPath(CP_Vector_Set(pos.x, pos.y + TILE_HEIGHT), pos);
+			}
+			break;
+		case 3: // Right
+			tileType = getTile(pos.x + TILE_WIDTH, pos.y).tileType;
+			if (((tileType > 100 && tileType <= 200) || tileType == 202) && CP_Vector_Distance(CP_Vector_Set(pos.x + TILE_WIDTH, pos.y), oldPos) != 0)
+			{
+				path.push_back(CP_Vector_Set(pos.x + TILE_WIDTH, pos.y));
+				createPath(CP_Vector_Set(pos.x + TILE_WIDTH, pos.y), pos);
+			}
+			break;
+		}
+	}
+}
+
+std::vector<CP_Vector> Map::getPath()
+{
+	return path;
 }

@@ -59,6 +59,8 @@ private:
 
 	std::vector<TILE_TYPE> tileTypesVector;
 
+	std::vector<CP_Vector> path;
+
 	std::string getImageFilePath(TILE_TYPE tileType);
 	void loadMapTileImages(void);
 
@@ -87,5 +89,8 @@ public:
 	int getTileSize();
 
 	std::map<TILE_TYPE, CP_Image> imageMap;
+
+	void createPath(CP_Vector pos, CP_Vector oldPos);
+	std::vector<CP_Vector> getPath();
 
 };
