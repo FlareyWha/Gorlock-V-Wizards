@@ -192,13 +192,13 @@ void gameUpdate(void)
 		enemiesList.push_back(new TankEnemy(game.getSpawnLocation()));
 	if (CP_Input_KeyReleased(KEY_3))
 		enemiesList.push_back(new SpeedsterEnemy(game.getSpawnLocation()));
-	if (CP_Input_KeyReleased(KEY_4))
-	{
-		for (BaseEnemy* enemy : enemiesList)
-			enemy->SetHealth(enemy->GetHealth() - 1);
-	}
+	//if (CP_Input_KeyReleased(KEY_4))
+	//{
+	//	for (BaseEnemy* enemy : enemiesList)
+	//		enemy->SetHealth(enemy->GetHealth() - 1);
+	//}
 
-
+	// tower placement
 	if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT) && (CP_Input_GetMouseX() >= 0 && CP_Input_GetMouseX() <= gameMap->getTileSize() * mapSize.x)
 								&& (CP_Input_GetMouseY() >= 0 && CP_Input_GetMouseY() <= gameMap->getTileSize() * mapSize.y))
 	{
@@ -232,18 +232,7 @@ void gameUpdate(void)
 		}
 	}
 
-	if (CP_Input_KeyTriggered(KEY_SPACE))
-	{
-		if (towerList.size())
-		{
-			for (BaseTower* tower : towerList)
-			{
-				CP_Vector direction = CP_Vector_Normalize(CP_Vector_Set(CP_Input_GetMouseWorldX() - tower->getPosition().x,CP_Input_GetMouseWorldY() - tower->getPosition().y));
-				projectileList.push_back(new BaseProjectile(tower->getPosition(), direction));
-			}
-		}
-	}
-
+	// enemy movement
 	for (int i = 0; i < enemiesList.size(); ++i)
 	{
 		BaseEnemy* enemy = enemiesList[i];
@@ -251,15 +240,13 @@ void gameUpdate(void)
 		if (gameMap->getTile(enemy->GetLocation().x, enemy->GetLocation().y).tileType == TILE_TYPE::ENDPOINT)
 		{
 			game.takeDamage(1);
-			enemiesList.erase(enemiesList.begin() + i);
+			enemiesList.erase(enemiesList.begin() + i--);
 			delete enemy;
-			--i;
 		}
 		else if (enemy->GetHealth() <= 0)
 		{
-			enemiesList.erase(enemiesList.begin() + i);
+			enemiesList.erase(enemiesList.begin() + i--);
 			delete enemy;
-			--i;
 		}
 		else
 		{
@@ -267,16 +254,26 @@ void gameUpdate(void)
 			enemy->Render();
 		}
 	}
-
-
-	for (BaseTower* tower : towerList)
-	{
-		tower->Render();
-	}
 	
-	if (CP_Input_MouseDragged(MOUSE_BUTTON_1))
+	// render and update towers, check for nearby enemies and target them
+	if (towerList.size())
 	{
+		for (BaseTower* tower : towerList)
+		{
+			tower->Update();
+			tower->Render();
 
+			for (BaseEnemy* enemy : enemiesList)
+			{
+				float dist = CP_Vector_Distance(tower->getPosition(), enemy->GetLocation());
+				if (dist <= tower->getDetectionDistance() && tower->getCooldownTime() <= 0.f)
+				{
+					CP_Vector direction = CP_Vector_Normalize(CP_Vector_Set(enemy->GetLocation().x - tower->getPosition().x, enemy->GetLocation().y - tower->getPosition().y));
+					projectileList.push_back(new BaseProjectile(tower->getPosition(), direction));
+					tower->setCooldownTime(tower->getCooldown());
+				}
+			}
+		}
 	}
 
 	CP_Image_Draw(game.fireTowerImage, 1500, 200, 96, 96, 255);
@@ -284,6 +281,7 @@ void gameUpdate(void)
 	std::string money = "Money: " + std::to_string(game.getMoneys());
 	game.drawText(money.c_str(), CP_System_GetWindowWidth()/2.0, 300);
 
+	// projectile collision
 	for (int i = 0; i < projectileList.size(); i++)
 	{
 		projectileList[i]->Update();
@@ -300,14 +298,15 @@ void gameUpdate(void)
 			for (int j = 0; j < enemiesList.size(); j++)
 			{
 				BaseEnemy* enemy = enemiesList[j];
-				if (areCirclesIntersecting(projectileList[i]->GetLocation(), 15.f, enemy->GetLocation(), 25.f))
+				if (areCirclesIntersecting(projectileList[i]->GetLocation(), projectileList[i]->GetRadius(), enemy->GetLocation(), 25.f))
 				{
+					enemy->SetHealth(enemy->GetHealth() - 1);
+
 					BaseProjectile* proj = projectileList[i];
 					projectileList.erase(projectileList.begin() + i);
 					delete proj;
 
-					enemiesList.erase(enemiesList.begin() + j);
-					delete enemy;
+					break;
 				}
 			}
 		}

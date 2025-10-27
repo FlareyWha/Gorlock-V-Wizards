@@ -131,7 +131,7 @@ Tile Map::getTile(float xPos, float yPos)
 	rowPos = floor(xPos / TILE_WIDTH);
 	columnPos = floor(yPos / TILE_HEIGHT);
 
-	std::cout << rowPos << std::endl;
+	//std::cout << rowPos << std::endl;
 
   	//rowPos = rowPos >= NUM_ROW ? NUM_ROW - 1 : rowPos;
 	//columnPos = columnPos >= NUM_COLUMN - 1 ? NUM_COLUMN : columnPos;

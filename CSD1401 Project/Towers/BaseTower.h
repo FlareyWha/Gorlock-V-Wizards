@@ -25,9 +25,11 @@ private:
 	ATTACK_TYPE attack = ATTACK_TYPE::NONE;
 	int damage = 0;
 	int level = 1;
-	float attackSpeed, range = 0.0f;
+	float detectionDistance = 150.f;
 	CP_Image towerSprite;
 	float spriteSize = 48.0f;
+	float cooldown = 2.f;
+	float cooldownTime = 0.f;
 
 public:
 
@@ -38,15 +40,19 @@ public:
 	ATTACK_TYPE getAttackType();
 	std::string getName();
 	CP_Image getImage();
+	float getCooldownTime();
+	float getCooldown();
+	float getDetectionDistance();
 
 	// Setters
 	void setPos(int xPosition, int yPosition);
 	void setImage(CP_Image inputImage);
+	void setCooldownTime(float time);
 
 	// Other functions
 	void Init();
 	void Update();
-	void AttackEnemy(void);
+	void Attack(void);
 
 	void Render(void);
 };

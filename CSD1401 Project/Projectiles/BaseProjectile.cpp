@@ -5,7 +5,8 @@
 BaseProjectile::BaseProjectile(CP_Vector position, CP_Vector direction)
 {
 	damage = 1.f;
-	projectileSpeed = 75.f;
+	projectileSpeed = 150.f;
+	radius = 20.f;
 	this->position = position;
 	this->direction = direction;
 	
@@ -36,4 +37,9 @@ float BaseProjectile::GetLifespan()
 CP_Vector BaseProjectile::GetLocation()
 {
 	return position;
+}
+
+float BaseProjectile::GetRadius()
+{
+	return radius;
 }

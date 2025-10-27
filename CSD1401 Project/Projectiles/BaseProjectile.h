@@ -16,6 +16,7 @@ private:
 	PROJECTILE_TYPE projectile = PROJECTILE_TYPE::PROJECTILE;
 	CP_Vector direction;
 	CP_Vector position;
+	float radius;
 
 	float damage;
 	float projectileSpeed;
@@ -29,5 +30,6 @@ public:
 
 	float GetLifespan(void);
 	CP_Vector GetLocation(void);
+	float GetRadius();
 };
 

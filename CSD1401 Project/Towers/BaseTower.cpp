@@ -12,7 +12,6 @@
 BaseTower::BaseTower()
 {
 	towerSprite = CP_Image_Load("Assets/kenney_tiny-battle/Tiles/tile_0068.png");
-	attackSpeed = 1;
 	position = CP_Vector_Set(0, 0);
 }
 
@@ -60,6 +59,21 @@ CP_Image BaseTower::getImage()
 	return towerSprite;
 }
 
+float BaseTower::getCooldownTime()
+{
+	return cooldownTime;
+}
+
+float BaseTower::getCooldown()
+{
+	return cooldown;
+}
+
+float BaseTower::getDetectionDistance()
+{
+	return detectionDistance;
+}
+
 /*!
 @brief      Sets the current tower's position to new values provided as function arguments
 
@@ -86,20 +100,23 @@ void BaseTower::setImage(CP_Image inputImage)
 	towerSprite = inputImage;
 }
 
-// testing for now
-void BaseTower::AttackEnemy(void)
+void BaseTower::setCooldownTime(float time)
+{
+	cooldownTime = time;
+}
+
+void BaseTower::Attack()
 {
 
 }
 
-// zzzzzz
 void BaseTower::Init()
 {
 }
 
 void BaseTower::Update()
 {
-
+	cooldownTime -= 1.f * CP_System_GetDt();
 }
 
 void BaseTower::Render()
