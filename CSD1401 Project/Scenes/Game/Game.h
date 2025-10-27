@@ -7,6 +7,21 @@
 #pragma once
 #include "cprocessing.h"
 #include <string>
+enum currSelected {
+	FIRETOWER,
+	WINDTOWER,
+	WATERTOWER,
+	LIGHTNINGTOWER,
+	NONE_TOWER
+};
+typedef struct TowerUIs {
+	CP_Vector pos;
+	float size = 96.f;
+	CP_Image image;
+	float radius = size / 2.0f;
+	currSelected selection = currSelected::NONE_TOWER;
+	float opacity = 255.f;
+}Tower;
 class Game{
 private:
 	int maxHealth = 3;
@@ -14,7 +29,7 @@ private:
 	float fontSize = 12.0f;
 	int moneys = 0;
 
-	float imageScaling = 8.0f;
+	float imageScaling = 4.0f;
 	CP_Vector spawnLocation = CP_Vector_Set(24.0f, 24.0f);
 public:
 	void drawRect(float posX, float posY, float rectWidth, float rectHeight, float angle = 0.0f, float cornerRadius = 0.0f, CP_Color rectColor = { 100,100,100,255 });
@@ -27,9 +42,11 @@ public:
 	void setMoneys(int moneyAmt);
 	void loseMoneys(int moneyAmt);
 	void gainMoneys(int moneyAmt);
+	void drawMoneys(float x,float y);
+
+
 
 	void drawHeart(float x,float y);
-	bool tookDamage = false;
 	int getHealth();
 	int getMaxHealth();
 	void setMaxHealth(int max);
@@ -47,7 +64,15 @@ public:
 
 	CP_Image healthImage;
 	CP_Image emptyHeartImage;
-	CP_Image fireTowerImage;
+	CP_Image moneysImage;
+	currSelected currSelect = currSelected::NONE_TOWER;
+
+	Tower fireTowerUI;
+	Tower waterTowerUI;
+	Tower windTowerUI;
+	Tower lightningTowerUI;
+
+	Tower uiElements[4];
 };
 void gameInit(void);
 void gameUpdate(void);

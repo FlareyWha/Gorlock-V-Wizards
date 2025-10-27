@@ -29,6 +29,7 @@ std::vector<BaseEnemy*> enemiesList;
 std::vector<BaseTower*> towerList;
 std::vector<BaseProjectile*> projectileList;
 
+
 Game game;
 void Game::drawRect(float posX, float posY, float rectWidth, float rectHeight, float angle, float cornerRadius, CP_Color rectColor)
 {
@@ -68,6 +69,13 @@ void Game::gainMoneys(int moneyAmt)
 	game.setMoneys(getMoneys() + moneyAmt);
 }
 
+void Game::drawMoneys(float x, float y)
+{
+	std::string money = "Money: " + std::to_string(game.getMoneys());
+	game.drawText(money.c_str(), x, y);
+	CP_Image_Draw(game.moneysImage, x, y, 16 * imageScaling, 16 * imageScaling, 255);
+}
+
 void Game::drawHeart(float x, float y)
 {
 	switch (game.getHealth())
@@ -79,7 +87,7 @@ void Game::drawHeart(float x, float y)
 		startOfTimer = 1.0f;
 		break;
 	case(1):
-		startOfTimer = 0.75f;
+		startOfTimer = 0.50f;
 		break;
 	default:
 		startOfTimer = 1.75f;
@@ -107,10 +115,10 @@ void Game::drawHeart(float x, float y)
 		}
 	}
 
-	CP_Image_Draw(game.emptyHeartImage, x, y, CP_Image_GetWidth(game.emptyHeartImage) * imageScaling, CP_Image_GetHeight(game.emptyHeartImage) * imageScaling, 255);
-	double heartSize = (double)game.getHealth() / (double)game.getMaxHealth() * heartBeatScale;
 	
-	CP_Image_Draw(game.healthImage, x, y, CP_Image_GetWidth(game.healthImage) * imageScaling * heartSize,CP_Image_GetHeight(game.healthImage) * imageScaling *heartSize,heartOpacity);
+	double heartSize = (double)game.getHealth() / (double)game.getMaxHealth() * heartBeatScale;
+	CP_Image_Draw(game.emptyHeartImage, x, y, CP_Image_GetWidth(game.healthImage) * imageScaling, CP_Image_GetHeight(game.healthImage) * imageScaling, 255);
+	CP_Image_Draw(game.healthImage, x, y, CP_Image_GetWidth(game.healthImage) * imageScaling * heartSize,CP_Image_GetHeight(game.healthImage) * imageScaling *heartSize,255);
 }
 
 int Game::getHealth()
@@ -134,7 +142,6 @@ void Game::takeDamage(int hp)
 	health -= hp;
 	//CP_Image_Draw(game.healthImage, CP_System_GetWindowWidth() / 2.0, 100, 128, 128, 255);
 	health = CP_Math_ClampInt(health, 0, game.getMaxHealth());
-	game.tookDamage = true;
 }
 
 CP_Vector Game::getSpawnLocation()
@@ -159,9 +166,30 @@ void gameInit(void)
 	mapSize = gameMap->getDimensions();
 	gameMap->createPath(game.getSpawnLocation(), game.getSpawnLocation());
 
-	game.healthImage = CP_Image_Load("./Assets/pixelplatformer/UI/full_heart.png");
-	game.emptyHeartImage = CP_Image_Load("./Assets/pixelplatformer/UI/empty_heart.png");
-	game.fireTowerImage = CP_Image_Load("./Assets/kenney_tiny-battle/Tiles/tile_0068.png");
+	game.healthImage = CP_Image_Load("./Assets/UI/full_heart.png");
+	game.emptyHeartImage = CP_Image_Load("./Assets/UI/empty_heart.png");
+	game.moneysImage = CP_Image_Load("./Assets/UI/money.png");
+
+	game.fireTowerUI.image = CP_Image_Load("./Assets/Towers/fireTower.png");
+	game.fireTowerUI.pos = CP_Vector_Set(1500, 200);
+	game.fireTowerUI.selection = FIRETOWER;
+
+	game.windTowerUI.image = CP_Image_Load("./Assets/Towers/windTower.png");
+	game.windTowerUI.pos = CP_Vector_Add(game.fireTowerUI.pos,CP_Vector_Set(0,100));
+	game.windTowerUI.selection = WINDTOWER;
+
+	game.waterTowerUI.image = CP_Image_Load("./Assets/Towers/iceTower.png");
+	game.waterTowerUI.pos = CP_Vector_Add(game.windTowerUI.pos, CP_Vector_Set(0, 100));
+	game.waterTowerUI.selection = WATERTOWER;
+
+	game.lightningTowerUI.image = CP_Image_Load("./Assets/Towers/lightningTower.png");
+	game.lightningTowerUI.pos = CP_Vector_Add(game.waterTowerUI.pos, CP_Vector_Set(0, 100));
+	game.lightningTowerUI.selection = LIGHTNINGTOWER;
+
+	game.uiElements[0] = game.fireTowerUI;
+	game.uiElements[1] = game.windTowerUI;
+	game.uiElements[2] = game.waterTowerUI;
+	game.uiElements[3] = game.lightningTowerUI;
 	CP_Settings_TextSize(game.getFontSize());
 
 	//CP_Font_DrawText("YIBBBEEE", 10, 10);
@@ -174,9 +202,55 @@ void gameUpdate(void)
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 
 	gameMap->renderMap();
+	
+	for (int i = 0; i < (sizeof(game.uiElements) / sizeof(game.uiElements[0])); i++)
+	{
+		CP_Image_Draw(game.uiElements[i].image, game.uiElements[i].pos.x, game.uiElements[i].pos.y, game.uiElements[i].size, game.uiElements[i].size, game.uiElements[i].opacity);
+	}
+	if (CP_Input_MouseTriggered(MOUSE_BUTTON_1))
+	{
+		for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]);i++)
+		{
+			if ((CP_Input_GetMouseX() >= game.uiElements[i].pos.x - game.uiElements[i].radius && CP_Input_GetMouseX() <= game.uiElements[i].pos.x + game.uiElements[i].radius) && (CP_Input_GetMouseY() >= game.uiElements[i].pos.y - game.uiElements[i].radius && CP_Input_GetMouseY() <= game.uiElements[i].pos.y + game.uiElements[i].radius))
+			{
+				game.currSelect = game.uiElements[i].selection;
+				game.uiElements[i].opacity = 100;
+			}
 
+		}
+		//if ((CP_Input_GetMouseX() >= game.fireTowerUI.pos.x - game.fireTowerUI.radius && CP_Input_GetMouseX() <= game.fireTowerUI.pos.x + game.fireTowerUI.radius)&& (CP_Input_GetMouseY() >= game.fireTowerUI.pos.y - game.fireTowerUI.radius && CP_Input_GetMouseY() <= game.fireTowerUI.pos.y + game.fireTowerUI.radius))
+		//{
+		//
+		//}
+	}
+	else if (CP_Input_MouseReleased(MOUSE_BUTTON_1))
+	{
+		game.currSelect = NONE_TOWER;
+		for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]); i++)
+		{
+			game.uiElements[i].opacity = 255;
+		}
+	}
+	if (CP_Input_MouseDown(MOUSE_BUTTON_1) && game.currSelect != currSelected::NONE_TOWER)
+	{
+		switch (game.currSelect)
+		{
+		case FIRETOWER:
+			CP_Image_Draw(game.fireTowerUI.image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50,50, 155);
+			break;
+		case WINDTOWER:
+			CP_Image_Draw(game.windTowerUI.image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
+			break;
+		case WATERTOWER:
+			CP_Image_Draw(game.waterTowerUI.image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
+			break;
+		case LIGHTNINGTOWER:
+			CP_Image_Draw(game.lightningTowerUI.image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
+			break;
+		}
+	}
 	game.drawHeart(CP_System_GetWindowWidth() / 2.0f, 100.0f);
-
+	game.drawMoneys(CP_System_GetWindowWidth() / 2.0f, 300.0f);
 	if (CP_Input_KeyReleased(KEY_H))
 	{
 		game.takeDamage(1);
@@ -198,8 +272,8 @@ void gameUpdate(void)
 	//		enemy->SetHealth(enemy->GetHealth() - 1);
 	//}
 
-	// tower placement
-	if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT) && (CP_Input_GetMouseX() >= 0 && CP_Input_GetMouseX() <= gameMap->getTileSize() * mapSize.x)
+
+	if (CP_Input_MouseReleased(MOUSE_BUTTON_LEFT) && (CP_Input_GetMouseX() >= 0 && CP_Input_GetMouseX() <= gameMap->getTileSize() * mapSize.x)
 								&& (CP_Input_GetMouseY() >= 0 && CP_Input_GetMouseY() <= gameMap->getTileSize() * mapSize.y))
 	{
 		if (gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).tileType >= TILE_TYPE::GROUND
@@ -254,7 +328,7 @@ void gameUpdate(void)
 			enemy->Render();
 		}
 	}
-	
+
 	// render and update towers, check for nearby enemies and target them
 	if (towerList.size())
 	{
@@ -275,11 +349,6 @@ void gameUpdate(void)
 			}
 		}
 	}
-
-	CP_Image_Draw(game.fireTowerImage, 1500, 200, 96, 96, 255);
-	
-	std::string money = "Money: " + std::to_string(game.getMoneys());
-	game.drawText(money.c_str(), CP_System_GetWindowWidth()/2.0, 300);
 
 	// projectile collision
 	for (int i = 0; i < projectileList.size(); i++)
