@@ -35,6 +35,8 @@
     <ClCompile Include="Projectiles\BaseProjectile.cpp" />
     <ClCompile Include="Utils\Utils.cpp" />
     <ClCompile Include="Utils\Button.cpp" />
+    <ClCompile Include="Towers\IceTower.cpp" />
+    <ClCompile Include="Towers\WindTower.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Towers\BaseTower.h">
@@ -72,6 +74,8 @@
     <ClInclude Include="Projectiles\BaseProjectile.h" />
     <ClInclude Include="Utils\Utils.h" />
     <ClInclude Include="Utils\Button.h" />
+    <ClInclude Include="Towers\IceTower.h" />
+    <ClInclude Include="Towers\WindTower.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

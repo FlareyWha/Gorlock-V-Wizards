@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Towers\IceTower.cpp" />
     <ClCompile Include="Utils\Button.cpp" />
     <ClCompile Include="Projectiles\BaseProjectile.cpp" />
     <ClCompile Include="Enemies\BasicEnemy.cpp" />
@@ -32,8 +33,10 @@
     <ClCompile Include="Towers\BaseTower.cpp" />
     <ClCompile Include="Utils\Slider.cpp" />
     <ClCompile Include="Utils\Utils.cpp" />
+    <ClCompile Include="Towers\WindTower.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Towers\IceTower.h" />
     <ClInclude Include="Utils\Button.h" />
     <ClInclude Include="Projectiles\BaseProjectile.h" />
     <ClInclude Include="Enemies\BasicEnemy.h" />
@@ -56,6 +59,7 @@
     <ClInclude Include="Towers\BaseTower.h" />
     <ClInclude Include="Utils\Slider.h" />
     <ClInclude Include="Utils\Utils.h" />
+    <ClInclude Include="Towers\WindTower.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

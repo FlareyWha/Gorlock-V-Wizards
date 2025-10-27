@@ -5,6 +5,7 @@
 #include "../../Utils/Utils.h"
 #include "../../System/SettingsManager.h"
 #include "../../System/SoundManager.h"
+#include "../../System/SceneManager.h"
 #include <iostream>
 #include <stdlib.h>
 
@@ -14,7 +15,7 @@ CP_Font myFont;
 //Volume and SFX slider
 Slider slider[2];
 int currentActiveSliderIndex = -1;
-
+SceneManager* scenes;
 SettingsManager* settings;
 SoundManager* sound;
 
@@ -38,7 +39,10 @@ void settingsUpdate(void)
 
 	CP_Font_Set(myFont);
 	CP_Font_DrawText("Settings", 100, 100);
-
+	if (CP_Input_KeyReleased(KEY_Q))
+	{
+		scenes->ChangeScenes(Scenes::MAIN_MENU_SCENE);
+	}
 	for (int i = 0; i < 2; i++)
 	{
 		if (CP_Input_MouseDown(MOUSE_BUTTON_LEFT))

@@ -218,17 +218,46 @@ void gameUpdate(void)
 			}
 
 		}
-		//if ((CP_Input_GetMouseX() >= game.fireTowerUI.pos.x - game.fireTowerUI.radius && CP_Input_GetMouseX() <= game.fireTowerUI.pos.x + game.fireTowerUI.radius)&& (CP_Input_GetMouseY() >= game.fireTowerUI.pos.y - game.fireTowerUI.radius && CP_Input_GetMouseY() <= game.fireTowerUI.pos.y + game.fireTowerUI.radius))
-		//{
-		//
-		//}
 	}
-	else if (CP_Input_MouseReleased(MOUSE_BUTTON_1))
+	else if (CP_Input_MouseReleased(MOUSE_BUTTON_1) && game.currSelect != NONE_TOWER)
 	{
-		game.currSelect = NONE_TOWER;
 		for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]); i++)
 		{
 			game.uiElements[i].opacity = 255;
+		}
+		if ((CP_Input_GetMouseX() >= 0 && CP_Input_GetMouseX() <= gameMap->getTileSize() * mapSize.x)
+			&& (CP_Input_GetMouseY() >= 0 && CP_Input_GetMouseY() <= gameMap->getTileSize() * mapSize.y))
+		{
+			if (gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).tileType >= TILE_TYPE::GROUND
+				&& gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).tileType <= TILE_TYPE::GRASS)
+			{
+				CP_Vector tempPos = gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).pos;
+				bool notOverlapping = true;
+
+				if (towerList.empty())
+				{
+					towerList.push_back(new FireTower(tempPos));
+					game.currSelect = NONE_TOWER;
+				}
+				else
+				{
+					for (BaseTower* tower : towerList)
+					{
+						float distance = CP_Vector_Distance(tower->getPosition(), tempPos);
+						if (distance == 0)
+						{
+							notOverlapping = false;
+						}
+					}
+
+					if (notOverlapping)
+					{
+						towerList.push_back(new FireTower(tempPos));
+						game.currSelect = NONE_TOWER;
+					}
+				}
+
+			}
 		}
 	}
 	if (CP_Input_MouseDown(MOUSE_BUTTON_1) && game.currSelect != currSelected::NONE_TOWER)
@@ -271,40 +300,6 @@ void gameUpdate(void)
 	//	for (BaseEnemy* enemy : enemiesList)
 	//		enemy->SetHealth(enemy->GetHealth() - 1);
 	//}
-
-
-	if (CP_Input_MouseReleased(MOUSE_BUTTON_LEFT) && (CP_Input_GetMouseX() >= 0 && CP_Input_GetMouseX() <= gameMap->getTileSize() * mapSize.x)
-								&& (CP_Input_GetMouseY() >= 0 && CP_Input_GetMouseY() <= gameMap->getTileSize() * mapSize.y))
-	{
-		if (gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).tileType >= TILE_TYPE::GROUND
-			&& gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).tileType <= TILE_TYPE::GRASS)
-		{
-			CP_Vector tempPos = gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).pos;
-			bool notOverlapping = true;
-
-			if (towerList.empty())
-			{
-				towerList.push_back(new FireTower(tempPos));
-			}
-			else
-			{
-				for (BaseTower* tower : towerList)
-				{
-					float distance = CP_Vector_Distance(tower->getPosition(), tempPos);
-					if (distance == 0)
-					{
-						notOverlapping = false;
-					}
-				}
-
-				if (notOverlapping)
-				{
-					towerList.push_back(new FireTower(tempPos));
-				}
-			}
-			
-		}
-	}
 
 	// enemy movement
 	for (int i = 0; i < enemiesList.size(); ++i)

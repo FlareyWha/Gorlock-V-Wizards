@@ -16,7 +16,7 @@ private:
 
 	//Value from 0-100
 	int sfxVolume = 100;
-	int bgmVolume = 100;
+	int bgmVolume = 0;
 
 public:
 
