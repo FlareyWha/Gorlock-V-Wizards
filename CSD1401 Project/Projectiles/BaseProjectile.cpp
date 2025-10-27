@@ -32,3 +32,8 @@ float BaseProjectile::GetLifespan()
 {
 	return lifespan;
 }
+
+CP_Vector BaseProjectile::GetLocation()
+{
+	return position;
+}
