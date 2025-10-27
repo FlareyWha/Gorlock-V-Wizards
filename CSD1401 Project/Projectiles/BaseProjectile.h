@@ -28,5 +28,6 @@ public:
 	void Render();
 
 	float GetLifespan(void);
+	CP_Vector GetLocation(void);
 };
 

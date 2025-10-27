@@ -10,6 +10,7 @@
 #include "../../Enemies/SpeedsterEnemy.h"
 #include "../../Towers/FireTower.h"
 #include "../../Projectiles/BaseProjectile.h"
+#include "../../Utils/Utils.h"
 
 /*!
 @file       Game.cpp
@@ -231,7 +232,7 @@ void gameUpdate(void)
 		}
 	}
 
-	if (CP_Input_KeyDown(KEY_SPACE))
+	if (CP_Input_KeyTriggered(KEY_SPACE))
 	{
 		if (towerList.size())
 		{
@@ -242,16 +243,11 @@ void gameUpdate(void)
 			}
 		}
 	}
-	for (int i = 0; i < enemiesList.size(); ++i)
-	{
-		BaseEnemy* enemy = enemiesList[i];
-		enemy->Move(gameMap);
-		enemy->Render();
-	}
 
 	for (int i = 0; i < enemiesList.size(); ++i)
 	{
 		BaseEnemy* enemy = enemiesList[i];
+
 		if (gameMap->getTile(enemy->GetLocation().x, enemy->GetLocation().y).tileType == TILE_TYPE::ENDPOINT)
 		{
 			game.takeDamage(1);
@@ -262,6 +258,11 @@ void gameUpdate(void)
 		{
 			enemiesList.erase(enemiesList.begin() + i);
 			delete enemy;
+		}
+		else
+		{
+			enemy->Move(gameMap);
+			enemy->Render();
 		}
 	}
 
@@ -281,20 +282,34 @@ void gameUpdate(void)
 	std::string money = "Money: " + std::to_string(game.getMoneys());
 	game.drawText(money.c_str(), CP_System_GetWindowWidth()/2.0, 300);
 
-	for (BaseProjectile* proj : projectileList)
-	{
-		proj->Update();
-		proj->Render();
-	}
-
 	for (int i = 0; i < projectileList.size(); i++)
 	{
+		projectileList[i]->Update();
+		projectileList[i]->Render();
+
 		if (projectileList[i]->GetLifespan() <= 0.f)
 		{
 			BaseProjectile* proj = projectileList[i];
 			projectileList.erase(projectileList.begin() + i);
 			delete proj;
 		}
+		else
+		{
+			for (int j = 0; j < enemiesList.size(); j++)
+			{
+				BaseEnemy* enemy = enemiesList[j];
+				if (areCirclesIntersecting(projectileList[i]->GetLocation(), 15.f, enemy->GetLocation(), 25.f))
+				{
+					BaseProjectile* proj = projectileList[i];
+					projectileList.erase(projectileList.begin() + i);
+					delete proj;
+
+					enemiesList.erase(enemiesList.begin() + j);
+					delete enemy;
+				}
+			}
+		}
+
 	}
 }
 
