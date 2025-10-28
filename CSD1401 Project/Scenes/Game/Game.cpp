@@ -5,10 +5,16 @@
 #include <vector>
 #include "Game.h"
 #include "../../System/Map.h"
+
 #include "../../Enemies/BasicEnemy.h"
 #include "../../Enemies/TankEnemy.h"
 #include "../../Enemies/SpeedsterEnemy.h"
+
 #include "../../Towers/FireTower.h"
+#include "../../Towers/IceTower.h"
+#include "../../Towers/LightningTower.h"
+#include "../../Towers/WindTower.h"
+
 #include "../../Projectiles/BaseProjectile.h"
 #include "../../Utils/Utils.h"
 
@@ -180,7 +186,7 @@ void gameInit(void)
 
 	game.waterTowerUI.image = CP_Image_Load("./Assets/Towers/iceTower.png");
 	game.waterTowerUI.pos = CP_Vector_Add(game.windTowerUI.pos, CP_Vector_Set(0, 100));
-	game.waterTowerUI.selection = WATERTOWER;
+	game.waterTowerUI.selection = ICETOWER;
 
 	game.lightningTowerUI.image = CP_Image_Load("./Assets/Towers/lightningTower.png");
 	game.lightningTowerUI.pos = CP_Vector_Add(game.waterTowerUI.pos, CP_Vector_Set(0, 100));
@@ -236,7 +242,29 @@ void gameUpdate(void)
 
 				if (towerList.empty())
 				{
-					towerList.push_back(new FireTower(tempPos));
+					switch (game.currSelect)
+					{
+						case FIRETOWER:
+						{
+							towerList.push_back(new FireTower(tempPos));
+							break;
+						}
+						case WINDTOWER:
+						{
+							towerList.push_back(new WindTower(tempPos));
+							break;
+						}
+						case ICETOWER:
+						{
+							towerList.push_back(new IceTower(tempPos));
+							break;
+						}
+						case LIGHTNINGTOWER:
+						{
+							towerList.push_back(new LightningTower(tempPos));
+							break;
+						}
+					}
 					game.currSelect = NONE_TOWER;
 				}
 				else
@@ -252,7 +280,29 @@ void gameUpdate(void)
 
 					if (notOverlapping)
 					{
-						towerList.push_back(new FireTower(tempPos));
+						switch (game.currSelect)
+						{
+							case FIRETOWER:
+							{
+								towerList.push_back(new FireTower(tempPos));
+								break;
+							}
+							case WINDTOWER:
+							{
+								towerList.push_back(new WindTower(tempPos));
+								break;
+							}
+							case ICETOWER:
+							{
+								towerList.push_back(new IceTower(tempPos));
+								break;
+							}
+							case LIGHTNINGTOWER:
+							{
+								towerList.push_back(new LightningTower(tempPos));
+								break;
+							}
+						}
 						game.currSelect = NONE_TOWER;
 					}
 				}
@@ -270,7 +320,7 @@ void gameUpdate(void)
 		case WINDTOWER:
 			CP_Image_Draw(game.windTowerUI.image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
 			break;
-		case WATERTOWER:
+		case ICETOWER:
 			CP_Image_Draw(game.waterTowerUI.image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
 			break;
 		case LIGHTNINGTOWER:

@@ -26,14 +26,15 @@ private:
 	int damage = 0;
 	int level = 1;
 	float detectionDistance = 150.f;
-	CP_Image towerSprite;
 	float spriteSize = 48.0f;
 	float cooldown = 2.f;
 	float cooldownTime = 0.f;
 
 public:
+	CP_Image towerSprite;
 
 	BaseTower();
+	~BaseTower();
 
 	// Getters
 	CP_Vector getPosition();
