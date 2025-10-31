@@ -125,8 +125,9 @@ void BaseTower::setDamage(int damage)
 	this->damage = damage;
 }
 
-BaseProjectile* BaseTower::Attack(CP_Vector direction)
+BaseProjectile* BaseTower::Attack(BaseEnemy* enemy)
 {
+	CP_Vector direction = CP_Vector_Normalize(CP_Vector_Set(enemy->GetLocation().x - getPosition().x, enemy->GetLocation().y - getPosition().y));
 	setCooldownTime(getCooldown());
 	return new BaseProjectile(getPosition(), direction);
 }

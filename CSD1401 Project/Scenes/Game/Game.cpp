@@ -403,8 +403,8 @@ void gameUpdate(void)
 				//if (dist <= tower->getDetectionDistance() && tower->getCooldownTime() <= 0.f)
 				if(areCirclesIntersecting(tower->getPosition(),tower->getDetectionDistance(),enemy->GetLocation(),enemy->GetSpriteSize()/2.0f) && tower->getCooldownTime() <= 0.f)
 				{
-					CP_Vector direction = CP_Vector_Normalize(CP_Vector_Set(enemy->GetLocation().x - tower->getPosition().x, enemy->GetLocation().y - tower->getPosition().y));
-					projectileList.push_back(tower->Attack(direction));
+					//CP_Vector direction = CP_Vector_Normalize(CP_Vector_Set(enemy->GetLocation().x - tower->getPosition().x, enemy->GetLocation().y - tower->getPosition().y));
+					projectileList.push_back(tower->Attack(enemy));
 				}
 			}
 		}

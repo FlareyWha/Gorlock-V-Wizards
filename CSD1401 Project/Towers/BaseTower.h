@@ -57,7 +57,7 @@ public:
 	// Other functions
 	void Init();
 	void Update();
-	BaseProjectile* Attack(CP_Vector direction);
+	BaseProjectile* Attack(BaseEnemy* enemy);
 
 	void Render(void);
 };
