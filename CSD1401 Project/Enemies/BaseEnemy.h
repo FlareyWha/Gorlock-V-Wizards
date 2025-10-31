@@ -19,6 +19,7 @@ public:
 	void SetMaxHealth(int health);
 	float GetSpeed(void);
 	void SetSpeed(float speed);
+	float GetSpriteSize();
 	CP_Image GetSprite(void);
 	void SetSprite(CP_Image sprite);
 	CP_Image GetSpriteLeft(void);
@@ -29,7 +30,6 @@ public:
 	CP_Vector GetDirectionVector(void);
 	void SetDirectionVector(float x, float y);
 	void SetDirectionVector(CP_Vector direction);
-
 	void Move(Map* map);
 	void Render(void);
 };

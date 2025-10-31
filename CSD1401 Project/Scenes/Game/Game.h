@@ -16,6 +16,7 @@ enum currSelected {
 	NONE_TOWER
 };
 typedef struct TowerUIs {
+	int towerCost;
 	CP_Vector pos;
 	float size = 96.f;
 	CP_Image image;
@@ -70,7 +71,7 @@ public:
 	currSelected currSelect = currSelected::NONE_TOWER;
 
 	Tower fireTowerUI;
-	Tower waterTowerUI;
+	Tower iceTowerUI;
 	Tower windTowerUI;
 	Tower lightningTowerUI;
 

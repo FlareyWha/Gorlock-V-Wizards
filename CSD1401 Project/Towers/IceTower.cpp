@@ -8,4 +8,5 @@ IceTower::IceTower(CP_Vector position)
 
 IceTower::~IceTower()
 {
+	CP_Image_Free(towerSprite);
 }
