@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "Game.h"
+
 #include "../../System/Map.h"
 
 #include "../../Enemies/BasicEnemy.h"
@@ -21,7 +21,7 @@
 /*!
 @file       Game.cpp
 @author     Chew Zavier(c.zavier)
-@brief      This file contains the definitions of functions to draw the Graphical User Interface (game).
+@brief      This file contains the definitions of functions to draw the game.
 *//*_______________________________________________________________________*/
 
 CP_Font font;
@@ -179,22 +179,26 @@ void gameInit(void)
 	game.fireTowerUI.image = CP_Image_Load("./Assets/Towers/fireTower.png");
 	game.fireTowerUI.pos = CP_Vector_Set(1500, 200);
 	game.fireTowerUI.selection = FIRETOWER;
+	game.fireTowerUI.towerCost = 100;
 
 	game.windTowerUI.image = CP_Image_Load("./Assets/Towers/windTower.png");
 	game.windTowerUI.pos = CP_Vector_Add(game.fireTowerUI.pos,CP_Vector_Set(0,100));
 	game.windTowerUI.selection = WINDTOWER;
+	game.windTowerUI.towerCost = 101;
 
-	game.waterTowerUI.image = CP_Image_Load("./Assets/Towers/iceTower.png");
-	game.waterTowerUI.pos = CP_Vector_Add(game.windTowerUI.pos, CP_Vector_Set(0, 100));
-	game.waterTowerUI.selection = ICETOWER;
+	game.iceTowerUI.image = CP_Image_Load("./Assets/Towers/iceTower.png");
+	game.iceTowerUI.pos = CP_Vector_Add(game.windTowerUI.pos, CP_Vector_Set(0, 100));
+	game.iceTowerUI.selection = ICETOWER;
+	game.iceTowerUI.towerCost = 102;
 
 	game.lightningTowerUI.image = CP_Image_Load("./Assets/Towers/lightningTower.png");
-	game.lightningTowerUI.pos = CP_Vector_Add(game.waterTowerUI.pos, CP_Vector_Set(0, 100));
+	game.lightningTowerUI.pos = CP_Vector_Add(game.iceTowerUI.pos, CP_Vector_Set(0, 100));
 	game.lightningTowerUI.selection = LIGHTNINGTOWER;
+	game.lightningTowerUI.towerCost = 103;
 
 	game.uiElements[0] = game.fireTowerUI;
 	game.uiElements[1] = game.windTowerUI;
-	game.uiElements[2] = game.waterTowerUI;
+	game.uiElements[2] = game.iceTowerUI;
 	game.uiElements[3] = game.lightningTowerUI;
 	CP_Settings_TextSize(game.getFontSize());
 
@@ -217,7 +221,9 @@ void gameUpdate(void)
 	{
 		for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]);i++)
 		{
-			if ((CP_Input_GetMouseX() >= game.uiElements[i].pos.x - game.uiElements[i].radius && CP_Input_GetMouseX() <= game.uiElements[i].pos.x + game.uiElements[i].radius) && (CP_Input_GetMouseY() >= game.uiElements[i].pos.y - game.uiElements[i].radius && CP_Input_GetMouseY() <= game.uiElements[i].pos.y + game.uiElements[i].radius))
+			if ((CP_Input_GetMouseX() >= game.uiElements[i].pos.x - game.uiElements[i].radius && CP_Input_GetMouseX() <= game.uiElements[i].pos.x + game.uiElements[i].radius) && (CP_Input_GetMouseY() >= game.uiElements[i].pos.y - game.uiElements[i].radius && CP_Input_GetMouseY() <= game.uiElements[i].pos.y + game.uiElements[i].radius)
+				&& game.getMoneys() >= game.uiElements[i].towerCost
+				)
 			{
 				game.currSelect = game.uiElements[i].selection;
 				game.uiElements[i].opacity = 100;
@@ -239,7 +245,7 @@ void gameUpdate(void)
 			{
 				CP_Vector tempPos = gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).pos;
 				bool notOverlapping = true;
-
+				printf("%d", game.currSelect);
 				if (towerList.empty())
 				{
 					switch (game.currSelect)
@@ -265,6 +271,14 @@ void gameUpdate(void)
 							break;
 						}
 					}
+					for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]); i++)
+					{
+						if (game.currSelect == game.uiElements[i].selection)
+						{
+							game.loseMoneys(game.uiElements[i].towerCost);
+							break;
+						}
+					}
 					game.currSelect = NONE_TOWER;
 				}
 				else
@@ -282,24 +296,24 @@ void gameUpdate(void)
 					{
 						switch (game.currSelect)
 						{
-							case FIRETOWER:
+						case FIRETOWER:
+							towerList.push_back(new FireTower(tempPos));
+							break;
+						case ICETOWER:
+							towerList.push_back(new IceTower(tempPos));
+							break;
+						case WINDTOWER:
+							towerList.push_back(new WindTower(tempPos));
+							break;
+						case LIGHTNINGTOWER:
+							towerList.push_back(new LightningTower(tempPos));
+							break;
+						}
+						for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]); i++)
+						{
+							if (game.currSelect == game.uiElements[i].selection)
 							{
-								towerList.push_back(new FireTower(tempPos));
-								break;
-							}
-							case WINDTOWER:
-							{
-								towerList.push_back(new WindTower(tempPos));
-								break;
-							}
-							case ICETOWER:
-							{
-								towerList.push_back(new IceTower(tempPos));
-								break;
-							}
-							case LIGHTNINGTOWER:
-							{
-								towerList.push_back(new LightningTower(tempPos));
+								game.loseMoneys(game.uiElements[i].towerCost);
 								break;
 							}
 						}
@@ -321,7 +335,7 @@ void gameUpdate(void)
 			CP_Image_Draw(game.windTowerUI.image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
 			break;
 		case ICETOWER:
-			CP_Image_Draw(game.waterTowerUI.image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
+			CP_Image_Draw(game.iceTowerUI.image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
 			break;
 		case LIGHTNINGTOWER:
 			CP_Image_Draw(game.lightningTowerUI.image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
@@ -364,6 +378,7 @@ void gameUpdate(void)
 		}
 		else if (enemy->GetHealth() <= 0)
 		{
+			game.gainMoneys(100);
 			enemiesList.erase(enemiesList.begin() + i--);
 			delete enemy;
 		}
@@ -385,11 +400,11 @@ void gameUpdate(void)
 			for (BaseEnemy* enemy : enemiesList)
 			{
 				float dist = CP_Vector_Distance(tower->getPosition(), enemy->GetLocation());
-				if (dist <= tower->getDetectionDistance() && tower->getCooldownTime() <= 0.f)
+				//if (dist <= tower->getDetectionDistance() && tower->getCooldownTime() <= 0.f)
+				if(areCirclesIntersecting(tower->getPosition(),tower->getDetectionDistance(),enemy->GetLocation(),enemy->GetSpriteSize()/2.0f) && tower->getCooldownTime() <= 0.f)
 				{
 					CP_Vector direction = CP_Vector_Normalize(CP_Vector_Set(enemy->GetLocation().x - tower->getPosition().x, enemy->GetLocation().y - tower->getPosition().y));
-					projectileList.push_back(new BaseProjectile(tower->getPosition(), direction));
-					tower->setCooldownTime(tower->getCooldown());
+					projectileList.push_back(tower->Attack(direction));
 				}
 			}
 		}
@@ -401,7 +416,9 @@ void gameUpdate(void)
 		projectileList[i]->Update();
 		projectileList[i]->Render();
 
-		if (projectileList[i]->GetLifespan() <= 0.f)
+		if (projectileList[i]->GetLifespan() <= 0.f ||
+			(projectileList[i]->GetLocation().x >= gameMap->getTileSize() * mapSize.x ||
+				projectileList[i]->GetLocation().y >= gameMap->getTileSize() * mapSize.y))
 		{
 			BaseProjectile* proj = projectileList[i];
 			projectileList.erase(projectileList.begin() + i);
@@ -412,7 +429,7 @@ void gameUpdate(void)
 			for (int j = 0; j < enemiesList.size(); j++)
 			{
 				BaseEnemy* enemy = enemiesList[j];
-				if (areCirclesIntersecting(projectileList[i]->GetLocation(), projectileList[i]->GetRadius(), enemy->GetLocation(), 25.f))
+				if (areCirclesIntersecting(projectileList[i]->GetLocation(), projectileList[i]->GetRadius(), enemy->GetLocation(), enemy->GetSpriteSize()/2.0f))
 				{
 					enemy->SetHealth(enemy->GetHealth() - 1);
 
@@ -422,6 +439,7 @@ void gameUpdate(void)
 
 					break;
 				}
+				
 			}
 		}
 

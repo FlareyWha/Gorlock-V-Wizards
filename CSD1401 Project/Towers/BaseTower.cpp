@@ -79,6 +79,11 @@ float BaseTower::getDetectionDistance()
 	return detectionDistance;
 }
 
+int BaseTower::getDamage()
+{
+	return damage;
+}
+
 /*!
 @brief      Sets the current tower's position to new values provided as function arguments
 
@@ -110,9 +115,20 @@ void BaseTower::setCooldownTime(float time)
 	cooldownTime = time;
 }
 
-void BaseTower::Attack()
+void BaseTower::setCooldown(float time)
 {
+	cooldown = time;
+}
 
+void BaseTower::setDamage(int damage)
+{
+	this->damage = damage;
+}
+
+BaseProjectile* BaseTower::Attack(CP_Vector direction)
+{
+	setCooldownTime(getCooldown());
+	return new BaseProjectile(getPosition(), direction);
 }
 
 void BaseTower::Init()

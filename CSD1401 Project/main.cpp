@@ -1,5 +1,9 @@
 #include "cprocessing.h"
 #include "Towers/BaseTower.h"
+#include "Towers/FireTower.h"
+#include "Towers/IceTower.h"
+#include "Towers/WindTower.h"
+#include "Towers/LightningTower.h"
 #include "System/Map.h"
 #include "Scenes/Settings/Settings.h"
 #include "Scenes/MainMenu/NewMainMenu.h"
@@ -12,14 +16,13 @@
 SettingsManager* settingsManager;
 
 CP_Image logo;
-BaseTower tower;
+
 CP_Font mainFont;
 SceneManager* sceneManager;
 SoundManager* soundManager;
 
 void game_init(void)
 {
-	tower.setImage(CP_Image_Load("Assets/kenney_tiny-battle/Tiles/tile_0152.png"));
 
 	logo = CP_Image_Load("Assets/DigiPen_Singapore_WEB_RED.png");
 	CP_System_SetWindowSize(1600, 900);

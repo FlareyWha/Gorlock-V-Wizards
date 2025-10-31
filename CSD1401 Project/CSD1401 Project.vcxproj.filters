@@ -38,6 +38,7 @@
     <ClCompile Include="Towers\IceTower.cpp" />
     <ClCompile Include="Towers\LightningTower.cpp" />
     <ClCompile Include="Towers\WindTower.cpp" />
+    <ClCompile Include="Towers\LightningTower.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Towers\BaseTower.h">
@@ -78,6 +79,7 @@
     <ClInclude Include="Towers\IceTower.h" />
     <ClInclude Include="Towers\LightningTower.h" />
     <ClInclude Include="Towers\WindTower.h" />
+    <ClInclude Include="Towers\LightningTower.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

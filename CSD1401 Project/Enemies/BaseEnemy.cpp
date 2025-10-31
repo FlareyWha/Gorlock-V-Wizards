@@ -32,6 +32,11 @@ void BaseEnemy::SetSpeed(float speed)
     this->speed = speed;
 }
 
+float BaseEnemy::GetSpriteSize()
+{
+    return spriteSize;
+}
+
 CP_Image BaseEnemy::GetSprite(void)
 {
     return sprite;

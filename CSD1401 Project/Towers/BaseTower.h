@@ -5,9 +5,11 @@
 *//*_______________________________________________________________________*/
 
 #pragma once
+#include <vector>
 #include <string>
 #include "cprocessing.h"
-
+#include "../Enemies/BaseEnemy.h"
+#include "../../Projectiles/BaseProjectile.h"
 enum class ATTACK_TYPE
 {
 	PROJECTILE = 0,
@@ -44,16 +46,18 @@ public:
 	float getCooldownTime();
 	float getCooldown();
 	float getDetectionDistance();
-
+	int getDamage();
 	// Setters
 	void setPos(int xPosition, int yPosition);
 	void setImage(CP_Image inputImage);
 	void setCooldownTime(float time);
+	void setCooldown(float time);
+	void setDamage(int damage);
 
 	// Other functions
 	void Init();
 	void Update();
-	void Attack(void);
+	BaseProjectile* Attack(CP_Vector direction);
 
 	void Render(void);
 };
