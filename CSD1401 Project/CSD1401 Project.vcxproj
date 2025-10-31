@@ -20,6 +20,7 @@
     <ClCompile Include="Enemies\TankEnemy.cpp" />
     <ClCompile Include="Enemies\SpeedsterEnemy.cpp" />
     <ClCompile Include="System\SettingsManager.cpp" />
+    <ClCompile Include="System\WaveManager.cpp" />
     <ClCompile Include="Towers\FireTower.cpp" />
     <ClCompile Include="System\SceneManager.cpp" />
     <ClCompile Include="main.cpp" />
@@ -46,6 +47,7 @@
     <ClInclude Include="Enemies\SpeedsterEnemy.h" />
     <ClInclude Include="Enemies\TankEnemy.h" />
     <ClInclude Include="System\SettingsManager.h" />
+    <ClInclude Include="System\WaveManager.h" />
     <ClInclude Include="Towers\FireTower.h" />
     <ClInclude Include="System\SceneManager.h" />
     <ClInclude Include="Scenes\Game\Game.h" />

@@ -86,8 +86,6 @@ void BaseEnemy::Move(Map* map)
 {
     std::vector<CP_Vector> path = map->getPath();
 
-
-
     if (path.size() == pathId) return;
 
     // Move toward next location in queue

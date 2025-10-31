@@ -4,8 +4,8 @@
 
 BaseProjectile::BaseProjectile(CP_Vector position, CP_Vector direction)
 {
-	damage = 1.f;
-	projectileSpeed = 150.f;
+	damage = 2.f;
+	projectileSpeed = 200.f;
 	radius = 20.f;
 	this->position = position;
 	this->direction = direction;

@@ -6,6 +6,7 @@
 
 #pragma once
 #include "cprocessing.h"
+#include "../../System/WaveManager.h"
 #include <string>
 enum currSelected {
 	FIRETOWER,
@@ -31,6 +32,7 @@ private:
 
 	float imageScaling = 4.0f;
 	CP_Vector spawnLocation = CP_Vector_Set(24.0f, 24.0f);
+	WaveManager waveManager;
 public:
 	void drawRect(float posX, float posY, float rectWidth, float rectHeight, float angle = 0.0f, float cornerRadius = 0.0f, CP_Color rectColor = { 100,100,100,255 });
 	void drawText(const char* text, float xPos, float yPos);
