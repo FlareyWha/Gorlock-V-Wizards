@@ -21,7 +21,7 @@ enum class ATTACK_TYPE
 
 class BaseTower
 {
-private:
+protected:
 	std::string towerName = "baseTower";
 	CP_Vector position;
 	ATTACK_TYPE attack = ATTACK_TYPE::NONE;
