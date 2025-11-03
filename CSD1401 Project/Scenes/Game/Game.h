@@ -7,6 +7,7 @@
 #pragma once
 #include "cprocessing.h"
 #include "../../System/WaveManager.h"
+#include "../../Towers/BaseTower.h"	
 #include <string>
 enum currSelected {
 	FIRETOWER,
@@ -75,6 +76,12 @@ public:
 	Tower windTowerUI;
 	Tower lightningTowerUI;
 	Tower levelUpUI;
+
+	Tower ghostTower;
+	bool grabbingTower = false;
+	CP_Vector ghostPosition;
+
+	BaseTower* currentTower;
 
 	Tower uiElements[5];
 

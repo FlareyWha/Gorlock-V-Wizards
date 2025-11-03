@@ -39,6 +39,9 @@
     <ClCompile Include="Towers\LightningTower.cpp" />
     <ClCompile Include="Towers\WindTower.cpp" />
     <ClCompile Include="Towers\LightningTower.cpp" />
+    <ClCompile Include="Enemies\BossEnemy.cpp" />
+    <ClCompile Include="System\WaveManager.cpp" />
+    <ClCompile Include="Towers\LavaTower.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Towers\BaseTower.h">
@@ -80,6 +83,9 @@
     <ClInclude Include="Towers\LightningTower.h" />
     <ClInclude Include="Towers\WindTower.h" />
     <ClInclude Include="Towers\LightningTower.h" />
+    <ClInclude Include="Enemies\BossEnemy.h" />
+    <ClInclude Include="System\WaveManager.h" />
+    <ClInclude Include="Towers\LavaTower.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

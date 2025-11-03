@@ -16,6 +16,8 @@
 #include "../../Towers/LightningTower.h"
 #include "../../Towers/WindTower.h"
 
+#include "../../Towers/LavaTower.h"
+
 #include "../../Projectiles/BaseProjectile.h"
 #include "../../Utils/Utils.h"
 
@@ -209,7 +211,11 @@ void gameInit(void)
 	game.uiElements[4] = game.levelUpUI;
 	CP_Settings_TextSize(game.getFontSize());
 
+	
+
 	game.waveManager = new WaveManager(game.getSpawnLocation());
+
+	game.currentTower = new BaseTower();
 	//CP_Font_DrawText("YIBBBEEE", 10, 10);
 }
 
@@ -336,24 +342,88 @@ void gameUpdate(void)
 			}
 		}
 	}
-	if (CP_Input_MouseDown(MOUSE_BUTTON_1) && game.currSelect != currSelected::NONE_TOWER)
+	if (CP_Input_MouseDown(MOUSE_BUTTON_1))
 	{
-		switch (game.currSelect)
+		if (game.currSelect != currSelected::NONE_TOWER)
 		{
-		case FIRETOWER:
-			CP_Image_Draw(game.fireTowerUI.image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
-			break;
-		case WINDTOWER:
-			CP_Image_Draw(game.windTowerUI.image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
-			break;
-		case ICETOWER:
-			CP_Image_Draw(game.iceTowerUI.image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
-			break;
-		case LIGHTNINGTOWER:
-			CP_Image_Draw(game.lightningTowerUI.image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
-			break;
+			switch (game.currSelect)
+			{
+			case FIRETOWER:
+				CP_Image_Draw(game.fireTowerUI.image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
+				break;
+			case WINDTOWER:
+				CP_Image_Draw(game.windTowerUI.image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
+				break;
+			case ICETOWER:
+				CP_Image_Draw(game.iceTowerUI.image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
+				break;
+			case LIGHTNINGTOWER:
+				CP_Image_Draw(game.lightningTowerUI.image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
+				break;
+			}
+		}
+		else if ((CP_Input_GetMouseX() >= 0 && CP_Input_GetMouseX() <= gameMap->getTileSize() * mapSize.x)
+			&& (CP_Input_GetMouseY() >= 0 && CP_Input_GetMouseY() <= gameMap->getTileSize() * mapSize.y))
+		{
+			// unholy fuck ahh code that should not exist
+			for (BaseTower* tower : towerList)
+			{
+				float dist = CP_Vector_Distance(tower->getPosition(), CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY()));
+				if (dist <= 24.f && !game.grabbingTower)
+				{
+					game.currentTower->setImage(tower->getImage());
+					game.currentTower->setPos(tower->getPosition().x, tower->getPosition().y);
+					game.grabbingTower = true;
+					//game.ghostTower.image = tower->getImage();
+					//game.ghostPosition = tower->getPosition();
+				}
+
+			}
+
+			if (game.currentTower->getImage() != NULL && game.grabbingTower)
+				CP_Image_Draw(game.currentTower->getImage(), CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
 		}
 	}
+
+	if (CP_Input_MouseReleased(MOUSE_BUTTON_1))
+	{
+		for (int i = 0; i < towerList.size(); i++)
+		{
+			BaseTower* tower = towerList[i];
+
+			if (tower->getPosition().x == game.currentTower->getPosition().x && tower->getPosition().y == game.currentTower->getPosition().y)
+			{
+				// if its the same tower
+				continue;
+			}
+
+			if (tower->getPosition().x == gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).pos.x &&
+				tower->getPosition().y == gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).pos.y && game.grabbingTower)
+			{
+				if (game.currentTower->getColor().r != tower->getColor().r)
+				{
+					break;
+				}
+				towerList.push_back(new LavaTower(tower->getPosition()));
+
+				towerList.erase(towerList.begin() + i);
+				delete tower;
+
+				for (int j = 0; j < towerList.size(); j++)
+				{
+					BaseTower* tower2 = towerList[j];
+					if (tower2 == game.currentTower)
+					{
+						towerList.erase(towerList.begin() + j);
+						delete tower2;
+					}
+				}
+			}
+		}
+		game.grabbingTower = false;
+	}
+
+
 	game.drawHeart(CP_System_GetWindowWidth() / 2.0f, 100.0f);
 	game.drawMoneys(CP_System_GetWindowWidth() / 2.0f, 300.0f);
 	if (CP_Input_KeyReleased(KEY_H))
@@ -393,7 +463,7 @@ void gameUpdate(void)
 		}
 		else if (enemy->GetHealth() <= 0)
 		{
-			game.gainMoneys(enemy->GetReward());
+			//game.gainMoneys(enemy->GetReward());
 			enemiesList.erase(enemiesList.begin() + i--);
 			delete enemy;
 		}
@@ -449,7 +519,7 @@ void gameUpdate(void)
 				BaseEnemy* enemy = enemiesList[j];
 				if (areCirclesIntersecting(projectileList[i]->GetLocation(), projectileList[i]->GetRadius(), enemy->GetLocation(), enemy->GetSpriteSize()/2.0f))
 				{
-					enemy->SetHealth(enemy->GetHealth() - projectileList[i]->getProjectileDamage());
+					//enemy->SetHealth(enemy->GetHealth() - projectileList[i]->getProjectileDamage());
 
 					BaseProjectile* proj = projectileList[i];
 					projectileList.erase(projectileList.begin() + i);
