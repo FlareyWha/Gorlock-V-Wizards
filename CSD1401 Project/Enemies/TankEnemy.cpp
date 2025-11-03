@@ -8,7 +8,7 @@ TankEnemy::TankEnemy(CP_Vector location)
 	SetSpeed(50.0f);
 	SetSprite(CP_Image_Load("Assets/Enemies/Tank.png"));
 	SetSpriteLeft(CP_Image_Load("Assets/Enemies/Tank_Left.png"));
-	SetReward(300);
+	SetReward(100);
 }
 
 TankEnemy::~TankEnemy()

@@ -367,8 +367,10 @@ void gameUpdate(void)
 
 	game.waveManager->Update(&enemiesList);
 
-	if (CP_Input_KeyReleased(KEY_1))
+	if (CP_Input_KeyReleased(KEY_SPACE))
 		game.waveManager->SpawnWave(game.getSpawnLocation());
+	if (CP_Input_KeyReleased(KEY_1))
+		enemiesList.push_back(new BasicEnemy(game.getSpawnLocation()));
 	if (CP_Input_KeyReleased(KEY_2))
 		enemiesList.push_back(new TankEnemy(game.getSpawnLocation()));
 	if (CP_Input_KeyReleased(KEY_3))

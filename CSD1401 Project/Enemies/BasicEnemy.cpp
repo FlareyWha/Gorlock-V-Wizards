@@ -8,7 +8,7 @@ BasicEnemy::BasicEnemy(CP_Vector location)
 	SetSpeed(100.0f);
 	SetSprite(CP_Image_Load("Assets/Enemies/Basic.png"));
 	SetSpriteLeft(CP_Image_Load("Assets/Enemies/Basic_Left.png"));
-	SetReward(75);
+	SetReward(25);
 }
 
 BasicEnemy::~BasicEnemy()
