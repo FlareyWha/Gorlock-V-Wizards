@@ -1,11 +1,13 @@
 #pragma once
 #include "BaseTower.h"
-class WindTower : public BaseTower
+#include "../../Projectiles/BaseProjectile.h"
+class WindTower : public virtual BaseTower
 {
 private:
 	std::string towerName = "WindTower";
 public:
 	WindTower(CP_Vector position);
 	~WindTower();
+	BaseProjectile* Attack(BaseEnemy* enemy) override;
 };
 

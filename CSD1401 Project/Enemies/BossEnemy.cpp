@@ -14,6 +14,7 @@ BossEnemy::BossEnemy(CP_Vector location)
 	SetSpeed(25.0f);
 	SetSprite(CP_Image_Load("Assets/Enemies/Boss.png"));
 	SetSpriteLeft(CP_Image_Load("Assets/Enemies/Boss_Left.png"));
+	SetReward(10000);
 }
 
 void BossEnemy::Render(void)

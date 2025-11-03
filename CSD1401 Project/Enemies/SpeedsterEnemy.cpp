@@ -8,6 +8,7 @@ SpeedsterEnemy::SpeedsterEnemy(CP_Vector location)
 	SetSpeed(200.0f);
 	SetSprite(CP_Image_Load("Assets/Enemies/Speedster.png"));
 	SetSpriteLeft(CP_Image_Load("Assets/Enemies/Speedster_Left.png"));
+	SetReward(150);
 }
 
 SpeedsterEnemy::~SpeedsterEnemy()

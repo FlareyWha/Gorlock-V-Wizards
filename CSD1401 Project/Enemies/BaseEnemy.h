@@ -12,11 +12,14 @@ protected:
 	CP_Vector location, directionVector;
 	float spriteSize = 50.0f;
 	int pathId = 0;
+	int reward;
 public:
 	int GetHealth(void);
 	void SetHealth(int health);
 	int GetMaxHealth(void);
 	void SetMaxHealth(int health);
+	int GetReward(void);
+	void SetReward(int rewardAmt);
 	float GetSpeed(void);
 	void SetSpeed(float speed);
 	float GetSpriteSize();

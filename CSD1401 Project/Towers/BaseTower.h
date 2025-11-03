@@ -25,13 +25,14 @@ protected:
 	std::string towerName = "baseTower";
 	CP_Vector position;
 	ATTACK_TYPE attack = ATTACK_TYPE::NONE;
-	int damage = 0;
+	float damage = 0;
 	int level = 1;
 	float detectionDistance = 150.f;
 	float spriteSize = 48.0f;
 	float cooldown = 2.f;
 	float cooldownTime = 0.f;
-
+	CP_Color color;
+	float projSpeed = 150;
 public:
 	CP_Image towerSprite;
 
@@ -46,18 +47,28 @@ public:
 	float getCooldownTime();
 	float getCooldown();
 	float getDetectionDistance();
-	int getDamage();
+
+	float getDamage();
 	// Setters
 	void setPos(int xPosition, int yPosition);
 	void setImage(CP_Image inputImage);
 	void setCooldownTime(float time);
 	void setCooldown(float time);
-	void setDamage(int damage);
 
+	void setDamage(float damage);
+
+	void setLevel(int level);
+	int getLevel();
+
+	void setColor(CP_Color color);
+	CP_Color getColor();
+
+	void setSpeed(float speed);
+	float getSpeed();
 	// Other functions
 	void Init();
 	void Update();
-	BaseProjectile* Attack(BaseEnemy* enemy);
+	virtual BaseProjectile* Attack(BaseEnemy* enemy);
 
 	void Render(void);
 };

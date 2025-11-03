@@ -198,12 +198,18 @@ void gameInit(void)
 	game.lightningTowerUI.selection = LIGHTNINGTOWER;
 	game.lightningTowerUI.towerCost = 103;
 
+	game.levelUpUI.image = CP_Image_Load("./Assets/UI/levelup.png");
+	game.levelUpUI.pos = CP_Vector_Set(1500, 800);
+	game.levelUpUI.towerCost = 0;
+
 	game.uiElements[0] = game.fireTowerUI;
 	game.uiElements[1] = game.windTowerUI;
 	game.uiElements[2] = game.iceTowerUI;
 	game.uiElements[3] = game.lightningTowerUI;
+	game.uiElements[4] = game.levelUpUI;
 	CP_Settings_TextSize(game.getFontSize());
 
+	game.waveManager = new WaveManager(game.getSpawnLocation());
 	//CP_Font_DrawText("YIBBBEEE", 10, 10);
 }
 
@@ -217,15 +223,19 @@ void gameUpdate(void)
 
 	for (int i = 0; i < (sizeof(game.uiElements) / sizeof(game.uiElements[0])); i++)
 	{
+		if (game.getMoneys() < game.uiElements[i].towerCost)
+		{
+			game.uiElements[i].opacity = 100;
+		}
+		else
+			game.uiElements[i].opacity = 255;
 		CP_Image_Draw(game.uiElements[i].image, game.uiElements[i].pos.x, game.uiElements[i].pos.y, game.uiElements[i].size, game.uiElements[i].size, game.uiElements[i].opacity);
 	}
 	if (CP_Input_MouseTriggered(MOUSE_BUTTON_1))
 	{
 		for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]); i++)
 		{
-			if ((CP_Input_GetMouseX() >= game.uiElements[i].pos.x - game.uiElements[i].radius && CP_Input_GetMouseX() <= game.uiElements[i].pos.x + game.uiElements[i].radius) && (CP_Input_GetMouseY() >= game.uiElements[i].pos.y - game.uiElements[i].radius && CP_Input_GetMouseY() <= game.uiElements[i].pos.y + game.uiElements[i].radius)
-				&& game.getMoneys() >= game.uiElements[i].towerCost
-				)
+			if( (isAreaClicked(game.uiElements[i].pos,game.uiElements[i].size,game.uiElements[i].size,CP_Vector_Set(CP_Input_GetMouseX(),CP_Input_GetMouseY()))) && game.getMoneys() >= game.uiElements[i].towerCost)
 			{
 				game.currSelect = game.uiElements[i].selection;
 				game.uiElements[i].opacity = 100;
@@ -233,7 +243,7 @@ void gameUpdate(void)
 
 		}
 	}
-	else if (CP_Input_MouseReleased(MOUSE_BUTTON_1) && game.currSelect != NONE_TOWER)
+	else if (CP_Input_MouseReleased(MOUSE_BUTTON_1) && game.currSelect != NONE_TOWER && game.currSelect!= LEVELUP)
 	{
 		for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]); i++)
 		{
@@ -355,8 +365,10 @@ void gameUpdate(void)
 		game.gainMoneys(100);
 	}
 
+	game.waveManager->Update(&enemiesList);
+
 	if (CP_Input_KeyReleased(KEY_1))
-		enemiesList.push_back(new BasicEnemy(game.getSpawnLocation()));
+		game.waveManager->SpawnWave(game.getSpawnLocation());
 	if (CP_Input_KeyReleased(KEY_2))
 		enemiesList.push_back(new TankEnemy(game.getSpawnLocation()));
 	if (CP_Input_KeyReleased(KEY_3))
@@ -379,7 +391,7 @@ void gameUpdate(void)
 		}
 		else if (enemy->GetHealth() <= 0)
 		{
-			game.gainMoneys(100);
+			game.gainMoneys(enemy->GetReward());
 			enemiesList.erase(enemiesList.begin() + i--);
 			delete enemy;
 		}
@@ -435,7 +447,7 @@ void gameUpdate(void)
 				BaseEnemy* enemy = enemiesList[j];
 				if (areCirclesIntersecting(projectileList[i]->GetLocation(), projectileList[i]->GetRadius(), enemy->GetLocation(), enemy->GetSpriteSize()/2.0f))
 				{
-					enemy->SetHealth(enemy->GetHealth() - 1);
+					enemy->SetHealth(enemy->GetHealth() - projectileList[i]->getProjectileDamage());
 
 					BaseProjectile* proj = projectileList[i];
 					projectileList.erase(projectileList.begin() + i);
@@ -458,6 +470,8 @@ void gameExit(void)
 	{
 		delete enemy;
 	}
+
+	delete game.waveManager;
 }
 
 void drawRect(float posX, float posY, float rectWidth, float rectHeight, float angle, float cornerRadius, CP_Color rectColor)

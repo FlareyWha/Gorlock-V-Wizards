@@ -79,7 +79,7 @@ float BaseTower::getDetectionDistance()
 	return detectionDistance;
 }
 
-int BaseTower::getDamage()
+float BaseTower::getDamage()
 {
 	return damage;
 }
@@ -120,16 +120,48 @@ void BaseTower::setCooldown(float time)
 	cooldown = time;
 }
 
-void BaseTower::setDamage(int damage)
+void BaseTower::setDamage(float damage)
 {
 	this->damage = damage;
+}
+
+void BaseTower::setLevel(int level)
+{
+	this->level = level;
+	CP_Math_ClampInt(this->level, 0, 5);
+}
+
+int BaseTower::getLevel()
+{
+	return this->level;
+}
+
+CP_Color BaseTower::getColor()
+{
+	return this->color;
+}
+
+void BaseTower::setSpeed(float speed)
+{
+	this->projSpeed = speed;
+}
+
+float BaseTower::getSpeed()
+{
+	return projSpeed;
 }
 
 BaseProjectile* BaseTower::Attack(BaseEnemy* enemy)
 {
 	CP_Vector direction = CP_Vector_Normalize(CP_Vector_Set(enemy->GetLocation().x - getPosition().x, enemy->GetLocation().y - getPosition().y));
 	setCooldownTime(getCooldown());
-	return new BaseProjectile(getPosition(), direction);
+	return new BaseProjectile(this->getPosition(),direction,this->damage,this->projSpeed,this->getColor());
+}
+
+
+void BaseTower::setColor(CP_Color color)
+{
+	this->color = color;
 }
 
 void BaseTower::Init()
