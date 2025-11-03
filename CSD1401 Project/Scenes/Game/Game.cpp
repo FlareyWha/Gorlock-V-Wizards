@@ -202,6 +202,7 @@ void gameInit(void)
 	game.uiElements[3] = game.lightningTowerUI;
 	CP_Settings_TextSize(game.getFontSize());
 
+	game.waveManager = new WaveManager(game.getSpawnLocation());
 	//CP_Font_DrawText("YIBBBEEE", 10, 10);
 }
 
@@ -353,8 +354,10 @@ void gameUpdate(void)
 		game.gainMoneys(100);
 	}
 
+	game.waveManager->Update(&enemiesList);
+
 	if (CP_Input_KeyReleased(KEY_1))
-		enemiesList.push_back(new BasicEnemy(game.getSpawnLocation()));
+		game.waveManager->SpawnWave(game.getSpawnLocation());
 	if (CP_Input_KeyReleased(KEY_2))
 		enemiesList.push_back(new TankEnemy(game.getSpawnLocation()));
 	if (CP_Input_KeyReleased(KEY_3))
@@ -454,6 +457,8 @@ void gameExit(void)
 	{
 		delete enemy;
 	}
+
+	delete game.waveManager;
 }
 
 void drawRect(float posX, float posY, float rectWidth, float rectHeight, float angle, float cornerRadius, CP_Color rectColor)
