@@ -33,8 +33,9 @@ void NewMainMenu::ButtonInit(void)
 	buttonLeftX = -buttonWidth;
 	//Buttons Y position
 	buttonY1 = windowHeight / 2;
-	buttonY2 = buttonY1 + 130;
-	buttonY3 = buttonY1 + 260;
+	buttonY2 = buttonY1 + 100;
+	buttonY3 = buttonY1 + 300;
+	buttonY4 = buttonY1 + 200;
 
 }
 
@@ -75,6 +76,9 @@ void NewMainMenu::ButtonDraw()
 	CP_Image_Draw(Button, buttonLeftX, buttonY2, buttonWidth, buttonHeight, 255);
 	CP_Font_DrawText("Settings", buttonLeftX, buttonY2);
 
+	CP_Image_Draw(Button, buttonRightX, buttonY4, buttonWidth, buttonHeight, 255);
+	CP_Font_DrawText("Map Editor", buttonRightX, buttonY4);
+
 	CP_Image_Draw(Button, buttonRightX, buttonBottomY, buttonWidth, buttonHeight, 255);
 	CP_Font_DrawText("Quit", buttonRightX, buttonBottomY);
 }
@@ -96,6 +100,9 @@ bool NewMainMenu::isButtonClicked()
 	else if (withinButton(buttonLeftX, buttonY2) && CP_Input_MouseClicked())
 	{
 		scene->ChangeScenes(Scenes::SETTINGS_SCENE);
+	}
+	else if (withinButton(buttonRightX, buttonY4) && CP_Input_MouseClicked()) {
+		scene->ChangeScenes(Scenes::MAP_EDITOR_SCENE);
 	}
 	else if (withinButton(buttonRightX, buttonBottomY) && CP_Input_MouseClicked()) {
 		CP_Engine_Terminate();

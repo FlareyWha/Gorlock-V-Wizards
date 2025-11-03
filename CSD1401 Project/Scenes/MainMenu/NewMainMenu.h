@@ -18,6 +18,7 @@ private:
 
 	float buttonY2 = 0;
 	float buttonY3 = 0;
+	float buttonY4 = 0;
 
 	float buttonTargetX = 0;
 	float buttonRightX = 0;
