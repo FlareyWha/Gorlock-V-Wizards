@@ -5,7 +5,7 @@
 
 class BaseEnemy
 {
-private:
+protected:
 	int health, maxHealth;
 	float speed;
 	CP_Image sprite, spriteLeft;
@@ -31,6 +31,7 @@ public:
 	void SetDirectionVector(float x, float y);
 	void SetDirectionVector(CP_Vector direction);
 	void Move(Map* map);
-	void Render(void);
+	virtual void Render(void);
+	void RenderBoss(void);
 };
 
