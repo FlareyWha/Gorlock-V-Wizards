@@ -9,6 +9,7 @@
 #include "../../Enemies/BasicEnemy.h"
 #include "../../Enemies/TankEnemy.h"
 #include "../../Enemies/SpeedsterEnemy.h"
+#include "../../Enemies/BossEnemy.h"
 
 #include "../../Towers/FireTower.h"
 #include "../../Towers/IceTower.h"
@@ -34,6 +35,7 @@ CP_Vector mapSize;
 std::vector<BaseEnemy*> enemiesList;
 std::vector<BaseTower*> towerList;
 std::vector<BaseProjectile*> projectileList;
+
 
 
 Game game;
@@ -213,14 +215,14 @@ void gameUpdate(void)
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 
 	gameMap->renderMap();
-	
+
 	for (int i = 0; i < (sizeof(game.uiElements) / sizeof(game.uiElements[0])); i++)
 	{
 		CP_Image_Draw(game.uiElements[i].image, game.uiElements[i].pos.x, game.uiElements[i].pos.y, game.uiElements[i].size, game.uiElements[i].size, game.uiElements[i].opacity);
 	}
 	if (CP_Input_MouseTriggered(MOUSE_BUTTON_1))
 	{
-		for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]);i++)
+		for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]); i++)
 		{
 			if ((CP_Input_GetMouseX() >= game.uiElements[i].pos.x - game.uiElements[i].radius && CP_Input_GetMouseX() <= game.uiElements[i].pos.x + game.uiElements[i].radius) && (CP_Input_GetMouseY() >= game.uiElements[i].pos.y - game.uiElements[i].radius && CP_Input_GetMouseY() <= game.uiElements[i].pos.y + game.uiElements[i].radius)
 				&& game.getMoneys() >= game.uiElements[i].towerCost
@@ -251,26 +253,26 @@ void gameUpdate(void)
 				{
 					switch (game.currSelect)
 					{
-						case FIRETOWER:
-						{
-							towerList.push_back(new FireTower(tempPos));
-							break;
-						}
-						case WINDTOWER:
-						{
-							towerList.push_back(new WindTower(tempPos));
-							break;
-						}
-						case ICETOWER:
-						{
-							towerList.push_back(new IceTower(tempPos));
-							break;
-						}
-						case LIGHTNINGTOWER:
-						{
-							towerList.push_back(new LightningTower(tempPos));
-							break;
-						}
+					case FIRETOWER:
+					{
+						towerList.push_back(new FireTower(tempPos));
+						break;
+					}
+					case WINDTOWER:
+					{
+						towerList.push_back(new WindTower(tempPos));
+						break;
+					}
+					case ICETOWER:
+					{
+						towerList.push_back(new IceTower(tempPos));
+						break;
+					}
+					case LIGHTNINGTOWER:
+					{
+						towerList.push_back(new LightningTower(tempPos));
+						break;
+					}
 					}
 					for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]); i++)
 					{
@@ -330,7 +332,7 @@ void gameUpdate(void)
 		switch (game.currSelect)
 		{
 		case FIRETOWER:
-			CP_Image_Draw(game.fireTowerUI.image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50,50, 155);
+			CP_Image_Draw(game.fireTowerUI.image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
 			break;
 		case WINDTOWER:
 			CP_Image_Draw(game.windTowerUI.image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
@@ -362,11 +364,10 @@ void gameUpdate(void)
 		enemiesList.push_back(new TankEnemy(game.getSpawnLocation()));
 	if (CP_Input_KeyReleased(KEY_3))
 		enemiesList.push_back(new SpeedsterEnemy(game.getSpawnLocation()));
-	//if (CP_Input_KeyReleased(KEY_4))
-	//{
-	//	for (BaseEnemy* enemy : enemiesList)
-	//		enemy->SetHealth(enemy->GetHealth() - 1);
-	//}
+	if (CP_Input_KeyReleased(KEY_4))
+	{
+		enemiesList.push_back(new BossEnemy(game.getSpawnLocation()));
+	}
 
 	// enemy movement
 	for (int i = 0; i < enemiesList.size(); ++i)
@@ -390,7 +391,9 @@ void gameUpdate(void)
 			enemy->Move(gameMap);
 			enemy->Render();
 		}
+
 	}
+
 
 	// render and update towers, check for nearby enemies and target them
 	if (towerList.size())
