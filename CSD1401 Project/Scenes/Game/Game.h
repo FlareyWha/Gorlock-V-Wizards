@@ -13,6 +13,7 @@ enum currSelected {
 	WINDTOWER,
 	ICETOWER,
 	LIGHTNINGTOWER,
+	LEVELUP,
 	NONE_TOWER
 };
 typedef struct TowerUIs {
@@ -29,7 +30,7 @@ private:
 	int maxHealth = 3;
 	int health = 3;
 	float fontSize = 12.0f;
-	int moneys = 0;
+	int moneys = 300;
 
 	float imageScaling = 4.0f;
 	CP_Vector spawnLocation = CP_Vector_Set(24.0f, 24.0f);
@@ -49,8 +50,8 @@ public:
 
 
 	void drawHeart(float x,float y);
-	int getHealth();
-	int getMaxHealth();
+	int getHealth(void);
+	int getMaxHealth(void);
 	void setMaxHealth(int max);
 	void setHealth(int hp);
 	void takeDamage(int hp);
@@ -73,8 +74,9 @@ public:
 	Tower iceTowerUI;
 	Tower windTowerUI;
 	Tower lightningTowerUI;
+	Tower levelUpUI;
 
-	Tower uiElements[4];
+	Tower uiElements[5];
 
 	WaveManager* waveManager;
 };

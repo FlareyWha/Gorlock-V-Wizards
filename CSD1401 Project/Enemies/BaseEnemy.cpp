@@ -22,6 +22,16 @@ void BaseEnemy::SetMaxHealth(int health)
     this->maxHealth = health;
 }
 
+int BaseEnemy::GetReward(void)
+{
+    return reward;
+}
+
+void BaseEnemy::SetReward(int rewardAmt)
+{
+    reward = rewardAmt;
+}
+
 float BaseEnemy::GetSpeed(void)
 {
     return speed;
