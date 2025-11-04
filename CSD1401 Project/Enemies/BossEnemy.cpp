@@ -9,9 +9,10 @@ BaseEnemy enemy;
 BossEnemy::BossEnemy(CP_Vector location)
 {
 	SetLocation(location);
-	SetHealth(200);
-	SetMaxHealth(200);
+	SetHealth(200.0f);
+	SetMaxHealth(200.0f);
 	SetSpeed(25.0f);
+	SetMaxSpeed(25.0f);
 	SetSprite(CP_Image_Load("Assets/Enemies/Boss.png"));
 	SetSpriteLeft(CP_Image_Load("Assets/Enemies/Boss_Left.png"));
 	SetReward(10000);

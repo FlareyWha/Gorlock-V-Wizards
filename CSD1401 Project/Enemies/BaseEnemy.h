@@ -13,23 +13,35 @@ enum EnemyType
 class BaseEnemy
 {
 protected:
-	int health, maxHealth;
-	float speed;
+	float health, maxHealth;
+	float speed , maxSpeed;
 	CP_Image sprite, spriteLeft;
 	CP_Vector location, directionVector;
 	float spriteSize = 50.0f;
 	int pathId = 0;
 	int reward;
 	EnemyType type;
+
+	float slowTimer = 0.f;
+	float maxSlowTimer = 3.f;
+	bool slowed = false;
 public:
-	int GetHealth(void);
-	void SetHealth(int health);
-	int GetMaxHealth(void);
-	void SetMaxHealth(int health);
+	float GetHealth(void);
+	void SetHealth(float health);
+	float GetMaxHealth(void);
+	void SetMaxHealth(float health);
+
+	bool IsSlowed();
+	void Slow(bool slow);
+
 	int GetReward(void);
 	void SetReward(int rewardAmt);
+
 	float GetSpeed(void);
 	void SetSpeed(float speed);
+	float GetMaxSpeed(void);
+	void SetMaxSpeed(float maxSpeed);
+
 	float GetSpriteSize();
 	CP_Image GetSprite(void);
 	void SetSprite(CP_Image sprite);
@@ -46,6 +58,5 @@ public:
 
 	void Move(Map* map);
 	virtual void Render(void);
-	void RenderBoss(void);
 };
 

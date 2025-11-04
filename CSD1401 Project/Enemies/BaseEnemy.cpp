@@ -2,24 +2,34 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int BaseEnemy::GetHealth(void)
+float BaseEnemy::GetHealth(void)
 {
     return health;
 }
 
-void BaseEnemy::SetHealth(int health)
+void BaseEnemy::SetHealth(float health)
 {
     health >= 0 ? this->health = health : this->health = 0;
 }
 
-int BaseEnemy::GetMaxHealth(void)
+float BaseEnemy::GetMaxHealth(void)
 {
     return maxHealth;
 }
 
-void BaseEnemy::SetMaxHealth(int health)
+void BaseEnemy::SetMaxHealth(float health)
 {
     this->maxHealth = health;
+}
+
+bool BaseEnemy::IsSlowed()
+{
+    return slowed;
+}
+
+void BaseEnemy::Slow(bool slow)
+{
+    this->slowed = slow;
 }
 
 int BaseEnemy::GetReward(void)
@@ -40,6 +50,16 @@ float BaseEnemy::GetSpeed(void)
 void BaseEnemy::SetSpeed(float speed)
 {
     this->speed = speed;
+}
+
+float BaseEnemy::GetMaxSpeed(void)
+{
+    return maxSpeed;
+}
+
+void BaseEnemy::SetMaxSpeed(float maxSpeed)
+{
+    this->maxSpeed = maxSpeed;  
 }
 
 float BaseEnemy::GetSpriteSize()
@@ -109,6 +129,7 @@ void BaseEnemy::SetEnemyType(EnemyType type)
 
 void BaseEnemy::Move(Map* map)
 {
+    slowTimer += -1 * CP_System_GetDt();
     std::vector<CP_Vector> path = map->getPath();
 
     if (path.size() == pathId) return;
@@ -121,6 +142,20 @@ void BaseEnemy::Move(Map* map)
     // Remove location from queue when reached
     if (CP_Vector_Distance(location, path[pathId]) <= spriteSize * 0.25f)
         ++pathId;
+
+    if (slowed == true)
+    {
+        slowTimer = maxSlowTimer;
+        slowed = false;
+    }
+    if (slowTimer <= 0)
+    {
+        speed = GetMaxSpeed();
+    }
+    else
+    {
+        SetSpeed(GetMaxSpeed() / 2.0f);
+    }
 }
 
 void BaseEnemy::Render(void)

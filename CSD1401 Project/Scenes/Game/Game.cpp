@@ -466,7 +466,19 @@ void gameUpdate(void)
 	game.waveManager->Update(&enemiesList);
 
 	if (CP_Input_KeyReleased(KEY_SPACE))
-		game.waveManager->SpawnWave(game.getSpawnLocation());
+	{
+		CP_Vector dir = CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY());
+		if (towerList.size())
+		{
+			for (BaseTower* tower : towerList)
+			{
+				tower->Update();
+				tower->Render();
+				projectileList.push_back(new BaseProjectile(tower->getPosition(),dir,tower->getDamage(),tower->getSpeed(), tower->getColor()));
+			}
+		}
+	}
+		//game.waveManager->SpawnWave(game.getSpawnLocation());
 	if (CP_Input_KeyReleased(KEY_1))
 		enemiesList.push_back(new BasicEnemy(game.getSpawnLocation()));
 	if (CP_Input_KeyReleased(KEY_2))
@@ -538,7 +550,7 @@ void gameUpdate(void)
 		{
 			BaseProjectile* proj = projectileList[i];
 			projectileList.erase(projectileList.begin() + i);
-			delete proj;
+			//delete proj;
 		}
 		else
 		{
@@ -547,11 +559,12 @@ void gameUpdate(void)
 				BaseEnemy* enemy = enemiesList[j];
 				if (areCirclesIntersecting(projectileList[i]->GetLocation(), projectileList[i]->GetRadius(), enemy->GetLocation(), enemy->GetSpriteSize()/2.0f))
 				{
-					enemy->SetHealth(enemy->GetHealth() - projectileList[i]->getProjectileDamage());
+					//enemy->SetHealth(enemy->GetHealth() - projectileList[i]->getProjectileDamage());
+					projectileList[i]->onHit(enemy);
 
 					BaseProjectile* proj = projectileList[i];
 					projectileList.erase(projectileList.begin() + i);
-					delete proj;
+					//delete proj;
 
 					break;
 				}
