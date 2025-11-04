@@ -23,8 +23,19 @@ void WaveManager::Update(std::vector<BaseEnemy*>* enemyList)
 	if (!enemyQueue->empty() && spawnCooldown <= 0.f)
 	{
 		enemyList->push_back(enemyQueue->front());
+		switch (enemyQueue->front()->GetEnemyType())
+		{
+		case EnemyType::BASIC:
+			spawnCooldown = basicCooldown;
+			break;
+		case EnemyType::SPEEDSTER:
+			spawnCooldown = speedCooldown;
+			break;
+		case EnemyType::TANK:
+			spawnCooldown = tankCooldown;
+			break;
+		}
 		enemyQueue->pop();
-		spawnCooldown = maxSpawnCooldown;
 	}
 }
 

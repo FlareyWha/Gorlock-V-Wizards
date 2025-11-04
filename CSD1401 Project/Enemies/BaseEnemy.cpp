@@ -97,6 +97,16 @@ void BaseEnemy::SetDirectionVector(CP_Vector direction)
     this->directionVector = direction;
 }
 
+EnemyType BaseEnemy::GetEnemyType(void)
+{
+    return type;
+}
+
+void BaseEnemy::SetEnemyType(EnemyType type)
+{
+    this->type = type;
+}
+
 void BaseEnemy::Move(Map* map)
 {
     std::vector<CP_Vector> path = map->getPath();

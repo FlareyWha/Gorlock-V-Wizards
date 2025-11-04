@@ -3,6 +3,13 @@
 #include "../../System/Map.h"
 #include <vector>
 
+enum EnemyType
+{
+	BASIC = 0,
+	SPEEDSTER,
+	TANK
+};
+
 class BaseEnemy
 {
 protected:
@@ -13,6 +20,7 @@ protected:
 	float spriteSize = 50.0f;
 	int pathId = 0;
 	int reward;
+	EnemyType type;
 public:
 	int GetHealth(void);
 	void SetHealth(int health);
@@ -33,6 +41,9 @@ public:
 	CP_Vector GetDirectionVector(void);
 	void SetDirectionVector(float x, float y);
 	void SetDirectionVector(CP_Vector direction);
+	EnemyType GetEnemyType(void);
+	void SetEnemyType(EnemyType type);
+
 	void Move(Map* map);
 	virtual void Render(void);
 	void RenderBoss(void);

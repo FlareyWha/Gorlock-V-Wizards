@@ -9,6 +9,7 @@ BasicEnemy::BasicEnemy(CP_Vector location)
 	SetSprite(CP_Image_Load("Assets/Enemies/Basic.png"));
 	SetSpriteLeft(CP_Image_Load("Assets/Enemies/Basic_Left.png"));
 	SetReward(25);
+	SetEnemyType(EnemyType::BASIC);
 }
 
 BasicEnemy::~BasicEnemy()

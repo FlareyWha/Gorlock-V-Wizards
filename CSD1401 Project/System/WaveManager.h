@@ -23,7 +23,7 @@ private:
 	std::map<int, WaveInfo> waveMap;
 	std::queue<BaseEnemy*>* enemyQueue = new std::queue<BaseEnemy*>();
 	int waveId = 1;
-	float spawnCooldown = 1.f, maxSpawnCooldown = 1.f;
+	float spawnCooldown = 1.f, basicCooldown = 0.5f, speedCooldown = 0.25f, tankCooldown = 1.f;
 public:
 	WaveManager(CP_Vector spawnLocation);
 	~WaveManager();
