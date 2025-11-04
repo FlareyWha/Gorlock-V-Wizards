@@ -517,24 +517,48 @@ void gameUpdate(void)
 
 
 	// render and update towers, check for nearby enemies and target them
-	if (towerList.size())
+	for (BaseTower* tower : towerList)
 	{
-		for (BaseTower* tower : towerList)
-		{
-			tower->Update();
-			tower->Render();
+		tower->Update();
+		tower->Render();
 
-			for (BaseEnemy* enemy : enemiesList)
+		bool bossNearby = false;
+
+		for (BaseEnemy* enemy : enemiesList)
+		{
+
+			if (areCirclesIntersecting(tower->getPosition(), tower->getDetectionDistance(),
+				enemy->GetLocation(), enemy->GetSpriteSize() / 2.0f) &&
+				tower->getCooldownTime() <= 0.f)
 			{
-				float dist = CP_Vector_Distance(tower->getPosition(), enemy->GetLocation());
-				//if (dist <= tower->getDetectionDistance() && tower->getCooldownTime() <= 0.f)
-				if(areCirclesIntersecting(tower->getPosition(),tower->getDetectionDistance(),enemy->GetLocation(),enemy->GetSpriteSize()/2.0f) && tower->getCooldownTime() <= 0.f)
-				{
-					//CP_Vector direction = CP_Vector_Normalize(CP_Vector_Set(enemy->GetLocation().x - tower->getPosition().x, enemy->GetLocation().y - tower->getPosition().y));
-					projectileList.push_back(tower->Attack(enemy));
-				}
-				BossEnemy isIntersect();
+				projectileList.push_back(tower->Attack(enemy));
 			}
+
+			// Check if a boss is nearby
+			if (BossEnemy* boss = dynamic_cast<BossEnemy*>(enemy))
+			{
+				float distance = CP_Vector_Distance(tower->getPosition(), boss->GetLocation());
+				if (distance < 100.0f) // matches the aura radius exactly
+				{
+					bossNearby = true;
+				}
+			}
+		}
+
+		// Apply or reset slowdown
+		if (bossNearby != tower->slowed)
+		{
+			if (bossNearby)
+			{
+				printf("Boss entered range, slowing tower\n");
+				tower->ApplySlowdown(5.0f);
+			}
+			else
+			{
+				printf("Boss left range, resetting cooldown\n");
+				tower->ResetCooldown();
+			}
+			tower->slowed = bossNearby;
 		}
 	}
 
@@ -559,8 +583,7 @@ void gameUpdate(void)
 				BaseEnemy* enemy = enemiesList[j];
 				if (areCirclesIntersecting(projectileList[i]->GetLocation(), projectileList[i]->GetRadius(), enemy->GetLocation(), enemy->GetSpriteSize()/2.0f))
 				{
-					//enemy->SetHealth(enemy->GetHealth() - projectileList[i]->getProjectileDamage());
-					projectileList[i]->onHit(enemy);
+					enemy->SetHealth(enemy->GetHealth() - projectileList[i]->getProjectileDamage());
 
 					BaseProjectile* proj = projectileList[i];
 					projectileList.erase(projectileList.begin() + i);

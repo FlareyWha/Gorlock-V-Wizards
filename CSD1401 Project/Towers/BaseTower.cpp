@@ -118,6 +118,8 @@ void BaseTower::setCooldownTime(float time)
 void BaseTower::setCooldown(float time)
 {
 	cooldown = time;
+	if (baseCooldown <= 0.0f)
+		baseCooldown = time;
 }
 
 void BaseTower::setDamage(float damage)
@@ -176,4 +178,14 @@ void BaseTower::Update()
 void BaseTower::Render()
 {
 	CP_Image_Draw(towerSprite, position.x, position.y, spriteSize, spriteSize, 255);
+}
+
+void BaseTower::ApplySlowdown(float multiplier)
+{
+	cooldown = baseCooldown * multiplier;
+}
+
+void BaseTower::ResetCooldown()
+{
+	cooldown = baseCooldown;
 }

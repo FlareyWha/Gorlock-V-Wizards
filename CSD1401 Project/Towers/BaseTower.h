@@ -29,10 +29,11 @@ protected:
 	int level = 1;
 	float detectionDistance = 150.f;
 	float spriteSize = 48.0f;
-	float cooldown = 2.f;
-	float cooldownTime = 0.f;
+	float cooldown = 2.0f;
+	float cooldownTime = 0.0f;
 	CP_Color color;
 	float projSpeed = 150;
+	float baseCooldown;
 public:
 	CP_Image towerSprite;
 
@@ -71,6 +72,10 @@ public:
 	virtual BaseProjectile* Attack(BaseEnemy* enemy);
 
 	void Render(void);
+	void InitCooldown(float time) { baseCooldown = cooldown = time; }
+	void ApplySlowdown(float multiplier);
+	void ResetCooldown();
+	bool slowed = false;
 };
 
 /*
