@@ -51,42 +51,38 @@ bool CSVManager::write(std::string fileName, const int TILE_ROW_NUM, const int T
 		return false;
 	}
 
-	//Checks if file is good
-	if (file.good())
+	//Checks if the number of columns is correct
+	if (data.size() == TILE_COLUMN_NUM)
 	{
-		//Checks if the number of columns is correct
-		if (data.size() == TILE_COLUMN_NUM)
+		//Sets the iterator for the row to the beginning of x vector
+		std::vector<std::vector<int>>::iterator rowIterator = data.begin();
+
+		//Checks if the number of rows is correct
+		if ((*rowIterator).size() == TILE_ROW_NUM)
 		{
-			//Sets the iterator for the row to the beginning of x vector
-			std::vector<std::vector<int>>::iterator rowIterator = data.begin();
-
-			//Checks if the number of rows is correct
-			if ((*rowIterator).size() == TILE_ROW_NUM)
+			//Writes the values into the file
+			for (rowIterator = data.begin(); rowIterator != data.end(); rowIterator++)
 			{
-				//Writes the values into the file
-				for (rowIterator = data.begin(); rowIterator != data.end(); rowIterator++)
+				//Set iterator for the column
+				std::vector<int>::iterator columnIterator;
+
+				//Loop through the column values
+				for (columnIterator = (*rowIterator).begin(); columnIterator != (*rowIterator).end(); columnIterator++)
 				{
-					//Set iterator for the column
-					std::vector<int>::iterator columnIterator;
+					//Insert column value into file
+					file << *columnIterator;
 
-					//Loop through the column values
-					for (columnIterator = (*rowIterator).begin(); columnIterator != (*rowIterator).end(); columnIterator++)
-					{
-						//Insert column value into file
-						file << *columnIterator;
-
-						//Use a tab token to split the values
-						if (columnIterator != (*rowIterator).end())
-							file << '\t';
-					}
-
-					//Adds endline to file so that it starts from next row
-					file << std::endl;
+					//Use a tab token to split the values
+					if (columnIterator != (*rowIterator).end())
+						file << '\t';
 				}
-			}
 
-			writeSucessful = true;
+				//Adds endline to file so that it starts from next row
+				file << std::endl;
+			}
 		}
+
+		writeSucessful = true;
 	}
 
 

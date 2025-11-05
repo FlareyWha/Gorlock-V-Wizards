@@ -21,9 +21,9 @@ enum TILE_TYPE
 	HORIZONTAL_LEFT_ROAD = 101,
 	HORIZONTAL_MIDDLE_ROAD = 102,
 	HORIZONTAL_RIGHT_ROAD = 103,
-	VERTICAL_LEFT_ROAD = 104,
+	VERTICAL_TOP_ROAD = 104,
 	VERTICAL_MIDDLE_ROAD = 105,
-	VERTICAL_RIGHT_ROAD = 106,
+	VERTICAL_BOTTOM_ROAD = 106,
 	CORNER_TOP_LEFT_ROAD = 107,
 	CORNER_TOP_RIGHT_ROAD = 108,
 	CORNER_BOTTOM_LEFT_ROAD = 109,
@@ -36,6 +36,15 @@ enum TILE_TYPE
 	STARTPOINT = 201,
 	ENDPOINT = 202,
 	TOTAL
+};
+
+enum TILE_RELATIVE_POSITION
+{
+	TOP_MIDDLE,
+	MIDDLE_LEFT,
+	MIDDLE_RIGHT,
+	BOTTOM_MIDDLE,
+	TILE_RELATIVE_TOTAL
 };
 
 struct Tile
@@ -70,10 +79,16 @@ protected:
 public:
 
 	Tile getTile(float xPos, float yPos);
+	CP_Vector getTilePos(float xPos, float yPos);
+	void setTile(TILE_TYPE tile, int rowPos, int columnPos);
+
+	std::map<TILE_RELATIVE_POSITION, Tile> getSurroundingTiles(CP_Vector tilePos);
+
+	bool checkSurroundingTile(CP_Vector tilePos);
+
 	Tile** getMap(void);
 	int getNumCol(void);
 	int getNumRow(void);
-
 
 	bool loadMap(std::string fileName);
 	bool saveMap(std::string fileName);

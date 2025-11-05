@@ -53,13 +53,13 @@ std::string Map::getImageFilePath(TILE_TYPE tileType)
 	case HORIZONTAL_RIGHT_ROAD:
 		filePath += "HorizontalRight.png";
 		break;
-	case VERTICAL_LEFT_ROAD:
+	case VERTICAL_TOP_ROAD:
 		filePath += "VerticalTop.png";
 		break;
 	case VERTICAL_MIDDLE_ROAD:
 		filePath += "VerticalMiddle.png";
 		break;
-	case VERTICAL_RIGHT_ROAD:
+	case VERTICAL_BOTTOM_ROAD:
 		filePath += "VerticalBottom.png";
 		break;
 	case CORNER_TOP_LEFT_ROAD:
@@ -109,7 +109,7 @@ std::string Map::getImageFilePath(TILE_TYPE tileType)
 *//*______________________________________________________________*/
 void Map::loadMapTileImages(void)
 {
-	tileTypesVector = { GROUND, GRASS, FLOWER, HORIZONTAL_LEFT_ROAD, HORIZONTAL_MIDDLE_ROAD, HORIZONTAL_RIGHT_ROAD, VERTICAL_LEFT_ROAD, VERTICAL_MIDDLE_ROAD, VERTICAL_RIGHT_ROAD, CORNER_TOP_LEFT_ROAD, CORNER_TOP_RIGHT_ROAD, CORNER_BOTTOM_LEFT_ROAD, CORNER_BOTTOM_RIGHT_ROAD, JUNCTION_MIDDLE_TOP_ROAD, JUNCTION_MIDDLE_BOTTOM_ROAD, JUNCTION_MIDDLE_LEFT_ROAD, JUNCTION_MIDDLE_RIGHT_ROAD, JUNCTION_MIDDLE_ROAD, STARTPOINT, ENDPOINT };
+	tileTypesVector = { GROUND, GRASS, FLOWER, HORIZONTAL_LEFT_ROAD, HORIZONTAL_MIDDLE_ROAD, HORIZONTAL_RIGHT_ROAD, VERTICAL_TOP_ROAD, VERTICAL_MIDDLE_ROAD, VERTICAL_BOTTOM_ROAD, CORNER_TOP_LEFT_ROAD, CORNER_TOP_RIGHT_ROAD, CORNER_BOTTOM_LEFT_ROAD, CORNER_BOTTOM_RIGHT_ROAD, JUNCTION_MIDDLE_TOP_ROAD, JUNCTION_MIDDLE_BOTTOM_ROAD, JUNCTION_MIDDLE_LEFT_ROAD, JUNCTION_MIDDLE_RIGHT_ROAD, JUNCTION_MIDDLE_ROAD, STARTPOINT, ENDPOINT };
 
 	for (int i = 0; i < tileTypesVector.size(); i++)
 	{
@@ -126,15 +126,25 @@ void Map::loadMapTileImages(void)
 *//*______________________________________________________________*/
 Tile Map::getTile(float xPos, float yPos)
 {
+	CP_Vector tilePos = getTilePos(xPos, yPos);
+
+	Tile tile = map[(int)tilePos.x][(int)tilePos.y];
+
+	return tile;
+}
+
+/*!
+@brief	Gets tile grid pos based on x & y position given
+@param	xPos - x position
+@param	yPos - y position
+@return CP_Vector - tile grid pos
+*//*______________________________________________________________*/
+CP_Vector Map::getTilePos(float xPos, float yPos)
+{
 	int rowPos = 0, columnPos = 0;
 
 	rowPos = floor(xPos / TILE_WIDTH);
 	columnPos = floor(yPos / TILE_HEIGHT);
-
-	//std::cout << rowPos << std::endl;
-
-  	//rowPos = rowPos >= NUM_ROW ? NUM_ROW - 1 : rowPos;
-	//columnPos = columnPos >= NUM_COLUMN - 1 ? NUM_COLUMN : columnPos;
 
 	if (rowPos >= NUM_ROW)
 	{
@@ -154,21 +164,97 @@ Tile Map::getTile(float xPos, float yPos)
 		columnPos = 0;
 	}
 
-	Tile tile = map[rowPos][columnPos];
-
-	return tile;
+	return CP_Vector_Set(rowPos, columnPos);
 }
 
+/*!
+@brief	Set tile type based on given grid position
+@param	rowPos - tile grid row pos
+@param	columnPos - tile grid column pos
+@return void
+*//*______________________________________________________________*/
+void Map::setTile(TILE_TYPE tile, int rowPos, int columnPos)
+{
+	map[rowPos][columnPos].tileType = tile;
+}
+
+/*!
+@brief	Get up to 4 surrounding tiles based on tile grid pos given
+		if they are "active" (not empty)
+@param	tilePos - tile grid pos
+@return std::map<TILE_RELATIVE_POSITION, Tile> - map that stores 0 - 4 tiles
+*//*______________________________________________________________*/
+std::map<TILE_RELATIVE_POSITION, Tile> Map::getSurroundingTiles(CP_Vector tilePos)
+{
+	std::map<TILE_RELATIVE_POSITION, Tile> tileMap;
+
+	/*int tileRelativePos = 0;
+
+	for (int i = tilePos.y - 1; i <= tilePos.y + 1; i++)
+	{
+		for (int j = tilePos.x - 1; j <= tilePos.x + 1; j++)
+		{
+			//Ensures tiles out of bound, empty tiles as well as the original tile itself doesnt get added
+			if (i < 0 || i > NUM_ROW || j < 0 || j > NUM_COLUMN || (j == tilePos.x && i == tilePos.y) || map[j][i].tileType == NONE)
+			{
+				tileRelativePos++;
+				continue;
+			}
+
+			tileMap.insert({ static_cast<TILE_RELATIVE_POSITION>(tileRelativePos++), map[j][i] });
+		}
+	}*/
+
+	CP_Vector positions[4] = { CP_Vector_Set(tilePos.y - 1, tilePos.x), CP_Vector_Set(tilePos.y, tilePos.x - 1), CP_Vector_Set(tilePos.y, tilePos.x + 1), CP_Vector_Set(tilePos.y + 1, tilePos.x) };
+
+	for (int i = 0; i < 4; i++)
+	{
+		if (checkSurroundingTile(positions[i]))
+		{
+			tileMap.insert({ static_cast<TILE_RELATIVE_POSITION>(i), map[(int)positions[i].y][(int)positions[i].x]});
+		}
+
+	}
+
+	//Min 0 tiles returned, Max 4 tiles returned
+	return tileMap;
+}
+
+bool Map::checkSurroundingTile(CP_Vector tilePos)
+{
+	if (tilePos.x < 0 || tilePos.x >= NUM_COLUMN || tilePos.y < 0 || tilePos.y >= NUM_ROW || map[(int)tilePos.y][(int)tilePos.x].tileType == NONE)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+/*!
+@brief	Get the map
+@param	void
+@return Tile** - map
+*//*______________________________________________________________*/
 Tile** Map::getMap(void)
 {
 	return this->map;
 }
 
+/*!
+@brief	Get number of columns
+@param	void
+@return int - number of columns
+*//*______________________________________________________________*/
 int Map::getNumCol(void)
 {
 	return NUM_COLUMN;
 }
 
+/*!
+@brief	Get number of rows
+@param	void
+@return int - number of rows
+*//*______________________________________________________________*/
 int Map::getNumRow(void)
 {
 	return NUM_ROW;
@@ -311,16 +397,32 @@ void Map::freeImages(bool free)
 	}
 }
 
+/*!
+@brief	Get dimensions of map in CP_Vector form
+@param	void
+@return CP_Vector - map dimensions
+*//*______________________________________________________________*/
 CP_Vector Map::getDimensions()
 {
 	return CP_Vector_Set(NUM_ROW, NUM_COLUMN);
 }
 
+/*!
+@brief	Get size of tile
+@param	void
+@return int - size of tile
+*//*______________________________________________________________*/
 int Map::getTileSize()
 {
 	return TILE_WIDTH;
 }
 
+/*!
+@brief	Create a path for enemy pathfinding uses
+@param	pos - current pos
+@param	oldPos - old pos
+@return void
+*//*______________________________________________________________*/
 void Map::createPath(CP_Vector pos, CP_Vector oldPos)
 {
 	TILE_TYPE tileType = TILE_TYPE::NONE;
