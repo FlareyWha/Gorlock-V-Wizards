@@ -1,40 +1,27 @@
 #pragma once
 #include "cprocessing.h"
-#include <iostream>
+#include "../../Utils/Button.h"
 
-class NewMainMenu
-{
+class NewMainMenu {
+public:
+    void ButtonInit();
+    void ButtonDraw();
+    void HandleClicks();
+    void Exit();
 
 protected:
+    Button* startButton;
+    Button* settingsButton;
+    Button* mapEditorButton;
+    Button* quitButton;
 
-private:
-	CP_Image Button;
-	CP_Font mainMenuFont;
-	float buttonX1 = 0;
-	float buttonY1 = 0;
+    float buttonWidth = 250;
+    float buttonHeight = 70;
 
-	float buttonWidth = 250;
-	float buttonHeight = 60;
-
-	float buttonY2 = 0;
-	float buttonY3 = 0;
-	float buttonY4 = 0;
-
-	float buttonTargetX = 0;
-	float buttonRightX = 0;
-	float buttonLeftX = 0;
-	float buttonTopY = 0;
-	float buttonBottomY = 0;
-
-	float distanceRight = buttonTargetX - buttonRightX;
-	float distanceLeft = buttonTargetX - buttonLeftX;
-	float distanceTop = buttonY1 - buttonTopY;
-	float distanceBottom = buttonY3 - buttonBottomY;
-
-public:
-	void ButtonInit();
-	void ButtonDraw();
-	bool isButtonClicked();
+    // Offscreen animation positions
+    float buttonTargetX;
+    float buttonTopY, buttonBottomY, buttonLeftX, buttonRightX;
+    float buttonY1, buttonY2, buttonY3, buttonY4;
 };
 
 void mainMenuInit(void);

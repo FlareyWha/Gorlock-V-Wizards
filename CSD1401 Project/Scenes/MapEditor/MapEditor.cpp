@@ -1,9 +1,13 @@
 #include "MapEditor.h"
 #include "cprocessing.h"
 #include "../../System/Map.h"
+#include "../../Utils/Button.h"
+#include "../../System/SceneManager.h"
 #include <iostream>
 #include <map>
 
+Button back(0, 0, 0, 0, "");
+Button save(0, 0, 0, 0, "");
 Map* mapEditorMap;
 CP_Vector prevMousePos = CP_Vector_Zero();
 CP_Vector currentTilePos = CP_Vector_Zero();
@@ -12,16 +16,29 @@ bool placedTile = false;
 void mapEditorInit(void)
 {
 	mapEditorMap = Map::GetInstance();
+	Button::LoadResources();
 	//map->loadMapTileImages();
 	//mapEditorMap->saveMap("test");
 	mapEditorMap->loadMap("Edit");
 
 	CP_Settings_ImageMode(CP_POSITION_CENTER);
+	back = Button(1520, 50, 150, 40, "Back");
+	save = Button(1520, 100, 150, 40, "Save");
 }
 
 void mapEditorUpdate(void)
 {
 	CP_Graphics_ClearBackground(CP_Color_Create(0, 0, 0, 255));
+	back.Draw();
+	save.Draw();
+
+	if (back.IsClicked())
+	{
+		mapEditorExit();
+		SceneManager::GetInstance()->ChangeScenes(Scenes::MAIN_MENU_SCENE);
+		
+	}
+	
 
 	if (CP_Input_MouseDown(MOUSE_BUTTON_LEFT))
 	{
@@ -41,6 +58,7 @@ void mapEditorUpdate(void)
 void mapEditorExit(void)
 {
 	mapEditorMap->resetMap(true);
+	Button::FreeResources();
 }
 
 void setNewMapTile(void)

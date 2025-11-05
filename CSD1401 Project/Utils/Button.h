@@ -1,21 +1,24 @@
 #pragma once
 #include "cprocessing.h"
-class Button1
-{
-protected:
+
+class Button {
+public:
+    Button(float x, float y, float w, float h, const char* text);
+
+    void Draw() const;
+    bool IsHovered() const;
+    bool IsClicked() const;
+    void SetPosition(float x, float y);
+
+    static void LoadResources();   // Load image/font once
+    static void FreeResources();   // Free image/font once
 
 private:
-	CP_Image Button;
-	float buttonX1 = 0;
-	float buttonY1 = 0;
+    float x, y, w, h;
+    const char* label;
 
-	float buttonWidth = 250;
-	float buttonHeight = 60;
-
-public:
-
-	void Buttondraw();
-	void buttoninit(float x, float y);
-
+    static CP_Image sprite;
+    static CP_Font mainMenuFont;
 };
+
 
