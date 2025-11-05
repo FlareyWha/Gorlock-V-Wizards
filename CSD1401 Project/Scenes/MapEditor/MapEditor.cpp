@@ -27,6 +27,10 @@ void mapEditorUpdate(void)
 	{
 		setNewMapTile();
 	}
+	else if (CP_Input_MouseDown(MOUSE_BUTTON_RIGHT))
+	{
+		deleteMapTile();
+	}
 
 	prevMousePos = CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY());
 	
@@ -59,28 +63,28 @@ void setNewMapTile(void)
 		if (verticalAngle >= 0 && verticalAngle <= 45)
 		{
 			mapEditorMap->setTile(VERTICAL_TOP_ROAD, tempTilePos.x, tempTilePos.y);
-			checkMapTileChanges(tempTilePos);
+			checkMapTileChanges(tempTilePos, true);
 
 			std::cout << "Vertical Angle: " << verticalAngle << std::endl;
 		}
 		else if (verticalAngle >= 135 && verticalAngle <= 180)
 		{
 			mapEditorMap->setTile(VERTICAL_BOTTOM_ROAD, tempTilePos.x, tempTilePos.y);
-			checkMapTileChanges(tempTilePos);
+			checkMapTileChanges(tempTilePos, true);
 
 			std::cout << "Vertical Angle: " << verticalAngle << std::endl;
 		}
 		else if (horizontalAngle >= 0 && horizontalAngle <= 45)
 		{
 			mapEditorMap->setTile(HORIZONTAL_LEFT_ROAD, tempTilePos.x, tempTilePos.y);
-			checkMapTileChanges(tempTilePos);
+			checkMapTileChanges(tempTilePos, true);
 
 			std::cout << "Horizontal Angle: " << horizontalAngle << std::endl;
 		}
 		else if (horizontalAngle >= 135 && horizontalAngle <= 180)
 		{
 			mapEditorMap->setTile(HORIZONTAL_RIGHT_ROAD, tempTilePos.x, tempTilePos.y);
-			checkMapTileChanges(tempTilePos);
+			checkMapTileChanges(tempTilePos, true);
 
 			std::cout << "Horizontal Angle: " << horizontalAngle << std::endl;
 		}
@@ -92,7 +96,18 @@ void setNewMapTile(void)
 	}
 }
 
-void checkMapTileChanges(CP_Vector tilePos)
+void deleteMapTile(void)
+{
+	//Get the tile pos of the tile that the mouse is at
+	CP_Vector tempTilePos = mapEditorMap->getTilePos(CP_Input_GetMouseX(), CP_Input_GetMouseY());
+
+	mapEditorMap->setTile(NONE, tempTilePos.x, tempTilePos.y);
+	checkMapTileChanges(tempTilePos, false);
+
+	placedTile = false;
+}
+
+void checkMapTileChanges(CP_Vector tilePos, bool checkInitial)
 {
 	currentTilePos = tilePos;
 	placedTile = true;
@@ -112,14 +127,12 @@ void checkMapTileChanges(CP_Vector tilePos)
 		setUpdatedMapTile(tempTilePos, relativeSurroundingTiles);
 	}
 
-	setUpdatedMapTile(tilePos, surroundingTiles);
+	if (checkInitial)
+	{
+		setUpdatedMapTile(tilePos, surroundingTiles);
+	}
 
 	std::cout << std::endl;
-
-	//Start out placing dead-end road tile based on dir
-	//Search 8 tiles around newly placed tile and get any placed ones
-	//Repeat the same for the placed ones
-	//Check if any of the placed ones are joined to other sides, if it is then change to the junction tiles
 }
 
 void setUpdatedMapTile(CP_Vector initialTilePos, std::map<TILE_RELATIVE_POSITION, Tile> surroundingTiles)
