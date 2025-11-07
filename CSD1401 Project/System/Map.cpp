@@ -44,6 +44,9 @@ std::string Map::getImageFilePath(TILE_TYPE tileType)
 	case FLOWER:
 		filePath += "Flower.png";
 		break;
+	case MIDDLE_ROAD:
+		filePath += "Middle.png";
+		break;
 	case HORIZONTAL_LEFT_ROAD:
 		filePath += "HorizontalLeft.png";
 		break;
@@ -109,7 +112,7 @@ std::string Map::getImageFilePath(TILE_TYPE tileType)
 *//*______________________________________________________________*/
 void Map::loadMapTileImages(void)
 {
-	tileTypesVector = { GROUND, GRASS, FLOWER, HORIZONTAL_LEFT_ROAD, HORIZONTAL_MIDDLE_ROAD, HORIZONTAL_RIGHT_ROAD, VERTICAL_TOP_ROAD, VERTICAL_MIDDLE_ROAD, VERTICAL_BOTTOM_ROAD, CORNER_TOP_LEFT_ROAD, CORNER_TOP_RIGHT_ROAD, CORNER_BOTTOM_LEFT_ROAD, CORNER_BOTTOM_RIGHT_ROAD, JUNCTION_MIDDLE_TOP_ROAD, JUNCTION_MIDDLE_BOTTOM_ROAD, JUNCTION_MIDDLE_LEFT_ROAD, JUNCTION_MIDDLE_RIGHT_ROAD, JUNCTION_MIDDLE_ROAD, STARTPOINT, ENDPOINT };
+	tileTypesVector = { GROUND, GRASS, FLOWER, MIDDLE_ROAD, HORIZONTAL_LEFT_ROAD, HORIZONTAL_MIDDLE_ROAD, HORIZONTAL_RIGHT_ROAD, VERTICAL_TOP_ROAD, VERTICAL_MIDDLE_ROAD, VERTICAL_BOTTOM_ROAD, CORNER_TOP_LEFT_ROAD, CORNER_TOP_RIGHT_ROAD, CORNER_BOTTOM_LEFT_ROAD, CORNER_BOTTOM_RIGHT_ROAD, JUNCTION_MIDDLE_TOP_ROAD, JUNCTION_MIDDLE_BOTTOM_ROAD, JUNCTION_MIDDLE_LEFT_ROAD, JUNCTION_MIDDLE_RIGHT_ROAD, JUNCTION_MIDDLE_ROAD, STARTPOINT, ENDPOINT };
 
 	for (int i = 0; i < tileTypesVector.size(); i++)
 	{
@@ -222,7 +225,7 @@ std::map<TILE_RELATIVE_POSITION, Tile> Map::getSurroundingTiles(CP_Vector tilePo
 
 bool Map::checkSurroundingTile(CP_Vector tilePos)
 {
-	if (tilePos.x < 0 || tilePos.x >= NUM_COLUMN || tilePos.y < 0 || tilePos.y >= NUM_ROW || map[(int)tilePos.y][(int)tilePos.x].tileType == NONE)
+	if (tilePos.x < 0 || tilePos.x >= NUM_COLUMN || tilePos.y < 0 || tilePos.y >= NUM_ROW || map[(int)tilePos.y][(int)tilePos.x].tileType == GROUND)
 	{
 		return false;
 	}
