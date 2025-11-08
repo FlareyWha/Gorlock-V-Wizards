@@ -8,17 +8,17 @@
 #include "cprocessing.h"
 #include "../Projectiles/BaseProjectile.h"
 
-// Constructor
-BaseTower::BaseTower()
-{
-	//towerSprite = CP_Image_Load("Assets/Towers/fireTower.png");
-	position = CP_Vector_Set(0, 0);
-}
-
-BaseTower::~BaseTower()
-{
-	CP_Image_Free(towerSprite);
-}
+//// Constructor
+//BaseTower::BaseTower()
+//{
+//	//towerSprite = CP_Image_Load("Assets/Towers/fireTower.png");
+//	position = CP_Vector_Set(0, 0);
+//}
+//
+//BaseTower::~BaseTower()
+//{
+//	CP_Image_Free(towerSprite);
+//}
 
 CP_Vector BaseTower::getPosition()
 {
