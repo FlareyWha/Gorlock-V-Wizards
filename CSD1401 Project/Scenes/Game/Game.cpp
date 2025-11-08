@@ -292,9 +292,7 @@ void gameUpdate(void)
 						|| tower->getTowerType() == TOWER_TYPE::LIGHTNINGTOWER
 						|| tower->getTowerType() == TOWER_TYPE::WINDTOWER)
 					{
-						game.currentTower->setImage(tower->getImage());
-						game.currentTower->setPos(tower->getPosition().x, tower->getPosition().y);
-						game.currentTower->setColor(tower->getColor());
+						game.currentTower = tower;
 						game.grabbingTower = true;
 					}
 				}
@@ -430,10 +428,9 @@ void gameUpdate(void)
 				}
 			}
 		}
-		else if (game.grabbingTower)
+		else if (game.grabbingTower && game.currentTower)
 		{
-			int mergeId = 0;
-			int mergeId2 = 0;
+			int targetId = -1;
 
 			CP_Vector tempPos = gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).pos;
 
@@ -441,73 +438,60 @@ void gameUpdate(void)
 			{
 				BaseTower* tower = towerList[i];
 
-				if (tower->getPosition().x == game.currentTower->getPosition().x && tower->getPosition().y == game.currentTower->getPosition().y)
-				{
-					// if its the same tower
-					mergeId = i;
+				if (tower == game.currentTower)
 					continue;
-				}
-				else
+
+				float distance = CP_Vector_Distance(tower->getPosition(), tempPos);
+				if (distance <= 24.f)
 				{
-					float distance = CP_Vector_Distance(tower->getPosition(), tempPos);
-					if (distance == 0)
-					{
-						mergeId2 = i;
-
-						// delete both towers, spawn fused tower where mergeId2 is
-						tempPos = towerList[mergeId2]->getPosition();
-						if (towerList[mergeId]->getTowerType() == towerList[mergeId2]->getTowerType())
-						{
-							switch (towerList[mergeId2]->getTowerType())
-							{
-							case TOWER_TYPE::FIRETOWER:
-								towerList.push_back(new LavaTower(tempPos));
-								break;
-							case TOWER_TYPE::FROSTTOWER:
-								towerList.push_back(new IceTower(tempPos));
-								break;
-							case TOWER_TYPE::STORMTOWER:
-								towerList.push_back(new LightningTower(tempPos));
-								break;
-							case TOWER_TYPE::HURRICANETOWER:
-								towerList.push_back(new WindTower(tempPos));
-								break;
-							}
-
-							BaseTower* toDelete2 = towerList[mergeId2];
-							towerList.erase(towerList.begin() + mergeId2);
-							delete toDelete2;
-
-							BaseTower* toDelete = towerList[mergeId];
-							towerList.erase(towerList.begin() + mergeId);
-							delete toDelete;
-
-							break;
-						}
-					}
+					targetId = i;
+					break;
 				}
 			}
 
+					// delete both towers, spawn fused tower where mergeId2 is
+			if (targetId != -1)
+			{
+				BaseTower* dragged = game.currentTower;
+				BaseTower* target = towerList[targetId];
 
-			//switch (game.currSelect)
-			//{
-			//case FIRETOWER:
-			//	towerList.push_back(new LavaTower(tempPos));
-			//	break;
-			//case ICETOWER:
-			//	towerList.push_back(new IceTower(tempPos));
-			//	break;
-			//case WINDTOWER:
-			//	towerList.push_back(new WindTower(tempPos));
-			//	break;
-			//case LIGHTNINGTOWER:
-			//	towerList.push_back(new LightningTower(tempPos));
-			//	break;
-			//}
+				if (dragged->getTowerType() == target->getTowerType())
+				{
+					CP_Vector mergedPos = target->getPosition();
+					TOWER_TYPE type = target->getTowerType();
 
+					switch (type)
+					{
+					case TOWER_TYPE::FIRETOWER:
+						towerList.push_back(new LavaTower(mergedPos));
+						break;
+					case TOWER_TYPE::ICETOWER:
+						towerList.push_back(new IceTower(mergedPos)); // REPLACE WITH FROSTTOWER WHEN TOWER CLASS IS MADE
+						break;
+					case TOWER_TYPE::LIGHTNINGTOWER:
+						towerList.push_back(new LightningTower(mergedPos)); // REPLACE WITH STORMTOWER WHEN TOWER CLASS IS MADE
+						break;
+					case TOWER_TYPE::WINDTOWER:
+						towerList.push_back(new WindTower(mergedPos)); // REPLACE WITH HURRICANETOWER WHEN TOWER CLASS IS MADE
+						break;
+					}
+
+					// Erase both current and target towers zzzzzzzz
+					for (int i = towerList.size() - 1; i >= 0; --i)
+					{
+						if (towerList[i] == dragged || towerList[i] == target)
+						{
+							delete towerList[i];
+							towerList.erase(towerList.begin() + i);
+						}
+					}
+
+
+				}
+			}
+			game.grabbingTower = false;
+			//game.currentTower->setImage(NULL);
 		}
-		game.grabbingTower = false;
-		game.currentTower->setImage(NULL);
 	}
 
 	game.drawHeart(CP_System_GetWindowWidth() / 2.0f, 100.0f);

@@ -77,11 +77,9 @@ public:
 	Tower lightningTowerUI;
 	Tower levelUpUI;
 
-	Tower ghostTower;
 	bool grabbingTower = false;
-	CP_Vector ghostPosition;
 
-	BaseTower* currentTower;
+	BaseTower* currentTower = nullptr;
 
 	Tower uiElements[5];
 
