@@ -357,6 +357,7 @@ void gameUpdate(void)
 							}
 						}
 						game.currSelect = NONE_TOWER;
+						SoundManager::GetInstance()->playSFX(TOWER_PLACE_SFX);
 					}
 					else
 					{
@@ -398,6 +399,7 @@ void gameUpdate(void)
 								}
 							}
 							game.currSelect = NONE_TOWER;
+							SoundManager::GetInstance()->playSFX(TOWER_PLACE_SFX);
 						}
 						else
 						{
@@ -421,6 +423,8 @@ void gameUpdate(void)
 								towerList.push_back(new WindTower(tempPos)); // REPLACE WITH HURRICANETOWER WHEN TOWER CLASS IS MADE
 								break;
 							}
+
+							SoundManager::GetInstance()->playSFX(TOWER_MERGE_SFX);
 						}
 					}
 				}
@@ -559,6 +563,19 @@ void gameUpdate(void)
 		{
 			game.gainMoneys(enemy->GetReward());
 			enemiesList.erase(enemiesList.begin() + i--);
+
+			switch (enemy->GetEnemyType())
+			{
+			case EnemyType::BASIC:
+				SoundManager::GetInstance()->playSFX(ENEMY_BASIC_DEATH_SFX);
+				break;
+			case EnemyType::SPEEDSTER:
+				SoundManager::GetInstance()->playSFX(ENEMY_SPEEDSTER_DEATH_SFX);
+				break;
+			case EnemyType::TANK:
+				SoundManager::GetInstance()->playSFX(ENEMY_TANK_DEATH_SFX);
+				break;
+			}
 			delete enemy;
 		}
 		else
