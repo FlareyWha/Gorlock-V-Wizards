@@ -80,6 +80,9 @@ std::string SoundManager::getSFXFilePath(SFX_TYPE sfxType)
 	case ENEMY_TANK_DEATH_SFX:
 		filePath += "tank_death.wav";
 		break;
+	case TOWER_WIND_ATTACK_SFX:
+		filePath += "wind_attack.wav";
+		break;
 	default:
 		break;
 	}
@@ -124,7 +127,8 @@ std::string SoundManager::getBGMFilePath(BGM_TYPE bgmType)
 *//*______________________________________________________________*/
 void SoundManager::loadAllSounds(void)
 {
-	sfxTypeVector = { TEST_SFX, TOWER_PLACE_SFX, TOWER_MERGE_SFX, ENEMY_BASIC_DEATH_SFX, ENEMY_SPEEDSTER_DEATH_SFX, ENEMY_TANK_DEATH_SFX };
+	sfxTypeVector = { TEST_SFX, TOWER_PLACE_SFX, TOWER_MERGE_SFX, ENEMY_BASIC_DEATH_SFX, ENEMY_SPEEDSTER_DEATH_SFX, ENEMY_TANK_DEATH_SFX,
+					TOWER_WIND_ATTACK_SFX };
 	bgmTypeVector = { TEST_BGM, MAIN_MENU_BGM, GAME_00_BGM, GAME_01_BGM };
 
 	for (int i = 0; i < sfxTypeVector.size(); i++)

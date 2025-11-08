@@ -22,5 +22,6 @@ BaseProjectile* WindTower::Attack(BaseEnemy* enemy)
 {
 	CP_Vector direction = CP_Vector_Normalize(CP_Vector_Set(enemy->GetLocation().x - getPosition().x, enemy->GetLocation().y - getPosition().y));
 	setCooldownTime(getCooldown());
+	SoundManager::GetInstance()->playSFX(TOWER_WIND_ATTACK_SFX);
 	return new WindProjectile(getPosition(), direction, this->getDamage(),this->getSpeed(), this->getColor());
 }

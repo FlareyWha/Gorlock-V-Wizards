@@ -219,8 +219,8 @@ void gameInit(void)
 	game.currentTower = new BaseTower();
 	//CP_Font_DrawText("YIBBBEEE", 10, 10);
 
-	SoundManager::GetInstance()->playBGM(GAME_00_BGM);
-	SoundManager::GetInstance()->queueNextBGM(GAME_01_BGM);
+	//SoundManager::GetInstance()->playBGM(GAME_00_BGM);
+	//SoundManager::GetInstance()->queueNextBGM(GAME_01_BGM);
 }
 
 void gameUpdate(void)

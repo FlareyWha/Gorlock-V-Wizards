@@ -10,6 +10,7 @@
 #include "cprocessing.h"
 #include "../Enemies/BaseEnemy.h"
 #include "../../Projectiles/BaseProjectile.h"
+#include "../../System/SoundManager.h"
 enum class ATTACK_TYPE
 {
 	PROJECTILE = 0,
