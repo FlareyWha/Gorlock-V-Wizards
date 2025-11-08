@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Enemies\BossEnemy.cpp" />
+    <ClCompile Include="Projectiles\FireProjectile.cpp" />
     <ClCompile Include="Projectiles\IceProjectile.cpp" />
     <ClCompile Include="Towers\LavaTower.cpp" />
     <ClCompile Include="Towers\LightningTower.cpp" />
@@ -43,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enemies\BossEnemy.h" />
+    <ClInclude Include="Projectiles\FireProjectile.h" />
     <ClInclude Include="Projectiles\IceProjectile.h" />
     <ClInclude Include="Towers\LavaTower.h" />
     <ClInclude Include="Towers\LightningTower.h" />
