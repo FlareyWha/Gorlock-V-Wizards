@@ -19,7 +19,6 @@ CP_Image logo;
 
 CP_Font mainFont;
 SceneManager* sceneManager;
-SoundManager* soundManager;
 
 void game_init(void)
 {
@@ -32,14 +31,13 @@ void game_init(void)
 
 	sceneManager = SceneManager::GetInstance();
 	settingsManager = SettingsManager::GetInstance();
-	soundManager = SoundManager::GetInstance();
 	
 	// Initialize Main Menu
 	//menu.StartButtonInit();
 	sceneManager->ChangeScenes(Scenes::MAIN_MENU_SCENE);
 	//map = Map::GetInstance();
 
-	soundManager->playBGM(TEST_BGM);
+	SoundManager::GetInstance()->playBGM(MAIN_MENU_BGM);
 }
 
 void game_update(void)
@@ -89,7 +87,7 @@ void game_update(void)
 	*/
 	if (CP_Input_KeyTriggered(KEY_5))
 	{
-		soundManager->playSFX(TEST_SFX);
+		SoundManager::GetInstance()->playSFX(TEST_SFX);
 	}
 }
 

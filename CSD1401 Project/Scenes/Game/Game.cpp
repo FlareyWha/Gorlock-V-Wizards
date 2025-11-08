@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "../../System/Map.h"
+#include "../../System/SoundManager.h"
 
 #include "../../Enemies/BasicEnemy.h"
 #include "../../Enemies/TankEnemy.h"
@@ -217,6 +218,9 @@ void gameInit(void)
 
 	game.currentTower = new BaseTower();
 	//CP_Font_DrawText("YIBBBEEE", 10, 10);
+
+	SoundManager::GetInstance()->playBGM(GAME_00_BGM);
+	SoundManager::GetInstance()->queueNextBGM(GAME_01_BGM);
 }
 
 void gameUpdate(void)
@@ -225,6 +229,7 @@ void gameUpdate(void)
 	CP_Graphics_ClearBackground(CP_Color_Create(132, 198, 105, 255));
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 
+	SoundManager::GetInstance()->Update();
 	gameMap->renderMap();
 
 	for (int i = 0; i < (sizeof(game.uiElements) / sizeof(game.uiElements[0])); i++)
@@ -608,6 +613,7 @@ void gameExit(void)
 	}
 
 	delete game.waveManager;
+	SoundManager::GetInstance()->stopBGM();
 }
 
 void drawRect(float posX, float posY, float rectWidth, float rectHeight, float angle, float cornerRadius, CP_Color rectColor)

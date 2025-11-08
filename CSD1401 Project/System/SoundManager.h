@@ -23,7 +23,10 @@ enum SFX_TYPE
 enum BGM_TYPE
 {
 	NONE_BGM = 0,
-	TEST_BGM = 1,
+	TEST_BGM,
+	MAIN_MENU_BGM,
+	GAME_00_BGM,
+	GAME_01_BGM,
 	TOTAL_BGM,
 };
 
@@ -47,12 +50,19 @@ private:
 	std::string getBGMFilePath(BGM_TYPE bgmType);
 	void loadAllSounds(void);
 
+	float timer;
+	float bgm_00_length, bgm_01_length;
+	BGM_TYPE currentBgm, nextBgmInQueue = NONE_BGM;
+
 protected:
 	SoundManager();
 
 public:
+	void Update(void);
+
 	void playSFX(SFX_TYPE sfxType);
 	void playBGM(BGM_TYPE bgmType);
+	void queueNextBGM(BGM_TYPE bgmType);
 
 	void stopBGM(void);
 

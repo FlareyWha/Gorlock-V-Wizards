@@ -19,6 +19,36 @@ SoundManager::SoundManager()
 {
 	settingsManager = SettingsManager::GetInstance();
 	loadAllSounds();
+	timer = 0.f;
+	bgm_00_length = 24.f;
+	bgm_00_length = 22.f;
+}
+
+void SoundManager::Update(void)
+{
+	timer += CP_System_GetDt();
+
+	if (nextBgmInQueue == NONE_BGM) return;
+	
+	switch (currentBgm)
+	{
+	case GAME_00_BGM:
+		if (timer >= bgm_00_length)
+		{
+			stopBGM();
+			playBGM(nextBgmInQueue);
+			nextBgmInQueue = NONE_BGM;
+		}
+		break;
+	case GAME_01_BGM:
+		if (timer >= bgm_01_length)
+		{
+			stopBGM();
+			playBGM(nextBgmInQueue);
+			nextBgmInQueue = NONE_BGM;
+		}
+		break;
+	}
 }
 
 /*!
@@ -57,7 +87,15 @@ std::string SoundManager::getBGMFilePath(BGM_TYPE bgmType)
 	case TEST_BGM:
 		filePath += "mambo.mp3";
 		break;
-
+	case MAIN_MENU_BGM:
+		filePath += "music_main.wav";
+		break;
+	case GAME_00_BGM:
+		filePath += "music_00.wav";
+		break;
+	case GAME_01_BGM:
+		filePath += "music_01.wav";
+		break;
 	default:
 		break;
 	}
@@ -73,7 +111,7 @@ std::string SoundManager::getBGMFilePath(BGM_TYPE bgmType)
 void SoundManager::loadAllSounds(void)
 {
 	sfxTypeVector = { TEST_SFX };
-	bgmTypeVector = { TEST_BGM };
+	bgmTypeVector = { TEST_BGM, MAIN_MENU_BGM, GAME_00_BGM, GAME_01_BGM };
 
 	for (int i = 0; i < sfxTypeVector.size(); i++)
 	{
@@ -105,7 +143,14 @@ void SoundManager::playSFX(SFX_TYPE sfxType)
 *//*______________________________________________________________*/
 void SoundManager::playBGM(BGM_TYPE bgmType)
 {
+	timer = 0.f;
+	currentBgm = bgmType;
 	CP_Sound_PlayAdvanced(bgmMap[bgmType], settingsManager->getBGMVolumeLerp(), 1.0f, TRUE, CP_SOUND_GROUP_0);
+}
+
+void SoundManager::queueNextBGM(BGM_TYPE bgmType)
+{
+	nextBgmInQueue = bgmType;
 }
 
 /*!
