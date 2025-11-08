@@ -37,8 +37,8 @@ protected:
 public:
 	CP_Image towerSprite;
 
-	BaseTower();
-	~BaseTower();
+	//BaseTower();
+	//~BaseTower();
 
 	// Getters
 	CP_Vector getPosition();

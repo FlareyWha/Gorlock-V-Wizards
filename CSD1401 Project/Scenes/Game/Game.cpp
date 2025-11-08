@@ -242,6 +242,7 @@ void gameUpdate(void)
 			game.uiElements[i].opacity = 255;
 		CP_Image_Draw(game.uiElements[i].image, game.uiElements[i].pos.x, game.uiElements[i].pos.y, game.uiElements[i].size, game.uiElements[i].size, game.uiElements[i].opacity);
 	}
+	// MOUSE CLICKED
 	if (CP_Input_MouseTriggered(MOUSE_BUTTON_1))
 	{
 		for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]); i++)
@@ -254,128 +255,8 @@ void gameUpdate(void)
 
 		}
 	}
-	else if (CP_Input_MouseReleased(MOUSE_BUTTON_1) && game.currSelect != NONE_TOWER && game.currSelect!= LEVELUP)
-	{
-		for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]); i++)
-		{
-			game.uiElements[i].opacity = 255;
-		}
-		if ((CP_Input_GetMouseX() >= 0 && CP_Input_GetMouseX() <= gameMap->getTileSize() * mapSize.x)
-			&& (CP_Input_GetMouseY() >= 0 && CP_Input_GetMouseY() <= gameMap->getTileSize() * mapSize.y))
-		{
-			if (gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).tileType >= TILE_TYPE::GROUND
-				&& gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).tileType <= TILE_TYPE::GRASS)
-			{
-				CP_Vector tempPos = gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).pos;
-				bool notOverlapping = true;
-				printf("%d", game.currSelect);
-				if (towerList.empty())
-				{
-					switch (game.currSelect)
-					{
-					case FIRETOWER:
-					{
-						towerList.push_back(new FireTower(tempPos));
-						break;
-					}
-					case WINDTOWER:
-					{
-						towerList.push_back(new WindTower(tempPos));
-						break;
-					}
-					case ICETOWER:
-					{
-						towerList.push_back(new IceTower(tempPos));
-						break;
-					}
-					case LIGHTNINGTOWER:
-					{
-						towerList.push_back(new LightningTower(tempPos));
-						break;
-					}
-					}
-					for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]); i++)
-					{
-						if (game.currSelect == game.uiElements[i].selection)
-						{
-							game.loseMoneys(game.uiElements[i].towerCost);
-							break;
-						}
-					}
-					game.currSelect = NONE_TOWER;
-					SoundManager::GetInstance()->playSFX(TOWER_PLACE_SFX);
-				}
-				else
-				{
-					int mergeId;
-					for (int i = 0; i < towerList.size(); ++i)
-					{
-						BaseTower* tower = towerList[i];
-						float distance = CP_Vector_Distance(tower->getPosition(), tempPos);
-						if (distance == 0)
-						{
-							notOverlapping = false;
-							mergeId = i;
-						}
-					}
-
-					if (notOverlapping)
-					{
-						switch (game.currSelect)
-						{
-						case FIRETOWER:
-							towerList.push_back(new FireTower(tempPos));
-							break;
-						case ICETOWER:
-							towerList.push_back(new IceTower(tempPos));
-							break;
-						case WINDTOWER:
-							towerList.push_back(new WindTower(tempPos));
-							break;
-						case LIGHTNINGTOWER:
-							towerList.push_back(new LightningTower(tempPos));
-							break;
-						}
-						for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]); i++)
-						{
-							if (game.currSelect == game.uiElements[i].selection)
-							{
-								game.loseMoneys(game.uiElements[i].towerCost);
-								break;
-							}
-						}
-						game.currSelect = NONE_TOWER;
-						SoundManager::GetInstance()->playSFX(TOWER_PLACE_SFX);
-					}
-					else
-					{
-						// Merging
-						BaseTower* toDelete = towerList[mergeId];
-						towerList.erase(towerList.begin() + mergeId);
-						delete toDelete;
-
-						switch (game.currSelect)
-						{
-						case FIRETOWER:
-							towerList.push_back(new LavaTower(tempPos));
-							break;
-						case ICETOWER:
-							towerList.push_back(new IceTower(tempPos));
-							break;
-						case WINDTOWER:
-							towerList.push_back(new WindTower(tempPos));
-							break;
-						case LIGHTNINGTOWER:
-							towerList.push_back(new LightningTower(tempPos));
-							break;
-						}
-						SoundManager::GetInstance()->playSFX(TOWER_MERGE_SFX);
-					}
-				}
-
-			}
-		}
-	}
+	
+	// MOUSE DOWN
 	if (CP_Input_MouseDown(MOUSE_BUTTON_1))
 	{
 		switch (game.currSelect)
@@ -395,31 +276,159 @@ void gameUpdate(void)
 		default:
 			break;
 		}
+
+		// render "ghost" tower for dragging existing towers
+		if ((CP_Input_GetMouseX() >= 0 && CP_Input_GetMouseX() <= gameMap->getTileSize() * mapSize.x)
+			&& (CP_Input_GetMouseY() >= 0 && CP_Input_GetMouseY() <= gameMap->getTileSize() * mapSize.y))
+		{
+			// unholy fuck ahh code that should not exist
+			for (BaseTower* tower : towerList)
+			{
+				float dist = CP_Vector_Distance(tower->getPosition(), CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY()));
+				if (dist <= 24.f && !game.grabbingTower)
+				{
+					game.currentTower->setImage(tower->getImage());
+					game.currentTower->setPos(tower->getPosition().x, tower->getPosition().y);
+					game.currentTower->setColor(tower->getColor());
+					game.grabbingTower = true;
+				}
+			}
+
+			if (game.currentTower->getImage() != NULL && game.grabbingTower)
+				CP_Image_Draw(game.currentTower->getImage(), CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
+		}
 	}
+	
+	// MOUSE RELEASED
+	if (CP_Input_MouseReleased(MOUSE_BUTTON_1))
+	{
+		if (game.currSelect != NONE_TOWER && game.currSelect != LEVELUP)
+		{
+			for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]); i++)
+			{
+				game.uiElements[i].opacity = 255;
+			}
+			if ((CP_Input_GetMouseX() >= 0 && CP_Input_GetMouseX() <= gameMap->getTileSize() * mapSize.x)
+				&& (CP_Input_GetMouseY() >= 0 && CP_Input_GetMouseY() <= gameMap->getTileSize() * mapSize.y))
+			{
+				if (gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).tileType >= TILE_TYPE::GROUND
+					&& gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).tileType <= TILE_TYPE::GRASS)
+				{
+					CP_Vector tempPos = gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).pos;
+					bool notOverlapping = true;
+					printf("%d", game.currSelect);
+					if (towerList.empty())
+					{
+						switch (game.currSelect)
+						{
+						case FIRETOWER:
+						{
+							towerList.push_back(new FireTower(tempPos));
+							break;
+						}
+						case WINDTOWER:
+						{
+							towerList.push_back(new WindTower(tempPos));
+							break;
+						}
+						case ICETOWER:
+						{
+							towerList.push_back(new IceTower(tempPos));
+							break;
+						}
+						case LIGHTNINGTOWER:
+						{
+							towerList.push_back(new LightningTower(tempPos));
+							break;
+						}
+						}
+						for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]); i++)
+						{
+							if (game.currSelect == game.uiElements[i].selection)
+							{
+								game.loseMoneys(game.uiElements[i].towerCost);
+								break;
+							}
+						}
+						game.currSelect = NONE_TOWER;
+						SoundManager::GetInstance()->playSFX(TOWER_PLACE_SFX);
+					}
+					else
+					{
+						int mergeId;
+						for (int i = 0; i < towerList.size(); ++i)
+						{
+							BaseTower* tower = towerList[i];
+							float distance = CP_Vector_Distance(tower->getPosition(), tempPos);
+							if (distance == 0)
+							{
+								notOverlapping = false;
+								mergeId = i;
+							}
+						}
 
+						if (notOverlapping)
+						{
+							switch (game.currSelect)
+							{
+							case FIRETOWER:
+								towerList.push_back(new FireTower(tempPos));
+								break;
+							case ICETOWER:
+								towerList.push_back(new IceTower(tempPos));
+								break;
+							case WINDTOWER:
+								towerList.push_back(new WindTower(tempPos));
+								break;
+							case LIGHTNINGTOWER:
+								towerList.push_back(new LightningTower(tempPos));
+								break;
+							}
+							for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]); i++)
+							{
+								if (game.currSelect == game.uiElements[i].selection)
+								{
+									game.loseMoneys(game.uiElements[i].towerCost);
+									break;
+								}
+							}
+							game.currSelect = NONE_TOWER;
+							SoundManager::GetInstance()->playSFX(TOWER_PLACE_SFX);
+						}
+						else
+						{
+							// Merging
+							BaseTower* toDelete = towerList[mergeId];
+							towerList.erase(towerList.begin() + mergeId);
+							delete toDelete;
 
-	//	if ((CP_Input_GetMouseX() >= 0 && CP_Input_GetMouseX() <= gameMap->getTileSize() * mapSize.x)
-	//		&& (CP_Input_GetMouseY() >= 0 && CP_Input_GetMouseY() <= gameMap->getTileSize() * mapSize.y))
-	//	{
-	//		// unholy fuck ahh code that should not exist
-	//		for (BaseTower* tower : towerList)
-	//		{
-	//			float dist = CP_Vector_Distance(tower->getPosition(), CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY()));
-	//			if (dist <= 24.f && !game.grabbingTower)
-	//			{
-	//				game.currentTower->setImage(tower->getImage());
-	//				game.currentTower->setPos(tower->getPosition().x, tower->getPosition().y);
-	//				game.grabbingTower = true;
-	//				//game.ghostTower.image = tower->getImage();
-	//				//game.ghostPosition = tower->getPosition();
-	//			}
+							switch (game.currSelect)
+							{
+							case FIRETOWER:
+								towerList.push_back(new LavaTower(tempPos));
+								break;
+							case ICETOWER:
+								towerList.push_back(new IceTower(tempPos));
+								break;
+							case WINDTOWER:
+								towerList.push_back(new WindTower(tempPos));
+								break;
+							case LIGHTNINGTOWER:
+								towerList.push_back(new LightningTower(tempPos));
+								break;
+							}
 
-	//		}
+							SoundManager::GetInstance()->playSFX(TOWER_MERGE_SFX);
+						}
+					}
 
-	//		if (game.currentTower->getImage() != NULL && game.grabbingTower)
-	//			CP_Image_Draw(game.currentTower->getImage(), CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
-	//	}
-	//}
+				}
+			}
+		}
+
+		game.grabbingTower = false;
+		game.currentTower->setImage(NULL);
+	}
 
 	//if (CP_Input_MouseReleased(MOUSE_BUTTON_1))
 	//{
