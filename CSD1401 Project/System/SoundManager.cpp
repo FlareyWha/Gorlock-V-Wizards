@@ -65,7 +65,21 @@ std::string SoundManager::getSFXFilePath(SFX_TYPE sfxType)
 	case TEST_SFX:
 		filePath += "duck-toy-sound.mp3";
 		break;
-
+	case TOWER_PLACE_SFX:
+		filePath += "tower_place.wav";
+		break;
+	case TOWER_MERGE_SFX:
+		filePath += "merge.wav";
+		break;
+	case ENEMY_BASIC_DEATH_SFX:
+		filePath += "basic_death.wav";
+		break;
+	case ENEMY_SPEEDSTER_DEATH_SFX:
+		filePath += "plane_death.wav";
+		break;
+	case ENEMY_TANK_DEATH_SFX:
+		filePath += "tank_death.wav";
+		break;
 	default:
 		break;
 	}
@@ -110,7 +124,7 @@ std::string SoundManager::getBGMFilePath(BGM_TYPE bgmType)
 *//*______________________________________________________________*/
 void SoundManager::loadAllSounds(void)
 {
-	sfxTypeVector = { TEST_SFX };
+	sfxTypeVector = { TEST_SFX, TOWER_PLACE_SFX, TOWER_MERGE_SFX, ENEMY_BASIC_DEATH_SFX, ENEMY_SPEEDSTER_DEATH_SFX, ENEMY_TANK_DEATH_SFX };
 	bgmTypeVector = { TEST_BGM, MAIN_MENU_BGM, GAME_00_BGM, GAME_01_BGM };
 
 	for (int i = 0; i < sfxTypeVector.size(); i++)
