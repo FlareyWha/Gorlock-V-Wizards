@@ -10,6 +10,7 @@ WindTower::WindTower(CP_Vector position)
 	setPos(position.x, position.y);
 	towerSprite = CP_Image_Load("Assets/Towers/windTower.png");
 	setCooldown(0.25f);
+	setTowerType(TOWER_TYPE::WINDTOWER);
 }
 
 WindTower::~WindTower()

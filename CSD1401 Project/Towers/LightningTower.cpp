@@ -3,6 +3,7 @@ LightningTower::LightningTower(CP_Vector position)
 {
 	setPos(position.x, position.y);
 	towerSprite = CP_Image_Load("Assets/Towers/lightningTower.png");
+	setTowerType(TOWER_TYPE::LIGHTNINGTOWER);
 }
 
 LightningTower::~LightningTower()

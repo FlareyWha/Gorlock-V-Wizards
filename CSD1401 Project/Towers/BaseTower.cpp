@@ -38,17 +38,9 @@ ATTACK_TYPE BaseTower::getAttackType()
 	return attack;
 }
 
-/*!
-@brief      Gets the name of the tower on the grid
-
-This function returns the name of the tower
-
-@param      void
-@return     string
-*//*______________________________________________________________*/
-std::string BaseTower::getName()
+TOWER_TYPE BaseTower::getTowerType()
 {
-	return towerName;
+	return towerType;
 }
 
 /*!
@@ -108,6 +100,11 @@ This function sets the tower's sprite to the CP_Image in the function argument
 void BaseTower::setImage(CP_Image inputImage)
 {
 	towerSprite = inputImage;
+}
+
+void BaseTower::setTowerType(TOWER_TYPE type)
+{
+	towerType = type;
 }
 
 void BaseTower::setCooldownTime(float time)

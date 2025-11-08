@@ -287,10 +287,16 @@ void gameUpdate(void)
 				float dist = CP_Vector_Distance(tower->getPosition(), CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY()));
 				if (dist <= 24.f && !game.grabbingTower)
 				{
-					game.currentTower->setImage(tower->getImage());
-					game.currentTower->setPos(tower->getPosition().x, tower->getPosition().y);
-					game.currentTower->setColor(tower->getColor());
-					game.grabbingTower = true;
+					if (tower->getTowerType() == TOWER_TYPE::FIRETOWER
+						|| tower->getTowerType() == TOWER_TYPE::ICETOWER
+						|| tower->getTowerType() == TOWER_TYPE::LIGHTNINGTOWER
+						|| tower->getTowerType() == TOWER_TYPE::WINDTOWER)
+					{
+						game.currentTower->setImage(tower->getImage());
+						game.currentTower->setPos(tower->getPosition().x, tower->getPosition().y);
+						game.currentTower->setColor(tower->getColor());
+						game.grabbingTower = true;
+					}
 				}
 			}
 
@@ -406,66 +412,99 @@ void gameUpdate(void)
 								towerList.push_back(new LavaTower(tempPos));
 								break;
 							case ICETOWER:
-								towerList.push_back(new IceTower(tempPos));
-								break;
-							case WINDTOWER:
-								towerList.push_back(new WindTower(tempPos));
+								towerList.push_back(new IceTower(tempPos)); // REPLACE WITH FROSTTOWER WHEN TOWER CLASS IS MADE
 								break;
 							case LIGHTNINGTOWER:
-								towerList.push_back(new LightningTower(tempPos));
+								towerList.push_back(new LightningTower(tempPos)); // REPLACE WITH STORMTOWER WHEN TOWER CLASS IS MADE
+								break;
+							case WINDTOWER:
+								towerList.push_back(new WindTower(tempPos)); // REPLACE WITH HURRICANETOWER WHEN TOWER CLASS IS MADE
 								break;
 							}
-
-
 						}
 					}
-
 				}
 			}
 		}
+		else if (game.grabbingTower)
+		{
+			int mergeId = 0;
+			int mergeId2 = 0;
 
+			CP_Vector tempPos = gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).pos;
+
+			for (int i = 0; i < towerList.size(); i++)
+			{
+				BaseTower* tower = towerList[i];
+
+				if (tower->getPosition().x == game.currentTower->getPosition().x && tower->getPosition().y == game.currentTower->getPosition().y)
+				{
+					// if its the same tower
+					mergeId = i;
+					continue;
+				}
+				else
+				{
+					float distance = CP_Vector_Distance(tower->getPosition(), tempPos);
+					if (distance == 0)
+					{
+						mergeId2 = i;
+
+						// delete both towers, spawn fused tower where mergeId2 is
+						tempPos = towerList[mergeId2]->getPosition();
+						if (towerList[mergeId]->getTowerType() == towerList[mergeId2]->getTowerType())
+						{
+							switch (towerList[mergeId2]->getTowerType())
+							{
+							case TOWER_TYPE::FIRETOWER:
+								towerList.push_back(new LavaTower(tempPos));
+								break;
+							case TOWER_TYPE::FROSTTOWER:
+								towerList.push_back(new IceTower(tempPos));
+								break;
+							case TOWER_TYPE::STORMTOWER:
+								towerList.push_back(new LightningTower(tempPos));
+								break;
+							case TOWER_TYPE::HURRICANETOWER:
+								towerList.push_back(new WindTower(tempPos));
+								break;
+							}
+
+							BaseTower* toDelete2 = towerList[mergeId2];
+							towerList.erase(towerList.begin() + mergeId2);
+							delete toDelete2;
+
+							BaseTower* toDelete = towerList[mergeId];
+							towerList.erase(towerList.begin() + mergeId);
+							delete toDelete;
+
+							break;
+						}
+					}
+				}
+			}
+
+
+			//switch (game.currSelect)
+			//{
+			//case FIRETOWER:
+			//	towerList.push_back(new LavaTower(tempPos));
+			//	break;
+			//case ICETOWER:
+			//	towerList.push_back(new IceTower(tempPos));
+			//	break;
+			//case WINDTOWER:
+			//	towerList.push_back(new WindTower(tempPos));
+			//	break;
+			//case LIGHTNINGTOWER:
+			//	towerList.push_back(new LightningTower(tempPos));
+			//	break;
+			//}
+
+		}
 		game.grabbingTower = false;
 		game.currentTower->setImage(NULL);
 	}
-
-	//if (CP_Input_MouseReleased(MOUSE_BUTTON_1))
-	//{
-	//	for (int i = 0; i < towerList.size(); i++)
-	//	{
-	//		BaseTower* tower = towerList[i];
-
-	//		if (tower->getPosition().x == game.currentTower->getPosition().x && tower->getPosition().y == game.currentTower->getPosition().y)
-	//		{
-	//			// if its the same tower
-	//			continue;
-	//		}
-
-	//		if (tower->getPosition().x == gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).pos.x &&
-	//			tower->getPosition().y == gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).pos.y && game.grabbingTower)
-	//		{
-	//			if (game.currentTower->getColor().r != tower->getColor().r)
-	//			{
-	//				break;
-	//			}
-	//			towerList.push_back(new LavaTower(tower->getPosition()));
-
-	//			towerList.erase(towerList.begin() + i);
-	//			delete tower;
-
-	//			for (int j = 0; j < towerList.size(); j++)
-	//			{
-	//				BaseTower* tower2 = towerList[j];
-	//				if (tower2 == game.currentTower)
-	//				{
-	//					towerList.erase(towerList.begin() + j);
-	//					delete tower2;
-	//				}
-	//			}
-	//		}
-	//	}
-	//	game.grabbingTower = false;
-	//}
-
 
 	game.drawHeart(CP_System_GetWindowWidth() / 2.0f, 100.0f);
 	game.drawMoneys(CP_System_GetWindowWidth() / 2.0f, 300.0f);

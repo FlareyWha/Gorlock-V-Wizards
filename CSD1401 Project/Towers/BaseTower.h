@@ -19,10 +19,26 @@ enum class ATTACK_TYPE
 	NONE
 };
 
+enum class TOWER_TYPE
+{
+	FIRETOWER = 0,
+	ICETOWER,
+	LIGHTNINGTOWER,
+	WINDTOWER,
+
+	LAVATOWER,
+	FROSTTOWER,
+	STORMTOWER,
+	HURRICANETOWER,
+
+	BASETOWER
+
+};
+
 class BaseTower
 {
 protected:
-	std::string towerName = "baseTower";
+	TOWER_TYPE towerType = TOWER_TYPE::BASETOWER;
 	CP_Vector position;
 	ATTACK_TYPE attack = ATTACK_TYPE::NONE;
 	float damage = 0;
@@ -43,7 +59,7 @@ public:
 	// Getters
 	CP_Vector getPosition();
 	ATTACK_TYPE getAttackType();
-	std::string getName();
+	TOWER_TYPE getTowerType();
 	CP_Image getImage();
 	float getCooldownTime();
 	float getCooldown();
@@ -53,6 +69,7 @@ public:
 	// Setters
 	void setPos(int xPosition, int yPosition);
 	void setImage(CP_Image inputImage);
+	void setTowerType(TOWER_TYPE type);
 	void setCooldownTime(float time);
 	void setCooldown(float time);
 

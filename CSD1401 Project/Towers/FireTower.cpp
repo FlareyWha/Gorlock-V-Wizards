@@ -7,6 +7,7 @@ FireTower::FireTower(CP_Vector position)
 	setDamage(1.0f);                             
 	setSpeed(400.f);
 	setCooldown(0.5f);
+	setTowerType(TOWER_TYPE::FIRETOWER);
 }
 
 FireTower::~FireTower()
