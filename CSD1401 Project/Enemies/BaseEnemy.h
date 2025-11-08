@@ -25,6 +25,15 @@ protected:
 	float slowTimer = 0.f;
 	float maxSlowTimer = 3.f;
 	bool slowed = false;
+
+	float dotTimer = 0.f;
+	float maxDOTTimer = 1.f;
+	float burnTimer = 0.f;
+	float maxBurnTimer = 5.f;
+	bool burned = false;
+	bool isBurning = false;
+	float burnDamage = 0.25f;
+	int burnStacks = 0;
 public:
 	float GetHealth(void);
 	void SetHealth(float health);
@@ -33,6 +42,9 @@ public:
 
 	bool IsSlowed();
 	void Slow(bool slow);
+
+	bool IsBurned();
+	void Burn(bool burned);
 
 	int GetReward(void);
 	void SetReward(int rewardAmt);
@@ -47,12 +59,15 @@ public:
 	void SetSprite(CP_Image sprite);
 	CP_Image GetSpriteLeft(void);
 	void SetSpriteLeft(CP_Image sprite);
+
 	CP_Vector GetLocation(void);
 	void SetLocation(float x, float y);
 	void SetLocation(CP_Vector location);
+
 	CP_Vector GetDirectionVector(void);
 	void SetDirectionVector(float x, float y);
 	void SetDirectionVector(CP_Vector direction);
+
 	EnemyType GetEnemyType(void);
 	void SetEnemyType(EnemyType type);
 

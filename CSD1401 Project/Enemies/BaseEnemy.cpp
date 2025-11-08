@@ -32,6 +32,16 @@ void BaseEnemy::Slow(bool slow)
     this->slowed = slow;
 }
 
+bool BaseEnemy::IsBurned()
+{
+    return burned;
+}
+
+void BaseEnemy::Burn(bool burned)
+{
+    this->burned = burned;
+}
+
 int BaseEnemy::GetReward(void)
 {
     return reward;
@@ -129,7 +139,11 @@ void BaseEnemy::SetEnemyType(EnemyType type)
 
 void BaseEnemy::Move(Map* map)
 {
+    printf("Health: %f\n", health);
+    dotTimer += -1 * CP_System_GetDt();
     slowTimer += -1 * CP_System_GetDt();
+    printf("Burn Timer: %f\n", burnTimer);
+    burnTimer += -1 * CP_System_GetDt();
     std::vector<CP_Vector> path = map->getPath();
 
     if (path.size() == pathId) return;
@@ -155,6 +169,28 @@ void BaseEnemy::Move(Map* map)
     else
     {
         SetSpeed(GetMaxSpeed() / 2.0f);
+    }
+    if (burned == true)
+    {
+        dotTimer = maxDOTTimer;
+        burnStacks++;
+        burnTimer = maxBurnTimer;
+        burned = false;
+        isBurning = true;
+    }
+    if (dotTimer <=0 && burnTimer >0 && isBurning)
+    {
+        SetHealth(GetHealth() - (burnDamage * burnStacks));
+        printf("Burn Damage: %f\n", burnDamage * burnStacks);
+        if (burnTimer >= maxDOTTimer)
+        {
+            dotTimer = maxDOTTimer;
+        }
+        else
+        {
+            isBurning = false;
+            burnStacks = 0;
+        }
     }
 }
 

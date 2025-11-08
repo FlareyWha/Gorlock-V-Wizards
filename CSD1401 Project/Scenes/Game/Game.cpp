@@ -638,7 +638,8 @@ void gameUpdate(void)
 				BaseEnemy* enemy = enemiesList[j];
 				if (areCirclesIntersecting(projectileList[i]->GetLocation(), projectileList[i]->GetRadius(), enemy->GetLocation(), enemy->GetSpriteSize()/2.0f))
 				{
-					enemy->SetHealth(enemy->GetHealth() - projectileList[i]->getProjectileDamage());
+					//enemy->SetHealth(enemy->GetHealth() - projectileList[i]->getProjectileDamage());
+					projectileList[i]->onHit(enemy);
 
 					BaseProjectile* proj = projectileList[i];
 					projectileList.erase(projectileList.begin() + i);
