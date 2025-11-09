@@ -1,26 +1,61 @@
 #include "WindProjectile.h"
-WindProjectile::WindProjectile()
-{
-	setProjDamage(1.f);
-}
+#include <cstdlib> // for rand()
+
+WindProjectile::WindProjectile() {}
 
 WindProjectile::WindProjectile(CP_Vector position, CP_Vector direction, float damage, float speed, CP_Color color)
+    : BaseProjectile(position, direction, damage, speed, color)
 {
-	setProjDamage(damage);
-	setProjSpeed(speed);
-	setRadius(20.f);
-	setPosition(position);
-	setDirection(direction);
-	setProjColor(color);
-
-	setLifespan(5.0f);
 }
 
 WindProjectile::~WindProjectile()
 {
+    for (auto p : particles)
+        delete p;
+    particles.clear();
 }
 
 void WindProjectile::onHit(BaseEnemy* enemy)
 {
-	enemy->SetHealth(enemy->GetHealth() - getProjDamage());
+    // Wind effect: maybe push enemy, or just damage
+    enemy->SetHealth(enemy->GetHealth() - getProjDamage());
+}
+
+void WindProjectile::SpawnParticles()
+{
+    for (int i = 0; i < 2; ++i)
+    {
+        CP_Vector vel = CP_Vector_Set(
+            ((rand() % 20) - 10) * 0.05f,
+            ((rand() % 20) - 10) * 0.05f
+        );
+        particles.push_back(new WindParticle(GetLocation(), vel, 30));
+    }
+}
+
+void WindProjectile::Update()
+{
+    BaseProjectile::Update(); // moves projectile
+    SpawnParticles();
+
+    for (auto it = particles.begin(); it != particles.end(); )
+    {
+        WindParticle* p = *it;
+        p->Update();
+        if (!p->IsAlive())
+        {
+            delete p;
+            it = particles.erase(it);
+        }
+        else
+            ++it;
+    }
+}
+
+void WindProjectile::Render()
+{
+    BaseProjectile::Render(); // draw projectile
+
+    for (auto& p : particles)
+        p->Draw(); // draw trail
 }

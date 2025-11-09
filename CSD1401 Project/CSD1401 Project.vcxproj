@@ -12,6 +12,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Enemies\BossEnemy.cpp" />
+    <ClCompile Include="Particles\FireParticle.cpp" />
+    <ClCompile Include="Particles\Particle.cpp" />
     <ClCompile Include="Projectiles\FireProjectile.cpp" />
     <ClCompile Include="Projectiles\IceProjectile.cpp" />
     <ClCompile Include="Towers\LavaTower.cpp" />
@@ -41,9 +43,12 @@
     <ClCompile Include="Utils\Utils.cpp" />
     <ClCompile Include="Towers\WindTower.cpp" />
     <ClCompile Include="Projectiles\WindProjectile.cpp" />
+    <ClCompile Include="Particles\WindParticle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enemies\BossEnemy.h" />
+    <ClInclude Include="Particles\FireParticle.h" />
+    <ClInclude Include="Particles\Particle.h" />
     <ClInclude Include="Projectiles\FireProjectile.h" />
     <ClInclude Include="Projectiles\IceProjectile.h" />
     <ClInclude Include="Towers\LavaTower.h" />
@@ -74,6 +79,7 @@
     <ClInclude Include="Utils\Utils.h" />
     <ClInclude Include="Towers\WindTower.h" />
     <ClInclude Include="Projectiles\WindProjectile.h" />
+    <ClInclude Include="Particles\WindParticle.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
