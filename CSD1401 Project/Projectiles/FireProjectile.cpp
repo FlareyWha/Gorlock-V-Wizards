@@ -9,7 +9,6 @@ FireProjectile::FireProjectile(CP_Vector position, CP_Vector direction, float da
 
 FireProjectile::~FireProjectile()
 {
-    // Free any remaining particles
     for (auto p : particles)
         delete p;
     particles.clear();
@@ -23,12 +22,11 @@ void FireProjectile::onHit(BaseEnemy* enemy)
 
 void FireProjectile::SpawnParticles()
 {
-    // spawn a few small particles at the projectile's position
     for (int i = 0; i < 2; ++i)
     {
         CP_Vector vel = CP_Vector_Set(
-            ((rand() % 20) - 10) * 0.05f, // small horizontal drift
-            ((rand() % 20) - 10) * 0.05f  // small vertical drift
+            ((rand() % 20) - 10) * 0.05f,
+            ((rand() % 20) - 10) * 0.05f
         );
 
         particles.push_back(new FireParticle(GetLocation(), vel, 30)); // 30 frames lifetime
@@ -37,13 +35,10 @@ void FireProjectile::SpawnParticles()
 
 void FireProjectile::Update()
 {
-    // Move projectile
     BaseProjectile::Update();
 
-    // Spawn trail particles
     SpawnParticles();
 
-    // Update particles
     for (auto it = particles.begin(); it != particles.end(); )
     {
         FireParticle* p = *it;
@@ -60,10 +55,8 @@ void FireProjectile::Update()
 
 void FireProjectile::Render()
 {
-    // Draw projectile itself
     BaseProjectile::Render();
 
-    // Draw particles
     for (auto& p : particles)
         p->Draw();
 }

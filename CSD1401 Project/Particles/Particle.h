@@ -1,7 +1,6 @@
 #pragma once
 #include "cprocessing.h"
 
-// Base abstract particle class
 class Particle
 {
 public:
@@ -15,7 +14,6 @@ public:
 
     virtual ~Particle() = default;
 
-    // Pure virtual functions to be implemented by derived classes
     virtual void Update() = 0;
     virtual void Draw() const = 0;
 

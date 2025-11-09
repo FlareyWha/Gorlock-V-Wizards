@@ -16,6 +16,6 @@ public:
     void Render() override;
 
 private:
-    std::vector<FireParticle*> particles;  // particle trail
+    std::vector<FireParticle*> particles;
     void SpawnParticles();
 };

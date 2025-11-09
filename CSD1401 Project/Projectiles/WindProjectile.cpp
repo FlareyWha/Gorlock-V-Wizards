@@ -35,7 +35,7 @@ void WindProjectile::SpawnParticles()
 
 void WindProjectile::Update()
 {
-    BaseProjectile::Update(); // moves projectile
+    BaseProjectile::Update();
     SpawnParticles();
 
     for (auto it = particles.begin(); it != particles.end(); )
@@ -54,8 +54,8 @@ void WindProjectile::Update()
 
 void WindProjectile::Render()
 {
-    BaseProjectile::Render(); // draw projectile
+    BaseProjectile::Render();
 
     for (auto& p : particles)
-        p->Draw(); // draw trail
+        p->Draw();
 }

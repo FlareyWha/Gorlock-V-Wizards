@@ -28,7 +28,7 @@ public:
 
 	void Init();
 	virtual void Update();
-	virtual void Render(); // <-- Add 'virtual' here to allow override
+	virtual void Render();
 
 	float getProjDamage();
 	float getProjectileDamage();
