@@ -6,8 +6,10 @@
 
 class FireProjectile : public BaseProjectile
 {
+private:
+    std::vector<FireParticle*> particles;
+    void SpawnParticles();
 public:
-    FireProjectile();
     FireProjectile(CP_Vector position, CP_Vector direction, float damage, float speed, CP_Color color);
     ~FireProjectile();
 
@@ -15,7 +17,4 @@ public:
     void Update() override;
     void Render() override;
 
-private:
-    std::vector<FireParticle*> particles;
-    void SpawnParticles();
 };

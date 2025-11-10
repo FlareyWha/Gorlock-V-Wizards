@@ -4,6 +4,9 @@
 
 class FireParticle : public Particle
 {
+private:
+    static CP_Image particleImage;
+
 public:
     FireParticle(const CP_Vector& pos, const CP_Vector& vel, int lifetime);
 
@@ -11,7 +14,4 @@ public:
     void Draw() const override;
 
     static void LoadImage(const char* path);
-
-private:
-    static CP_Image particleImage;
 };
