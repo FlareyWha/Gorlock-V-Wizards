@@ -16,7 +16,7 @@ BaseProjectile::BaseProjectile(CP_Vector position, CP_Vector direction, float da
 	this->direction = direction;
 	this->projColor = color;
 	
-	lifespan = 5.0f;
+	lifespan = 2.0f;
 }
 
 void BaseProjectile::Init()

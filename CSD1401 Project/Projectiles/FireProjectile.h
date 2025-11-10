@@ -1,6 +1,6 @@
 #pragma once
 #include "BaseProjectile.h"
-#include "../../Particles/FireParticle.h"
+#include "../Particles/FireParticle.h"
 #include "cprocessing.h"
 #include <vector>
 

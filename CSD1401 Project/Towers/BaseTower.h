@@ -51,6 +51,7 @@ protected:
 	CP_Color color;
 	float projSpeed = 150;
 	float baseCooldown;
+	bool isSlowed = false;
 public:
 	CP_Image towerSprite;
 
@@ -93,7 +94,8 @@ public:
 	void InitCooldown(float time) { baseCooldown = cooldown = time; }
 	void ApplySlowdown(float multiplier);
 	void ResetCooldown();
-	bool slowed = false;
+	bool slowed();
+
 };
 
 /*

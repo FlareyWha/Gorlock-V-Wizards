@@ -1,10 +1,11 @@
 #include "FireProjectile.h"
-
-FireProjectile::FireProjectile() {}
+#include "../../Particles/FireParticle.h"
+#include <cstdlib> // for rand()
 
 FireProjectile::FireProjectile(CP_Vector position, CP_Vector direction, float damage, float speed, CP_Color color)
     : BaseProjectile(position, direction, damage, speed, color)
 {
+    FireParticle::LoadImage("Assets/Particles/Fire.png");
 }
 
 FireProjectile::~FireProjectile()
@@ -16,6 +17,7 @@ FireProjectile::~FireProjectile()
 
 void FireProjectile::onHit(BaseEnemy* enemy)
 {
+   
     if (!enemy->IsBurned())
         enemy->Burn(true);
 }
@@ -29,7 +31,7 @@ void FireProjectile::SpawnParticles()
             ((rand() % 20) - 10) * 0.05f
         );
 
-        particles.push_back(new FireParticle(GetLocation(), vel, 30)); // 30 frames lifetime
+        particles.push_back(new FireParticle(GetLocation(), vel, 10));
     }
 }
 

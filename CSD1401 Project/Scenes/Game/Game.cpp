@@ -603,8 +603,7 @@ void gameUpdate(void)
 			}
 		}
 
-		// Apply or reset slowdown
-		if (bossNearby != tower->slowed)
+		if (bossNearby != tower->slowed())
 		{
 			if (bossNearby)
 			{
@@ -616,7 +615,6 @@ void gameUpdate(void)
 				printf("Boss left range, resetting cooldown\n");
 				tower->ResetCooldown();
 			}
-			tower->slowed = bossNearby;
 		}
 	}
 

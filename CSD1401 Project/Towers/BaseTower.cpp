@@ -180,9 +180,15 @@ void BaseTower::Render()
 void BaseTower::ApplySlowdown(float multiplier)
 {
 	cooldown = baseCooldown * multiplier;
+	isSlowed = true;
 }
 
 void BaseTower::ResetCooldown()
 {
 	cooldown = baseCooldown;
+	isSlowed = false;
+}
+
+bool BaseTower::slowed() {
+	return isSlowed;
 }
