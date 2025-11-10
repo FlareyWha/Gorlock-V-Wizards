@@ -24,6 +24,10 @@ bool startpointActive = false;
 CP_Vector endpointTilePos;
 bool endpointActive = false;
 
+bool showSavedText = false;
+bool saveSucessful = false;
+float savedTextTimer = 0.f;
+
 void mapEditorInit(void)
 {
 	mapEditorMap = Map::GetInstance();
@@ -56,7 +60,9 @@ void mapEditorUpdate(void)
 	else if (save.IsClicked())
 	{
 		//Save map
-		mapEditorMap->saveMap("Edit");
+		saveSucessful = mapEditorMap->saveMap("Edit");
+		showSavedText = true;
+		savedTextTimer = 3.f;
 	}
 	else if (startpointSwitch.IsClicked())
 	{
@@ -116,6 +122,25 @@ void mapEditorUpdate(void)
 
 	default:
 		break;
+	}
+
+	if (showSavedText)
+	{
+		savedTextTimer -= CP_System_GetDt();
+
+		if (saveSucessful)
+		{
+			CP_Font_DrawText("Map sucessfully saved!", 1450, 550);
+		}
+		else
+		{
+			CP_Font_DrawText("Map UNSUCESSFULLY saved!", 1450, 550);
+		}
+
+		if (savedTextTimer <= 0.f)
+		{
+			showSavedText = false;
+		}
 	}
 }
 
