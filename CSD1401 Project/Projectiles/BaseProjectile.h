@@ -1,12 +1,14 @@
 #pragma once
 #include "cprocessing.h"
 #include "../Enemies/BaseEnemy.h"
+#include <vector>
 enum class PROJECTILE_TYPE
 {
 	PROJECTILE = 0,
 	BEAM,
 	HOMING,
 	DAMAGEOVERTIME,
+	CHAIN,
 	NONE
 };
 
@@ -36,7 +38,9 @@ public:
 	CP_Vector GetLocation(void);
 	float GetRadius();
 	CP_Color getProjColor();
-
+	PROJECTILE_TYPE getProjType();
+	void setProjType(PROJECTILE_TYPE type);
+	
 	void setProjDamage(float damage);
 	void setProjSpeed(int speed);
 	void setPosition(CP_Vector pos);
@@ -45,5 +49,6 @@ public:
 	void setDirection(CP_Vector dir);
 	void setLifespan(float lifespan);
 	void virtual onHit(BaseEnemy* enemy);
+	void virtual chainHit(std::vector<BaseEnemy*> enemyList,BaseEnemy* specificEnemy);
 };
 

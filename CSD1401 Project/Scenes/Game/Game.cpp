@@ -83,8 +83,8 @@ void Game::gainMoneys(int moneyAmt)
 void Game::drawMoneys(float x, float y)
 {
 	std::string money = "Money: " + std::to_string(game.getMoneys());
-	game.drawText(money.c_str(), x, y);
 	CP_Image_Draw(game.moneysImage, x, y, 16 * imageScaling, 16 * imageScaling, 255);
+	game.drawText(money.c_str(), x, y);
 }
 
 void Game::drawHeart(float x, float y)
@@ -494,8 +494,9 @@ void gameUpdate(void)
 		}
 	}
 
-	game.drawHeart(CP_System_GetWindowWidth() / 2.0f, 100.0f);
-	game.drawMoneys(CP_System_GetWindowWidth() / 2.0f, 300.0f);
+	game.drawHeart(1500, 700.0f);
+	game.drawMoneys(1350, 100.0f);
+
 	if (CP_Input_KeyReleased(KEY_H))
 	{
 		game.takeDamage(1);
@@ -639,7 +640,12 @@ void gameUpdate(void)
 				if (areCirclesIntersecting(projectileList[i]->GetLocation(), projectileList[i]->GetRadius(), enemy->GetLocation(), enemy->GetSpriteSize()/2.0f))
 				{
 					//enemy->SetHealth(enemy->GetHealth() - projectileList[i]->getProjectileDamage());
-					projectileList[i]->onHit(enemy);
+					if (projectileList[i]->getProjType() == PROJECTILE_TYPE::CHAIN)
+					{
+						projectileList[i]->chainHit(enemiesList,enemy);	
+					}
+					else
+						projectileList[i]->onHit(enemy);
 
 					BaseProjectile* proj = projectileList[i];
 					projectileList.erase(projectileList.begin() + i);

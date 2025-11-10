@@ -15,7 +15,7 @@ BaseProjectile::BaseProjectile(CP_Vector position, CP_Vector direction, float da
 	this->position = position;
 	this->direction = direction;
 	this->projColor = color;
-
+	
 	lifespan = 5.0f;
 }
 
@@ -66,6 +66,16 @@ CP_Color BaseProjectile::getProjColor()
 	return projColor;
 }
 
+PROJECTILE_TYPE BaseProjectile::getProjType()
+{
+	return projectile;
+}
+
+void BaseProjectile::setProjType(PROJECTILE_TYPE type)
+{
+	this->projectile = type;
+}
+
 void BaseProjectile::setProjDamage(float damage)
 {
 	this->damage = damage;
@@ -104,4 +114,8 @@ void BaseProjectile::setLifespan(float lifespan)
 void BaseProjectile::onHit(BaseEnemy* enemy)
 {
 	enemy->SetHealth(enemy->GetHealth() - damage);
+}
+
+void BaseProjectile::chainHit(std::vector<BaseEnemy*> enemyList,BaseEnemy* specificEnemy)
+{
 }

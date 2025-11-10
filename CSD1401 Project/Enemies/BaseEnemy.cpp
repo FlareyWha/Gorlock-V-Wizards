@@ -139,10 +139,8 @@ void BaseEnemy::SetEnemyType(EnemyType type)
 
 void BaseEnemy::Move(Map* map)
 {
-    printf("Health: %f\n", health);
     dotTimer += -1 * CP_System_GetDt();
     slowTimer += -1 * CP_System_GetDt();
-    printf("Burn Timer: %f\n", burnTimer);
     burnTimer += -1 * CP_System_GetDt();
     std::vector<CP_Vector> path = map->getPath();
 
@@ -172,13 +170,13 @@ void BaseEnemy::Move(Map* map)
     }
     if (burned == true)
     {
-        dotTimer = maxDOTTimer;
+        //dotTimer = maxDOTTimer;
         burnStacks++;
         burnTimer = maxBurnTimer;
         burned = false;
         isBurning = true;
     }
-    if (dotTimer <=0 && burnTimer >0 && isBurning)
+    if (dotTimer <=0 && burnTimer > 0 && isBurning)
     {
         SetHealth(GetHealth() - (burnDamage * burnStacks));
         printf("Burn Damage: %f\n", burnDamage * burnStacks);
