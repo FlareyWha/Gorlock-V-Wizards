@@ -1,3 +1,10 @@
+/*!
+@file       MapEditor.cpp
+@author     Yap Yu Xuan Daevon (yuxuandaevon.yap)
+@brief      This file contains definition of functions and variables
+			used for the map editor class
+*//*_______________________________________________________________________*/
+
 #include "MapEditor.h"
 #include "cprocessing.h"
 #include "../../System/Map.h"
@@ -23,6 +30,10 @@ CP_Vector startpointTilePos;
 bool startpointActive = false;
 CP_Vector endpointTilePos;
 bool endpointActive = false;
+
+bool showSavedText = false;
+bool saveSucessful = false;
+float savedTextTimer = 0.f;
 
 void mapEditorInit(void)
 {
@@ -56,7 +67,9 @@ void mapEditorUpdate(void)
 	else if (save.IsClicked())
 	{
 		//Save map
-		mapEditorMap->saveMap("Edit");
+		saveSucessful = mapEditorMap->saveMap("Edit");
+		showSavedText = true;
+		savedTextTimer = 3.f;
 	}
 	else if (startpointSwitch.IsClicked())
 	{
@@ -117,6 +130,25 @@ void mapEditorUpdate(void)
 	default:
 		break;
 	}
+
+	if (showSavedText)
+	{
+		savedTextTimer -= CP_System_GetDt();
+
+		if (saveSucessful)
+		{
+			CP_Font_DrawText("Map sucessfully saved!", 1450, 550);
+		}
+		else
+		{
+			CP_Font_DrawText("Map UNSUCESSFULLY saved!", 1450, 550);
+		}
+
+		if (savedTextTimer <= 0.f)
+		{
+			showSavedText = false;
+		}
+	}
 }
 
 void mapEditorExit(void)
@@ -125,6 +157,11 @@ void mapEditorExit(void)
 	Button::FreeResources();
 }
 
+/*!
+@brief	Sets new map tile based on the current editor state
+@param	void
+@return void
+*//*______________________________________________________________*/
 void setNewMapTile(void)
 {
 	//Get the tile pos of the tile that the mouse is at
@@ -137,10 +174,13 @@ void setNewMapTile(void)
 		switch (currentEditorState)
 		{
 		case STARTPOINT_EDIT:
+			//Remove old startpoint if its already active
 			if (startpointActive)
 			{
 				mapEditorMap->setTile(GROUND, startpointTilePos.x, startpointTilePos.y);
+				checkRoadTileChanges(startpointTilePos, false);
 			}
+			//Set the new startpoint, startpointTilePos and startpointActive
 			mapEditorMap->setTile(STARTPOINT, tempTilePos.x, tempTilePos.y);
 			startpointTilePos = tempTilePos;
 			startpointActive = true;
@@ -157,9 +197,11 @@ void setNewMapTile(void)
 			break;
 
 		case ENDPOINT_EDIT:
+			//Remove old endpoint if its already active
 			if (endpointActive)
 			{
 				mapEditorMap->setTile(GROUND, endpointTilePos.x, endpointTilePos.y);
+				checkRoadTileChanges(endpointTilePos, false);
 			}
 			mapEditorMap->setTile(ENDPOINT, tempTilePos.x, tempTilePos.y);
 			endpointTilePos = tempTilePos;
@@ -179,6 +221,11 @@ void setNewMapTile(void)
 	}
 }
 
+/*!
+@brief	Deletes new map tile based on the current editor state
+@param	void
+@return void
+*//*______________________________________________________________*/
 void deleteMapTile(void)
 {
 	//Get the tile pos of the tile that the mouse is at
@@ -208,11 +255,23 @@ void deleteMapTile(void)
 	placedTile = false;
 }
 
+/*!
+@brief	Switch editor state
+@param	EDITOR_STATE newState - the new state to switch to
+@return void
+*//*______________________________________________________________*/
 void switchEditorState(EDITOR_STATE newState)
 {
 	currentEditorState = newState;
 }
 
+/*!
+@brief	Gets the 4 surrounding tiles and the 4 tiles surrounding those tiles,
+		then calls setUpdatedRoadTile to change the road tile based on the surrounding tiles
+@param	CP_Vector tilePos - tile position
+@param	bool checkInitial - whether to check the intitial tile or not
+@return void
+*//*______________________________________________________________*/
 void checkRoadTileChanges(CP_Vector tilePos, bool checkInitial)
 {
 	currentTilePos = tilePos;
@@ -241,10 +300,17 @@ void checkRoadTileChanges(CP_Vector tilePos, bool checkInitial)
 	std::cout << std::endl;
 }
 
+/*!
+@brief	Set the new updated road tile based on the tiles surrounding it
+@param	CP_Vector initialTilePos - initial tile position
+@param	std::map<TILE_RELATIVE_POSITION, Tile> surroundingTiles - map of the surrounding tiles
+@return void
+*//*______________________________________________________________*/
 void setUpdatedRoadTile(CP_Vector initialTilePos, std::map<TILE_RELATIVE_POSITION, Tile> surroundingTiles)
 {
 	bool active[4] = { false };
 
+	//Quit function if the current tile is either startpoint or endpoint
 	if (mapEditorMap->getTileFromTilePos(initialTilePos.x, initialTilePos.y).tileType == STARTPOINT || mapEditorMap->getTileFromTilePos(initialTilePos.x, initialTilePos.y).tileType == ENDPOINT)
 	{
 		return;
@@ -255,11 +321,13 @@ void setUpdatedRoadTile(CP_Vector initialTilePos, std::map<TILE_RELATIVE_POSITIO
 	// 1-2
 	// -3-
 
+	//Sets corresponding bool active to true if tile exists
 	for (std::map<TILE_RELATIVE_POSITION, Tile>::iterator it = surroundingTiles.begin(); it != surroundingTiles.end(); it++)
 	{
 		active[(int)it->first] = true;
 	}
 	
+	//Choose which road tile to set to
 	if (active[0] && active[1] && active[2] && active[3])
 	{
 		mapEditorMap->setTile(JUNCTION_MIDDLE_ROAD, initialTilePos.x, initialTilePos.y);

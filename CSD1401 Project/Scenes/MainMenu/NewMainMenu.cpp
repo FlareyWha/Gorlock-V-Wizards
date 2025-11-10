@@ -67,7 +67,10 @@ void NewMainMenu::ButtonDraw()
 void NewMainMenu::HandleClicks()
 {
 	if (startButton->IsClicked())
+	{
+		SoundManager::GetInstance()->stopBGM();
 		scene->ChangeScenes(Scenes::GAME_SCENE);
+	}
 
 	else if (settingsButton->IsClicked())
 		scene->ChangeScenes(Scenes::SETTINGS_SCENE);
@@ -76,7 +79,15 @@ void NewMainMenu::HandleClicks()
 		scene->ChangeScenes(Scenes::MAP_EDITOR_SCENE);
 
 	else if (quitButton->IsClicked())
+	{
+		SoundManager::GetInstance()->freeAllSounds();
+		SoundManager::GetInstance()->DestroyInstance();
+		SettingsManager::GetInstance()->DestroyInstance();
+		Map::GetInstance()->resetMap(true);
+		Map::GetInstance()->freeImages(true);
+		Map::GetInstance()->DestroyInstance();
 		CP_Engine_Terminate();
+	}
 }
 
 void NewMainMenu::Exit()
@@ -117,5 +128,5 @@ void mainMenuExit(void)
 	//This stuff below should move to anywhere that terminates the game
 	CP_Font_Free(mainMenuFont);
 	
-	SoundManager::GetInstance()->stopBGM();
+	//SoundManager::GetInstance()->stopBGM();
 }

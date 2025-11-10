@@ -301,20 +301,6 @@ bool Map::loadMap(std::string fileName)
 *//*______________________________________________________________*/
 bool Map::saveMap(std::string fileName)
 {
-	/*std::vector<std::vector<int>> test;
-
-	for (int i = 0; i < 32; i++)
-	{
-		std::vector<int> column;
-
-		for (int j = 0; j < 32; j++)
-		{
-			column.push_back(1);
-		}
-
-		test.push_back(column);
-	}*/
-
 	std::vector<std::vector<int>> mapData;
 
 	for (int i = 0; i < NUM_COLUMN; i++)
@@ -332,11 +318,10 @@ bool Map::saveMap(std::string fileName)
 	if (CSVManager::write(fileName, NUM_ROW, NUM_COLUMN, mapData))
 	{
 		std::cout << "Write sucessful!!!!" << std::endl;
+		return true;
 	}
-	else
-	{
-		std::cout << "Write unsucessful!!!!" << std::endl;
-	}
+
+	std::cout << "Write unsucessful!!!!" << std::endl;
 
 	return false;
 }

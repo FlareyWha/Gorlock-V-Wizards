@@ -31,6 +31,8 @@ void game_init(void)
 
 	sceneManager = SceneManager::GetInstance();
 	settingsManager = SettingsManager::GetInstance();
+
+	settingsManager->readVolumeSettings();
 	
 	// Initialize Main Menu
 	//menu.StartButtonInit();

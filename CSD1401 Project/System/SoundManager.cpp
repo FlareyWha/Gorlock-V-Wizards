@@ -83,6 +83,12 @@ std::string SoundManager::getSFXFilePath(SFX_TYPE sfxType)
 	case TOWER_WIND_ATTACK_SFX:
 		filePath += "wind_attack.wav";
 		break;
+	case TOWER_FIRE_ATTACK_SFX:
+		filePath += "fire_attack.wav";
+		break;
+	case TOWER_LIGHTNING_ATTACK_SFX:
+		filePath += "lightning_attack.wav";
+		break;
 	default:
 		break;
 	}
@@ -128,7 +134,7 @@ std::string SoundManager::getBGMFilePath(BGM_TYPE bgmType)
 void SoundManager::loadAllSounds(void)
 {
 	sfxTypeVector = { TEST_SFX, TOWER_PLACE_SFX, TOWER_MERGE_SFX, ENEMY_BASIC_DEATH_SFX, ENEMY_SPEEDSTER_DEATH_SFX, ENEMY_TANK_DEATH_SFX,
-					TOWER_WIND_ATTACK_SFX };
+					TOWER_WIND_ATTACK_SFX, TOWER_FIRE_ATTACK_SFX, TOWER_LIGHTNING_ATTACK_SFX };
 	bgmTypeVector = { TEST_BGM, MAIN_MENU_BGM, GAME_00_BGM, GAME_01_BGM };
 
 	for (int i = 0; i < sfxTypeVector.size(); i++)
@@ -166,6 +172,11 @@ void SoundManager::playBGM(BGM_TYPE bgmType)
 	CP_Sound_PlayAdvanced(bgmMap[bgmType], settingsManager->getBGMVolumeLerp(), 1.0f, TRUE, CP_SOUND_GROUP_0);
 }
 
+/*!
+@brief	Queue next BGM
+@param	BGM_TYPE bgmType - bgm to queue
+@return void
+*//*______________________________________________________________*/
 void SoundManager::queueNextBGM(BGM_TYPE bgmType)
 {
 	nextBgmInQueue = bgmType;
@@ -182,12 +193,21 @@ void SoundManager::stopBGM(void)
 	CP_Sound_StopGroup(CP_SOUND_GROUP_0);
 }
 
+/*!
+@brief	Refresh the bgm volume (used when changing bgm volume)
+@param	float bgmVolume - new volume to change
+@return void
+*//*______________________________________________________________*/
 void SoundManager::refreshBGMVolume(float bgmVolume)
 {
-
 	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_0, bgmVolume);
 }
 
+/*!
+@brief	Refresh the sfx volume (used when changing sfx volume)
+@param	float sfxVolume - new volume to change
+@return void
+*//*______________________________________________________________*/
 void SoundManager::refreshSFXVolume(float sfxVolume)
 {
 	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_1, sfxVolume);
