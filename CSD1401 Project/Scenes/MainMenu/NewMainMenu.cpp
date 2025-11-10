@@ -76,7 +76,15 @@ void NewMainMenu::HandleClicks()
 		scene->ChangeScenes(Scenes::MAP_EDITOR_SCENE);
 
 	else if (quitButton->IsClicked())
+	{
+		SoundManager::GetInstance()->freeAllSounds();
+		SoundManager::GetInstance()->DestroyInstance();
+		SettingsManager::GetInstance()->DestroyInstance();
+		Map::GetInstance()->resetMap(true);
+		Map::GetInstance()->freeImages(true);
+		Map::GetInstance()->DestroyInstance();
 		CP_Engine_Terminate();
+	}
 }
 
 void NewMainMenu::Exit()
