@@ -219,8 +219,8 @@ void gameInit(void)
 	game.currentTower = new BaseTower();
 	//CP_Font_DrawText("YIBBBEEE", 10, 10);
 
-	//SoundManager::GetInstance()->playBGM(GAME_00_BGM);
-	//SoundManager::GetInstance()->queueNextBGM(GAME_01_BGM);
+	SoundManager::GetInstance()->playBGM(GAME_00_BGM);
+	SoundManager::GetInstance()->queueNextBGM(GAME_01_BGM);
 }
 
 void gameUpdate(void)
@@ -521,7 +521,6 @@ void gameUpdate(void)
 			}
 		}
 	}
-		//game.waveManager->SpawnWave(game.getSpawnLocation());
 	if (CP_Input_KeyReleased(KEY_1))
 		enemiesList.push_back(new BasicEnemy(game.getSpawnLocation()));
 	if (CP_Input_KeyReleased(KEY_2))
@@ -529,9 +528,10 @@ void gameUpdate(void)
 	if (CP_Input_KeyReleased(KEY_3))
 		enemiesList.push_back(new SpeedsterEnemy(game.getSpawnLocation()));
 	if (CP_Input_KeyReleased(KEY_4))
-	{
 		enemiesList.push_back(new BossEnemy(game.getSpawnLocation()));
-	}
+	if (CP_Input_KeyReleased(KEY_SPACE))
+		game.waveManager->SpawnWave(game.getSpawnLocation());
+
 
 	// enemy movement
 	for (int i = 0; i < enemiesList.size(); ++i)
