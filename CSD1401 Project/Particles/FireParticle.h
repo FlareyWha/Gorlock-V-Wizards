@@ -10,9 +10,8 @@ public:
     void Update() override;
     void Draw() const override;
 
-    // Load the image once
     static void LoadImage(const char* path);
 
 private:
-    static CP_Image particleImage; // shared image for all particles
+    static CP_Image particleImage;
 };

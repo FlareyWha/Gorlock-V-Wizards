@@ -1,6 +1,6 @@
 #include "FireProjectile.h"
 #include "../../Particles/FireParticle.h"
-#include <cstdlib> // for rand()
+#include <cstdlib>
 
 FireProjectile::FireProjectile(CP_Vector position, CP_Vector direction, float damage, float speed, CP_Color color)
     : BaseProjectile(position, direction, damage, speed, color)
