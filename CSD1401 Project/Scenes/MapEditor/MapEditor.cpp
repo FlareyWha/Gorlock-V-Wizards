@@ -3,56 +3,120 @@
 #include "../../System/Map.h"
 #include "../../Utils/Button.h"
 #include "../../System/SceneManager.h"
+#include "../../Utils/Utils.h"
 #include <iostream>
 #include <map>
 
 Button back(0, 0, 0, 0, "");
 Button save(0, 0, 0, 0, "");
+Button startpointSwitch(0, 0, 0, 0, "");
+Button roadSwitch(0, 0, 0, 0, "");
+Button endpointSwitch(0, 0, 0, 0, "");
 Map* mapEditorMap;
 CP_Vector prevMousePos = CP_Vector_Zero();
 CP_Vector currentTilePos = CP_Vector_Zero();
 bool placedTile = false;
+EDITOR_STATE currentEditorState = ROAD_EDIT;
+CP_Font mapEditorFont;
+
+CP_Vector startpointTilePos;
+bool startpointActive = false;
+CP_Vector endpointTilePos;
+bool endpointActive = false;
 
 void mapEditorInit(void)
 {
 	mapEditorMap = Map::GetInstance();
 	Button::LoadResources();
+	mapEditorFont = CP_Font_Load("Assets/Fonts/KenneyFonts/Kenney Mini.ttf");
 	//map->loadMapTileImages();
 	//mapEditorMap->saveMap("test");
 	mapEditorMap->loadMap("Edit");
 
 	CP_Settings_ImageMode(CP_POSITION_CENTER);
-	back = Button(1520, 50, 150, 40, "Back");
-	save = Button(1520, 100, 150, 40, "Save");
+
+	//Init buttons
+	save = Button(1450, 700, 150, 40, "Save");
+	back = Button(1520, 875, 150, 40, "Back");
+	startpointSwitch = Button(1450, 300, 200, 40, "Startpoint Editor");
+	roadSwitch = Button(1450, 350, 200, 40, "Road Editor");
+	endpointSwitch = Button(1450, 400, 200, 40, "Endpoint Editor");
 }
 
 void mapEditorUpdate(void)
 {
 	CP_Graphics_ClearBackground(CP_Color_Create(132, 198, 105, 255));
-	back.Draw();
-	save.Draw();
 
+	//Check button clicks
 	if (back.IsClicked())
 	{
 		mapEditorExit();
 		SceneManager::GetInstance()->ChangeScenes(Scenes::MAIN_MENU_SCENE);
-		
 	}
-	
+	else if (save.IsClicked())
+	{
+		//Save map
+		mapEditorMap->saveMap("Edit");
+	}
+	else if (startpointSwitch.IsClicked())
+	{
+		currentEditorState = STARTPOINT_EDIT;
+	}
+	else if (roadSwitch.IsClicked())
+	{
+		currentEditorState = ROAD_EDIT;
+	}
+	else if (endpointSwitch.IsClicked())
+	{
+		currentEditorState = ENDPOINT_EDIT;
+	}
 
-	if (CP_Input_MouseDown(MOUSE_BUTTON_LEFT))
+	//TODO: Add checks to switch between different editor modes
+
+	//Only draw roads if in area
+	if (isAreaClicked(CP_Vector_Set(650, 450), 1300, 900, CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY())))
 	{
-		setNewMapTile();
-	}
-	else if (CP_Input_MouseDown(MOUSE_BUTTON_RIGHT))
-	{
-		deleteMapTile();
+		if (CP_Input_MouseDown(MOUSE_BUTTON_LEFT))
+		{
+			setNewMapTile();
+		}
+		else if (CP_Input_MouseDown(MOUSE_BUTTON_RIGHT))
+		{
+			deleteMapTile();
+		}
 	}
 
 	prevMousePos = CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY());
 	
 	//Render map
 	mapEditorMap->renderMap();
+
+	//Render buttons
+	back.Draw();
+	save.Draw();
+	startpointSwitch.Draw();
+	roadSwitch.Draw();
+	endpointSwitch.Draw();
+
+	CP_Font_Set(mapEditorFont);
+	CP_Font_DrawText("Current Editor State: ", 1450, 100);
+	switch (currentEditorState)
+	{
+	case STARTPOINT_EDIT:
+		CP_Font_DrawText("Startpoint Editor", 1450, 150);
+		break;
+
+	case ROAD_EDIT:
+		CP_Font_DrawText("Road Editor", 1450, 150);
+		break;
+
+	case ENDPOINT_EDIT:
+		CP_Font_DrawText("Endpoint Editor", 1450, 150);
+		break;
+
+	default:
+		break;
+	}
 }
 
 void mapEditorExit(void)
@@ -69,8 +133,44 @@ void setNewMapTile(void)
 	//Places tile only if the cursor is on a new tile, this prevents placing multiple times
 	if (!placedTile)
 	{
-		mapEditorMap->setTile(MIDDLE_ROAD, tempTilePos.x, tempTilePos.y);
-		checkMapTileChanges(tempTilePos, true);
+		//Special cases for different editor states
+		switch (currentEditorState)
+		{
+		case STARTPOINT_EDIT:
+			if (startpointActive)
+			{
+				mapEditorMap->setTile(GROUND, startpointTilePos.x, startpointTilePos.y);
+			}
+			mapEditorMap->setTile(STARTPOINT, tempTilePos.x, tempTilePos.y);
+			startpointTilePos = tempTilePos;
+			startpointActive = true;
+			checkRoadTileChanges(tempTilePos, false);
+			break;
+
+		case ROAD_EDIT:
+			//Only allows road to be edited if the tile is not a startpoint or endpoint
+			if (mapEditorMap->getTileFromTilePos(tempTilePos.x, tempTilePos.y).tileType != STARTPOINT && mapEditorMap->getTileFromTilePos(tempTilePos.x, tempTilePos.y).tileType != ENDPOINT)
+			{
+				mapEditorMap->setTile(MIDDLE_ROAD, tempTilePos.x, tempTilePos.y);
+				checkRoadTileChanges(tempTilePos, true);
+			}
+			break;
+
+		case ENDPOINT_EDIT:
+			if (endpointActive)
+			{
+				mapEditorMap->setTile(GROUND, endpointTilePos.x, endpointTilePos.y);
+			}
+			mapEditorMap->setTile(ENDPOINT, tempTilePos.x, tempTilePos.y);
+			endpointTilePos = tempTilePos;
+			endpointActive = true;
+			checkRoadTileChanges(tempTilePos, false);
+			break;
+
+		default:
+			break;
+		}
+
 	}
 	else if (tempTilePos.x != currentTilePos.x || tempTilePos.y != currentTilePos.y && placedTile)
 	{
@@ -85,12 +185,35 @@ void deleteMapTile(void)
 	CP_Vector tempTilePos = mapEditorMap->getTilePos(CP_Input_GetMouseX(), CP_Input_GetMouseY());
 
 	mapEditorMap->setTile(GROUND, tempTilePos.x, tempTilePos.y);
-	checkMapTileChanges(tempTilePos, false);
+	checkRoadTileChanges(tempTilePos, false);
+
+	//Special cases for different editor states
+	switch (currentEditorState)
+	{
+	case STARTPOINT_EDIT:
+		startpointActive = false;
+		break;
+
+	case ROAD_EDIT:
+		break;
+
+	case ENDPOINT_EDIT:
+		endpointActive = false;
+		break;
+
+	default:
+		break;
+	}
 
 	placedTile = false;
 }
 
-void checkMapTileChanges(CP_Vector tilePos, bool checkInitial)
+void switchEditorState(EDITOR_STATE newState)
+{
+	currentEditorState = newState;
+}
+
+void checkRoadTileChanges(CP_Vector tilePos, bool checkInitial)
 {
 	currentTilePos = tilePos;
 	placedTile = true;
@@ -107,20 +230,25 @@ void checkMapTileChanges(CP_Vector tilePos, bool checkInitial)
 
 		std::map<TILE_RELATIVE_POSITION, Tile> relativeSurroundingTiles = mapEditorMap->getSurroundingTiles(tempTilePos);
 
-		setUpdatedMapTile(tempTilePos, relativeSurroundingTiles);
+		setUpdatedRoadTile(tempTilePos, relativeSurroundingTiles);
 	}
 
 	if (checkInitial)
 	{
-		setUpdatedMapTile(tilePos, surroundingTiles);
+		setUpdatedRoadTile(tilePos, surroundingTiles);
 	}
 
 	std::cout << std::endl;
 }
 
-void setUpdatedMapTile(CP_Vector initialTilePos, std::map<TILE_RELATIVE_POSITION, Tile> surroundingTiles)
+void setUpdatedRoadTile(CP_Vector initialTilePos, std::map<TILE_RELATIVE_POSITION, Tile> surroundingTiles)
 {
 	bool active[4] = { false };
+
+	if (mapEditorMap->getTileFromTilePos(initialTilePos.x, initialTilePos.y).tileType == STARTPOINT || mapEditorMap->getTileFromTilePos(initialTilePos.x, initialTilePos.y).tileType == ENDPOINT)
+	{
+		return;
+	}
 
 	//Tile arrangement
 	// -0- 

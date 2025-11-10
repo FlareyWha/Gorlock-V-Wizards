@@ -137,6 +137,19 @@ Tile Map::getTile(float xPos, float yPos)
 }
 
 /*!
+@brief	Gets a tile based on the x & y tile pos given
+@param	xPos - x tile position
+@param	yPos - y tile position
+@return Tile
+*//*______________________________________________________________*/
+Tile Map::getTileFromTilePos(int xPos, int yPos)
+{
+	Tile tile = map[xPos][yPos];
+
+	return tile;
+}
+
+/*!
 @brief	Gets tile grid pos based on x & y position given
 @param	xPos - x position
 @param	yPos - y position
@@ -191,23 +204,6 @@ std::map<TILE_RELATIVE_POSITION, Tile> Map::getSurroundingTiles(CP_Vector tilePo
 {
 	std::map<TILE_RELATIVE_POSITION, Tile> tileMap;
 
-	/*int tileRelativePos = 0;
-
-	for (int i = tilePos.y - 1; i <= tilePos.y + 1; i++)
-	{
-		for (int j = tilePos.x - 1; j <= tilePos.x + 1; j++)
-		{
-			//Ensures tiles out of bound, empty tiles as well as the original tile itself doesnt get added
-			if (i < 0 || i > NUM_ROW || j < 0 || j > NUM_COLUMN || (j == tilePos.x && i == tilePos.y) || map[j][i].tileType == NONE)
-			{
-				tileRelativePos++;
-				continue;
-			}
-
-			tileMap.insert({ static_cast<TILE_RELATIVE_POSITION>(tileRelativePos++), map[j][i] });
-		}
-	}*/
-
 	CP_Vector positions[4] = { CP_Vector_Set(tilePos.y - 1, tilePos.x), CP_Vector_Set(tilePos.y, tilePos.x - 1), CP_Vector_Set(tilePos.y, tilePos.x + 1), CP_Vector_Set(tilePos.y + 1, tilePos.x) };
 
 	for (int i = 0; i < 4; i++)
@@ -223,6 +219,12 @@ std::map<TILE_RELATIVE_POSITION, Tile> Map::getSurroundingTiles(CP_Vector tilePo
 	return tileMap;
 }
 
+/*!
+@brief	Check whether the surrounding tile is valid by checking if it within bounds and the tile is not
+		a ground tile
+@param	tilePos - tile grid pos
+@return bool - true is valid, false is not
+*//*______________________________________________________________*/
 bool Map::checkSurroundingTile(CP_Vector tilePos)
 {
 	if (tilePos.x < 0 || tilePos.x >= NUM_COLUMN || tilePos.y < 0 || tilePos.y >= NUM_ROW || map[(int)tilePos.y][(int)tilePos.x].tileType == GROUND)
@@ -299,7 +301,7 @@ bool Map::loadMap(std::string fileName)
 *//*______________________________________________________________*/
 bool Map::saveMap(std::string fileName)
 {
-	std::vector<std::vector<int>> test;
+	/*std::vector<std::vector<int>> test;
 
 	for (int i = 0; i < 32; i++)
 	{
@@ -311,9 +313,30 @@ bool Map::saveMap(std::string fileName)
 		}
 
 		test.push_back(column);
+	}*/
+
+	std::vector<std::vector<int>> mapData;
+
+	for (int i = 0; i < NUM_COLUMN; i++)
+	{
+		std::vector<int> columnData;
+
+		for (int j = 0; j < NUM_ROW; j++)
+		{
+			columnData.push_back(map[j][i].tileType);
+		}
+
+		mapData.push_back(columnData);
 	}
 
-	CSVManager::write(fileName, 32, 32, test);
+	if (CSVManager::write(fileName, NUM_ROW, NUM_COLUMN, mapData))
+	{
+		std::cout << "Write sucessful!!!!" << std::endl;
+	}
+	else
+	{
+		std::cout << "Write unsucessful!!!!" << std::endl;
+	}
 
 	return false;
 }
