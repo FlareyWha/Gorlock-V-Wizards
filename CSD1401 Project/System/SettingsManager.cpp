@@ -8,6 +8,7 @@
 #include "SettingsManager.h"
 #include "cprocessing.h"
 #include <fstream>
+#include <sstream>
 
 /*!
 @brief	Gets the SFX volume and returns it
@@ -79,4 +80,20 @@ void SettingsManager::setBGMVolume(int newVolume)
 
 	bgmVolume = newVolume;
 	file.close();
+}
+
+void SettingsManager::readVolumeSettings(void)
+{
+	std::ifstream currentBGMFile(bgmFile);
+	std::ifstream currentSFXFile(sfxFile);
+	
+	std::string line;
+
+	getline(currentBGMFile, line);
+	std::stringstream bgmSS(line);
+	bgmSS >> bgmVolume;
+
+	getline(currentSFXFile, line);
+	std::stringstream sfxSS(line);
+	sfxSS >> sfxVolume;
 }

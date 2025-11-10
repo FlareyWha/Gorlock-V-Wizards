@@ -117,5 +117,5 @@ void mainMenuExit(void)
 	//This stuff below should move to anywhere that terminates the game
 	CP_Font_Free(mainMenuFont);
 	
-	SoundManager::GetInstance()->stopBGM();
+	//SoundManager::GetInstance()->stopBGM();
 }

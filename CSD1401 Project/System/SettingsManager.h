@@ -29,4 +29,6 @@ public:
 	int getBGMVolume(void);
 	float getBGMVolumeLerp(void);
 	void setBGMVolume(int newVolume);
+
+	void readVolumeSettings(void);
 };

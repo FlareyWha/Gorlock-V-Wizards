@@ -172,6 +172,11 @@ void SoundManager::playBGM(BGM_TYPE bgmType)
 	CP_Sound_PlayAdvanced(bgmMap[bgmType], settingsManager->getBGMVolumeLerp(), 1.0f, TRUE, CP_SOUND_GROUP_0);
 }
 
+/*!
+@brief	Queue next BGM
+@param	BGM_TYPE bgmType - bgm to queue
+@return void
+*//*______________________________________________________________*/
 void SoundManager::queueNextBGM(BGM_TYPE bgmType)
 {
 	nextBgmInQueue = bgmType;
@@ -188,12 +193,21 @@ void SoundManager::stopBGM(void)
 	CP_Sound_StopGroup(CP_SOUND_GROUP_0);
 }
 
+/*!
+@brief	Refresh the bgm volume (used when changing bgm volume)
+@param	float bgmVolume - new volume to change
+@return void
+*//*______________________________________________________________*/
 void SoundManager::refreshBGMVolume(float bgmVolume)
 {
-
 	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_0, bgmVolume);
 }
 
+/*!
+@brief	Refresh the sfx volume (used when changing sfx volume)
+@param	float sfxVolume - new volume to change
+@return void
+*//*______________________________________________________________*/
 void SoundManager::refreshSFXVolume(float sfxVolume)
 {
 	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_1, sfxVolume);
