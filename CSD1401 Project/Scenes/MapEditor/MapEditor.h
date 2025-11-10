@@ -1,3 +1,10 @@
+/*!
+@file       MapEditor.h
+@author     Yap Yu Xuan Daevon (yuxuandaevon.yap)
+@brief      This file contains declaration of functions and variables
+			used for the map editor class
+*//*_______________________________________________________________________*/
+
 #pragma once
 #include "../../System/Map.h"
 
