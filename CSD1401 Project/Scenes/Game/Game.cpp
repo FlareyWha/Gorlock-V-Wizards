@@ -18,6 +18,7 @@
 #include "../../Towers/WindTower.h"
 
 #include "../../Towers/LavaTower.h"
+#include "../../Towers/FrostTower.h"
 
 #include "../../Projectiles/BaseProjectile.h"
 #include "../../Utils/Utils.h"
@@ -404,7 +405,8 @@ void gameUpdate(void)
 							// Merging
 							BaseTower* toDelete = towerList[mergeId];
 							towerList.erase(towerList.begin() + mergeId);
-							delete toDelete;
+							//delete toDelete;
+							toDelete = nullptr;
 
 							switch (game.currSelect)
 							{
@@ -412,7 +414,7 @@ void gameUpdate(void)
 								towerList.push_back(new LavaTower(tempPos));
 								break;
 							case ICETOWER:
-								towerList.push_back(new IceTower(tempPos)); // REPLACE WITH FROSTTOWER WHEN TOWER CLASS IS MADE
+								towerList.push_back(new FrostTower(tempPos));
 								break;
 							case LIGHTNINGTOWER:
 								towerList.push_back(new LightningTower(tempPos)); // REPLACE WITH STORMTOWER WHEN TOWER CLASS IS MADE
@@ -466,7 +468,7 @@ void gameUpdate(void)
 						towerList.push_back(new LavaTower(mergedPos));
 						break;
 					case TOWER_TYPE::ICETOWER:
-						towerList.push_back(new IceTower(mergedPos)); // REPLACE WITH FROSTTOWER WHEN TOWER CLASS IS MADE
+						towerList.push_back(new FrostTower(mergedPos));
 						break;
 					case TOWER_TYPE::LIGHTNINGTOWER:
 						towerList.push_back(new LightningTower(mergedPos)); // REPLACE WITH STORMTOWER WHEN TOWER CLASS IS MADE
@@ -481,7 +483,7 @@ void gameUpdate(void)
 					{
 						if (towerList[i] == dragged || towerList[i] == target)
 						{
-							delete towerList[i];
+							towerList[i] = nullptr;
 							towerList.erase(towerList.begin() + i);
 						}
 					}

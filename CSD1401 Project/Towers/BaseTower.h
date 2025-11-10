@@ -86,7 +86,7 @@ public:
 	float getSpeed();
 	// Other functions
 	void Init();
-	void Update();
+	virtual void Update();
 	virtual BaseProjectile* Attack(BaseEnemy* enemy);
 
 	void Render(void);

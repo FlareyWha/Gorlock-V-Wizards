@@ -48,6 +48,8 @@
     <ClCompile Include="Particles\Particle.cpp" />
     <ClCompile Include="Particles\FireParticle.cpp" />
     <ClCompile Include="Particles\WindParticle.cpp" />
+    <ClCompile Include="Projectiles\LightningProjectile.cpp" />
+    <ClCompile Include="Towers\FrostTower.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Towers\BaseTower.h">
@@ -98,6 +100,8 @@
     <ClInclude Include="Particles\Particle.h" />
     <ClInclude Include="Particles\FireParticle.h" />
     <ClInclude Include="Particles\WindParticle.h" />
+    <ClInclude Include="Projectiles\LightningProjectile.h" />
+    <ClInclude Include="Towers\FrostTower.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

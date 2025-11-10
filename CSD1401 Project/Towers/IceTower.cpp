@@ -1,6 +1,8 @@
 #include "IceTower.h"
 #include "../Projectiles/IceProjectile.h"
 #include "../../Projectiles/BaseProjectile.h"
+
+#include <math.h>
 IceTower::IceTower(CP_Vector position)
 {
 	this->setColor(CP_Color_Create(0, 0, 255, 255));
@@ -20,12 +22,15 @@ IceTower::~IceTower()
 BaseProjectile* IceTower::Attack(BaseEnemy* enemy)
 {
 	CP_Vector direction = CP_Vector_Normalize(CP_Vector_Set(enemy->GetLocation().x - getPosition().x, enemy->GetLocation().y - getPosition().y));
-	CP_Vector unNormDirection = CP_Vector_Set(enemy->GetLocation().x - getPosition().x, enemy->GetLocation().y - getPosition().y);
-	float angle = CP_Vector_AngleCW(this->getPosition(),enemy->GetLocation());
-	CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255));
-	CP_Settings_RectMode(CP_POSITION_CORNER);
-	CP_Graphics_DrawRectAdvanced(this->getPosition().x, this->getPosition().y, CP_Vector_Length(unNormDirection), 10.f, angle, 10.f);
-	CP_Settings_RectMode(CP_POSITION_CENTER);
+	
+	//CP_Vector unNormDirection = CP_Vector_Set(enemy->GetLocation().x - getPosition().x, enemy->GetLocation().y - getPosition().y);
+	//float angle = CP_Math_Degrees(atan2f(direction.y, direction.x));
+	//printf("%f\n", angle);
+	//CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255));
+	//CP_Settings_RectMode(CP_POSITION_CORNER);
+	//CP_Graphics_DrawRectAdvanced(this->getPosition().x, this->getPosition().y, CP_Vector_Length(unNormDirection), 10.f, angle, 10.f);
+	//CP_Settings_RectMode(CP_POSITION_CENTER);
+	
 	setCooldownTime(getCooldown());
 	return new IceProjectile(getPosition(), direction, this->getDamage(), this->getSpeed(), this->getColor());
 }
