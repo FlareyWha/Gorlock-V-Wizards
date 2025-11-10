@@ -1,5 +1,6 @@
 #include "LightningProjectile.h"
 #include "../Utils/Utils.h"
+#include "../../System/SoundManager.h"
 #include <stdio.h>
 LightningProjectile::LightningProjectile()
 {
@@ -27,6 +28,7 @@ void LightningProjectile::onHit(BaseEnemy* enemy)
 {
 	printf("chained: %d\n", counter);
 	enemy->SetHealth(enemy->GetHealth() - getProjDamage());
+	SoundManager::GetInstance()->playSFX(TOWER_LIGHTNING_ATTACK_SFX);
 }
 
 void LightningProjectile::chainHit(std::vector<BaseEnemy*> enemyList,BaseEnemy* specificEnemy)
