@@ -80,6 +80,7 @@ protected:
 public:
 
 	Tile getTile(float xPos, float yPos);
+	Tile getTileFromTilePos(int xPos, int yPos);
 	CP_Vector getTilePos(float xPos, float yPos);
 	void setTile(TILE_TYPE tile, int rowPos, int columnPos);
 

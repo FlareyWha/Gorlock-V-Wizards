@@ -172,7 +172,7 @@ void gameInit(void)
 	CP_Settings_TextSize(game.getFontSize());
 
 	gameMap = Map::GetInstance();
-	gameMap->loadMap("Map2");
+	gameMap->loadMap("Map3");
 
 	mapSize = gameMap->getDimensions();
 	gameMap->createPath(game.getSpawnLocation(), game.getSpawnLocation());

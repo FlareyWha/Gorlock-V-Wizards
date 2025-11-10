@@ -1,6 +1,14 @@
 #pragma once
 #include "../../System/Map.h"
 
+enum EDITOR_STATE
+{
+	STARTPOINT_EDIT,
+	ROAD_EDIT,
+	ENDPOINT_EDIT,
+	TOTAL_EDITOR_STATE
+};
+
 void mapEditorInit(void);
 void mapEditorUpdate(void);
 void mapEditorExit(void);
@@ -8,6 +16,8 @@ void mapEditorExit(void);
 void setNewMapTile(void);
 void deleteMapTile(void);
 
-void checkMapTileChanges(CP_Vector tilePos, bool checkInitital);
+void switchEditorState(EDITOR_STATE newState);
 
-void setUpdatedMapTile(CP_Vector initialTilePos, std::map<TILE_RELATIVE_POSITION, Tile> surroundingTiles);
+void checkRoadTileChanges(CP_Vector tilePos, bool checkInitital);
+
+void setUpdatedRoadTile(CP_Vector initialTilePos, std::map<TILE_RELATIVE_POSITION, Tile> surroundingTiles);
