@@ -39,6 +39,7 @@ void settingsUpdate(void)
 
 	CP_Font_Set(myFont);
 	CP_Font_DrawText("Settings", 100, 100);
+
 	if (CP_Input_KeyReleased(KEY_Q))
 	{
 		scenes->ChangeScenes(Scenes::MAIN_MENU_SCENE);
@@ -97,4 +98,9 @@ void settingsUpdate(void)
 void settingsExit(void)
 {
 	CP_Font_Free(myFont);
+	
+	for (int i = 0; i < 2; i++)
+	{
+		slider[i].freeResources();
+	}
 }

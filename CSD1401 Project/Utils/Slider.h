@@ -1,3 +1,10 @@
+/*!
+@file       Slider.h
+@author     Yap Yu Xuan Daevon (yuxuandaevon.yap)
+@brief      This file contains declaration of functions and variables
+			used for the slider class
+*//*_______________________________________________________________________*/
+
 #pragma once
 #include "cprocessing.h"
 
@@ -22,7 +29,6 @@ private:
 public:
 	Slider();
 	Slider(CP_Vector position, float value);
-	~Slider();
 
 	void loadImages(void);
 
@@ -41,4 +47,6 @@ public:
 	float getThumbHeight(void);
 
 	void renderSlider(CP_POSITION_MODE previousMode);
+
+	void freeResources(void);
 };

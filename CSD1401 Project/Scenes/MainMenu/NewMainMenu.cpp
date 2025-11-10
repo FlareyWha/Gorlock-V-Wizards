@@ -67,7 +67,10 @@ void NewMainMenu::ButtonDraw()
 void NewMainMenu::HandleClicks()
 {
 	if (startButton->IsClicked())
+	{
+		SoundManager::GetInstance()->stopBGM();
 		scene->ChangeScenes(Scenes::GAME_SCENE);
+	}
 
 	else if (settingsButton->IsClicked())
 		scene->ChangeScenes(Scenes::SETTINGS_SCENE);
