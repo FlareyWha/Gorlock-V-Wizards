@@ -6,6 +6,7 @@
 #include "../../System/SettingsManager.h"
 #include "../../System/SoundManager.h"
 #include "../../System/SceneManager.h"
+#include "../../Utils/Button.h"
 #include <iostream>
 #include <stdlib.h>
 
@@ -18,6 +19,7 @@ int currentActiveSliderIndex = -1;
 SceneManager* scenes;
 SettingsManager* settings;
 SoundManager* sound;
+Button Backbutton(0, 0, 0, 0, "");
 
 void settingsInit(void)
 {
@@ -31,6 +33,10 @@ void settingsInit(void)
 
 	//1 is SFX
 	slider[1] = Slider(CP_Vector_Set(800, 600), settings->getSFXVolume());
+
+	scenes = SceneManager::GetInstance();
+
+	Backbutton = Button(CP_System_GetWindowWidth()/2, 750, 150, 50, "Back");
 }
 
 void settingsUpdate(void)
@@ -93,6 +99,14 @@ void settingsUpdate(void)
 
 	sprintf_s(buffer, 50, "SFX: %i", settings->getSFXVolume());
 	CP_Font_DrawText(buffer, 800, 500);
+
+	Backbutton.Draw();
+
+	if (Backbutton.IsClicked())
+	{
+		scenes->ChangeScenes(Scenes::MAIN_MENU_SCENE);
+	}
+
 }
 
 void settingsExit(void)

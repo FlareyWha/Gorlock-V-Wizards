@@ -8,6 +8,7 @@
 #include "cprocessing.h"
 #include "../../System/WaveManager.h"
 #include "../../Towers/BaseTower.h"	
+#include "../../Utils/Button.h"
 #include <string>
 enum currSelected {
 	FIRETOWER,
@@ -32,6 +33,8 @@ private:
 	int health = 3;
 	float fontSize = 12.0f;
 	int moneys = 300;
+	Button* quit;
+	Button* settings;
 
 	float imageScaling = 6.0f;
 	CP_Vector spawnLocation = CP_Vector_Set(24.0f, 24.0f);
@@ -48,7 +51,8 @@ public:
 	void gainMoneys(int moneyAmt);
 	void drawMoneys(float x,float y);
 
-
+	void ButtonInit();
+	void ButtonDraw();
 
 	void drawHeart(float x,float y);
 	int getHealth(void);

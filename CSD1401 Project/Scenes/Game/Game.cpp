@@ -161,6 +161,18 @@ CP_Vector Game::getSpawnLocation()
 	return spawnLocation;
 }
 
+void Game::ButtonInit()
+{
+	quit = new Button(1380, 850, 130, 50, "Quit");
+	settings = new Button(1380, 750, 130, 50, "Settings");
+}
+
+void Game::ButtonDraw()
+{
+	quit->Draw();
+	settings->Draw();
+}
+
 void gameInit(void)
 {	
 	font = CP_Font_Load(FILE_PATH);
@@ -171,6 +183,8 @@ void gameInit(void)
 	CP_Font_Set(font);
 	game.setFontSize(20);
 	CP_Settings_TextSize(game.getFontSize());
+
+	game.ButtonInit();
 
 	gameMap = Map::GetInstance();
 	gameMap->loadMap("Map3");
@@ -232,6 +246,8 @@ void gameUpdate(void)
 
 	SoundManager::GetInstance()->Update();
 	gameMap->renderMap();
+
+	game.ButtonDraw();
 
 	for (int i = 0; i < (sizeof(game.uiElements) / sizeof(game.uiElements[0])); i++)
 	{
