@@ -577,31 +577,62 @@ void gameUpdate(void)
 	// render and update towers, check for nearby enemies and target them
 	for (BaseTower* tower : towerList)
 	{
-		tower->Update();
-		tower->Render();
-
 		bool bossNearby = false;
-
-		for (BaseEnemy* enemy : enemiesList)
+		
+		FrostTower* frostTower = dynamic_cast<FrostTower*>(tower);
+		if (frostTower && !enemiesList.empty())
 		{
+			frostTower->TrackEnemy(enemiesList);
+			frostTower->Update();
 
-			if (areCirclesIntersecting(tower->getPosition(), tower->getDetectionDistance(),
-				enemy->GetLocation(), enemy->GetSpriteSize() / 2.0f) &&
-				tower->getCooldownTime() <= 0.f)
+			if (frostTower->getCooldownTime() <= 0.f && frostTower->trackedEnemy)
 			{
-				projectileList.push_back(tower->Attack(enemy));
+				printf("%f %f\n", frostTower->trackedEnemy->GetLocation().x, frostTower->trackedEnemy->GetLocation().y);
+				projectileList.push_back(frostTower->Attack(frostTower->trackedEnemy));
 			}
 
-			// Check if a boss is nearby
-			if (BossEnemy* boss = dynamic_cast<BossEnemy*>(enemy))
+
+			// Boss check for FrostTower
+			for (BaseEnemy* enemy : enemiesList)
 			{
-				float distance = CP_Vector_Distance(tower->getPosition(), boss->GetLocation());
-				if (distance < 100.0f) // matches the aura radius exactly
+				if (BossEnemy* boss = dynamic_cast<BossEnemy*>(enemy))
 				{
-					bossNearby = true;
+					float distance = CP_Vector_Distance(tower->getPosition(), boss->GetLocation());
+					if (distance < 100.0f)
+					{
+						bossNearby = true;
+					}
+				}
+			}	
+		}
+		else
+		{
+			tower->Update();
+
+
+			for (BaseEnemy* enemy : enemiesList)
+			{
+
+				if (areCirclesIntersecting(tower->getPosition(), tower->getDetectionDistance(),
+					enemy->GetLocation(), enemy->GetSpriteSize() / 2.0f) &&
+					tower->getCooldownTime() <= 0.f)
+				{
+					projectileList.push_back(tower->Attack(enemy));
+					break;
+				}
+
+				// Check if a boss is nearby
+				if (BossEnemy* boss = dynamic_cast<BossEnemy*>(enemy))
+				{
+					float distance = CP_Vector_Distance(tower->getPosition(), boss->GetLocation());
+					if (distance < 100.0f) // matches the aura radius exactly
+					{
+						bossNearby = true;
+					}
 				}
 			}
 		}
+		tower->Render();
 
 		if (bossNearby != tower->slowed())
 		{
