@@ -20,6 +20,8 @@ FrostTower::~FrostTower()
 
 void FrostTower::Update()
 {
+	cooldownTime -= 1.f * CP_System_GetDt();
+
 	if (trackedEnemy)
 	{
 		//printf("%f %f\n", trackedEnemy->GetLocation().x, trackedEnemy->GetLocation().y);
