@@ -44,6 +44,7 @@
     <ClCompile Include="System\Singleton.cpp" />
     <ClCompile Include="System\SoundManager.cpp" />
     <ClCompile Include="Towers\BaseTower.cpp" />
+    <ClCompile Include="Utils\Rand.cpp" />
     <ClCompile Include="Utils\Slider.cpp" />
     <ClCompile Include="Utils\Utils.cpp" />
     <ClCompile Include="Towers\WindTower.cpp" />
@@ -85,6 +86,7 @@
     <ClInclude Include="System\SingletonTemplate.h" />
     <ClInclude Include="System\SoundManager.h" />
     <ClInclude Include="Towers\BaseTower.h" />
+    <ClInclude Include="Utils\Rand.h" />
     <ClInclude Include="Utils\Slider.h" />
     <ClInclude Include="Utils\Utils.h" />
     <ClInclude Include="Towers\WindTower.h" />
