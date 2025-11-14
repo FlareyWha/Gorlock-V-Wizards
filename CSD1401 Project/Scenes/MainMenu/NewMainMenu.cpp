@@ -68,6 +68,7 @@ void NewMainMenu::HandleClicks()
 {
 	if (startButton->IsClicked())
 	{
+		Map::GetInstance()->setLoadEditedMap(false);
 		SoundManager::GetInstance()->stopBGM();
 		scene->ChangeScenes(Scenes::GAME_SCENE);
 	}

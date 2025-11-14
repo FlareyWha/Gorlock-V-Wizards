@@ -7,10 +7,10 @@
 
 #include "MapEditor.h"
 #include "cprocessing.h"
-#include "../../System/Map.h"
 #include "../../Utils/Button.h"
 #include "../../System/SceneManager.h"
 #include "../../Utils/Utils.h"
+#include "../../System/SoundManager.h"
 #include <iostream>
 #include <map>
 #include "../../Enemies/SpeedsterEnemy.h"
@@ -81,6 +81,12 @@ void mapEditorUpdate(void)
 		showSavedText = true;
 		savedTextTimer = 3.f;
 	}
+	else if (play.IsClicked() && playable)
+	{
+		mapEditorMap->setLoadEditedMap(true);
+		SoundManager::GetInstance()->stopBGM();
+		SceneManager::GetInstance()->ChangeScenes(Scenes::GAME_SCENE);
+	}
 	else if (startpointSwitch.IsClicked())
 	{
 		currentEditorState = STARTPOINT_EDIT;
@@ -115,6 +121,10 @@ void mapEditorUpdate(void)
 	//Render buttons
 	back.Draw();
 	save.Draw();
+	if (playable)
+	{
+		play.Draw();
+	}
 	startpointSwitch.Draw();
 	roadSwitch.Draw();
 	endpointSwitch.Draw();
@@ -423,7 +433,7 @@ void testMap(void)
 {
 	mapEditorMap->setSpawnpoint(mapEditorMap->getTileWorldPos(startpointTilePos));
 
-	testEnemy = new SpeedsterEnemy(mapEditorMap->getSpawnpoint());
+	testEnemy = new SpeedsterEnemy(mapEditorMap->getSpawnpoint(), 1000.f);
 
 	testing = true;
 }
@@ -436,7 +446,7 @@ void updateTestEnemy(void)
 
 		delete testEnemy;
 
-		saveSucessful = mapEditorMap->saveMap("Edit");
+		saveSucessful = playable = mapEditorMap->saveMap("Edit");
 	}
 	else if (mapEditorMap->getTile(testEnemy->GetLocation().x, testEnemy->GetLocation().y).tileType == TILE_TYPE::GROUND)
 	{
@@ -444,7 +454,7 @@ void updateTestEnemy(void)
 
 		delete testEnemy;
 
-		saveSucessful = false;
+		saveSucessful = playable = false;
 	}
 	else
 	{

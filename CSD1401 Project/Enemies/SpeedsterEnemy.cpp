@@ -14,6 +14,20 @@ SpeedsterEnemy::SpeedsterEnemy(CP_Vector location)
 	RandomizeTurn();
 }
 
+SpeedsterEnemy::SpeedsterEnemy(CP_Vector location, float speed)
+{
+	SetLocation(location);
+	SetHealth(5.f);
+	SetMaxHealth(5.f);
+	SetSpeed(200.0f);
+	SetMaxSpeed(speed);
+	SetSprite(CP_Image_Load("Assets/Enemies/Speedster.png"));
+	SetSpriteLeft(CP_Image_Load("Assets/Enemies/Speedster_Left.png"));
+	SetReward(50);
+	SetEnemyType(EnemyType::SPEEDSTER);
+	RandomizeTurn();
+}
+
 SpeedsterEnemy::~SpeedsterEnemy()
 {
 	CP_Image_Free(GetSprite());
