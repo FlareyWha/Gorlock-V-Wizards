@@ -121,6 +121,8 @@ void mapEditorUpdate(void)
 	}
 
 	CP_Font_Set(mapEditorFont);
+
+	CP_Settings_TextSize(25.f);
 	CP_Font_DrawText("Current Editor State: ", 1450, 100);
 	switch (currentEditorState)
 	{
@@ -164,7 +166,10 @@ void mapEditorUpdate(void)
 				showSavedText = false;
 			}
 		}
+
 	}
+
+	CP_Settings_TextSize(20.f);
 }
 
 void mapEditorExit(void)
