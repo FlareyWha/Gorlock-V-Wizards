@@ -183,6 +183,13 @@ CP_Vector Map::getTilePos(float xPos, float yPos)
 	return CP_Vector_Set(rowPos, columnPos);
 }
 
+CP_Vector Map::getTileWorldPos(CP_Vector tilePos)
+{
+	Tile tile = map[(int)tilePos.x][(int)tilePos.y];
+
+	return tile.pos;
+}
+
 /*!
 @brief	Set tile type based on given grid position
 @param	rowPos - tile grid row pos
@@ -273,8 +280,19 @@ int Map::getNumRow(void)
 *//*______________________________________________________________*/
 bool Map::loadMap(std::string fileName)
 {
+	std::string file;
+
+	if (loadEditedMap)
+	{
+		file = "Edit";
+	}
+	else
+	{
+		file = fileName;
+	}
+
 	//Get the map data from reading the file
-	std::vector<std::vector<int>> mapData = CSVManager::read(fileName, NUM_COLUMN, NUM_ROW);
+	std::vector<std::vector<int>> mapData = CSVManager::read(file, NUM_COLUMN, NUM_ROW);
 
 	//Reset the map
 	resetMap(true);
@@ -430,6 +448,16 @@ int Map::getTileSize()
 }
 
 /*!
+@brief	Set the bool that controls whether to load the edited map
+@param	bool loadEditedMap - the new value to set
+@return void
+*//*______________________________________________________________*/
+void Map::setLoadEditedMap(bool loadEditedMap)
+{
+	this->loadEditedMap = loadEditedMap;
+}
+
+/*!
 @brief	Get spawnpoint of the enemies
 @param	void
 @return CP_Vector - vector of spawnpoint
@@ -437,5 +465,15 @@ int Map::getTileSize()
 CP_Vector Map::getSpawnpoint(void)
 {
 	return spawnpoint;
+}
+
+/*!
+@brief	Set spawnpoint of the enemies
+@param	CP_Vector - vector of spawnpoint
+@return void
+*//*______________________________________________________________*/
+void Map::setSpawnpoint(CP_Vector spawnpoint)
+{
+	this->spawnpoint = spawnpoint;
 }
 
