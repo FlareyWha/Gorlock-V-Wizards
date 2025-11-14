@@ -113,7 +113,8 @@ void BaseProjectile::setLifespan(float lifespan)
 
 void BaseProjectile::onHit(BaseEnemy* enemy)
 {
-	enemy->SetHealth(enemy->GetHealth() - damage);
+	enemy->SetHealth(enemy->GetHealth() - this->getProjDamage());
+	printf("hitting");
 }
 
 void BaseProjectile::chainHit(std::vector<BaseEnemy*> enemyList,BaseEnemy* specificEnemy)

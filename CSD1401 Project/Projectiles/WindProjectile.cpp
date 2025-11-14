@@ -18,6 +18,7 @@ WindProjectile::~WindProjectile()
 void WindProjectile::onHit(BaseEnemy* enemy)
 {
     // Wind effect: maybe push enemy, or just damage
+    printf("Curr Damage: %f", this->getProjDamage());
     enemy->SetHealth(enemy->GetHealth() - getProjDamage());
 }
 

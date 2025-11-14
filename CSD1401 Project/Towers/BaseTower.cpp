@@ -127,7 +127,7 @@ void BaseTower::setDamage(float damage)
 void BaseTower::setLevel(int level)
 {
 	this->level = level;
-	CP_Math_ClampInt(this->level, 0, 5);
+	CP_Math_ClampInt(this->level, 0, 3);
 }
 
 void BaseTower::setMaxLevel(int level)
@@ -137,9 +137,14 @@ void BaseTower::setMaxLevel(int level)
 
 void BaseTower::levelUp()
 {
-	this->level++;
-	this->setUpgradeCosts(levelUpCosts * level);
-	CP_Math_ClampInt(level, 1, maxLevel);
+	printf("Level: %d\n", this->getLevel());
+	printf("UpgradeCosts: %d\n", this->getUpgradeCosts());
+	if (level != maxLevel)
+	{
+		this->level++;
+		this->setUpgradeCosts(levelUpCosts * level);
+		CP_Math_ClampInt(level, 1, maxLevel);
+	}
 }
 
 int BaseTower::getLevel()
@@ -188,6 +193,31 @@ BaseProjectile* BaseTower::Attack(BaseEnemy* enemy)
 	setCooldownTime(getCooldown());
 	return new BaseProjectile(this->getPosition(),direction,this->damage,this->projSpeed,this->getColor());
 }
+BaseProjectile* BaseTower::SpawnMissiles(BaseEnemy* enemy)
+{
+	CP_Vector direction = CP_Vector_Normalize(CP_Vector_Set(enemy->GetLocation().x - getPosition().x, enemy->GetLocation().y - getPosition().y));
+	setCooldownTime(getCooldown());
+	return new BaseProjectile(this->getPosition(), direction, this->damage, this->projSpeed, this->getColor());
+}
+float BaseTower::getMaxMissileCD()
+{
+	return maxMissileCooldown;
+}
+
+float BaseTower::getMissileCD()
+{
+	return missileCooldown;
+}
+
+void BaseTower::setMaxMissileCD(float maxCD)
+{
+	this->maxMissileCooldown = maxCD;
+}
+
+void BaseTower::setMissleCD(float cd)
+{
+	this->missileCooldown = cd;
+}
 
 
 void BaseTower::setColor(CP_Color color)
@@ -202,6 +232,7 @@ void BaseTower::Init()
 void BaseTower::Update()
 {
 	cooldownTime -= 1.f * CP_System_GetDt();
+	missileCooldown -= 1.f * CP_System_GetDt();
 }
 
 void BaseTower::Render()

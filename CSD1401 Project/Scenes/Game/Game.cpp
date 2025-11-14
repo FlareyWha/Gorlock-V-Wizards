@@ -19,6 +19,7 @@
 
 #include "../../Towers/LavaTower.h"
 #include "../../Towers/FrostTower.h"
+#include "../../Towers/HurricaneTower.h"
 
 #include "../../Projectiles/BaseProjectile.h"
 #include "../../Utils/Utils.h"
@@ -170,6 +171,29 @@ void Game::ButtonDraw()
 	nextWave->Draw();
 }
 
+void drawRect(float posX, float posY, float rectWidth, float rectHeight, float angle, float cornerRadius, CP_Color rectColor)
+{
+	CP_Settings_Fill(rectColor);
+	CP_Graphics_DrawRectAdvanced(posX, posY, rectWidth, rectHeight, angle, cornerRadius);
+	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
+}
+
+void drawText(const char* text, float xPos, float yPos)
+{
+	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_LEFT, CP_TEXT_ALIGN_V_MIDDLE);
+	CP_Font_DrawTextBox(text, xPos, yPos, sizeof(text) * game.getFontSize());
+	if (CP_Input_KeyDown(KEY_F))
+	{
+		game.setFontSize(game.getFontSize() + 1);
+		CP_Settings_TextSize(game.getFontSize());
+	}
+	else if (CP_Input_KeyDown(KEY_G))
+	{
+		game.setFontSize(game.getFontSize() - 1);
+		CP_Settings_TextSize(game.getFontSize());
+	}
+	//drawText("hoorah",CP_Input_GetMouseX(), CP_Input_GetMouseY());
+}
 void gameInit(void)
 {	
 	font = CP_Font_Load(FILE_PATH);
@@ -184,7 +208,7 @@ void gameInit(void)
 	game.ButtonInit();
 
 	gameMap = Map::GetInstance();
-	gameMap->loadMap("Edit2");
+	gameMap->loadMap("Edit3");
 
 	mapSize = gameMap->getDimensions();
 
@@ -395,7 +419,7 @@ void gameUpdate(void)
 								break;
 							}
 							for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]); i++)
-							{
+							{	
 								if (game.currSelect != LEVELUP)
 								{
 									game.loseMoneys(game.uiElements[i].towerCost);
@@ -481,7 +505,7 @@ void gameUpdate(void)
 						towerList.push_back(new LightningTower(mergedPos)); // REPLACE WITH STORMTOWER WHEN TOWER CLASS IS MADE
 						break;
 					case TOWER_TYPE::WINDTOWER:
-						towerList.push_back(new WindTower(mergedPos)); // REPLACE WITH HURRICANETOWER WHEN TOWER CLASS IS MADE
+						towerList.push_back(new HurricaneTower(mergedPos)); // REPLACE WITH HURRICANETOWER WHEN TOWER CLASS IS MADE
 						break;
 					}
 
@@ -573,7 +597,7 @@ void gameUpdate(void)
 	for (BaseTower* tower : towerList)
 	{
 		bool bossNearby = false;
-		
+
 		FrostTower* frostTower = dynamic_cast<FrostTower*>(tower);
 		if (frostTower && !enemiesList.empty())
 		{
@@ -598,7 +622,7 @@ void gameUpdate(void)
 						bossNearby = true;
 					}
 				}
-			}	
+			}
 		}
 		else
 		{
@@ -613,6 +637,13 @@ void gameUpdate(void)
 					tower->getCooldownTime() <= 0.f)
 				{
 					projectileList.push_back(tower->Attack(enemy));
+					if (tower->getTowerType() == TOWER_TYPE::HURRICANETOWER)
+					{
+						if (tower->getMissileCD() <= 0.f)
+						{
+							projectileList.push_back(tower->SpawnMissiles(enemy));
+						}
+					}
 					break;
 				}
 
@@ -644,9 +675,24 @@ void gameUpdate(void)
 		}
 
 		//check if my current selected is leveling up
-		if (game.currSelect == LEVELUP )
+		if (game.currSelect == LEVELUP)
 		{
-			if (game.getMoneys() < tower->getUpgradeCosts() || tower->getLevel() == tower->getMaxLevel())
+			std::string cost = std::to_string(tower->getUpgradeCosts());
+			if (tower->getLevel() != tower->getMaxLevel() && tower->getTowerType() != TOWER_TYPE::HURRICANETOWER
+				&& tower->getTowerType() != TOWER_TYPE::LAVATOWER && tower->getTowerType() != TOWER_TYPE::STORMTOWER
+				&& tower->getTowerType() != TOWER_TYPE::FROSTTOWER)
+			{
+				drawText(cost.c_str(), tower->getPosition().x, tower->getPosition().y);
+			}
+			else if (tower->getLevel() == tower->getMaxLevel() || tower->getTowerType() == TOWER_TYPE::HURRICANETOWER
+				|| tower->getTowerType() == TOWER_TYPE::LAVATOWER || tower->getTowerType() == TOWER_TYPE::STORMTOWER
+				|| tower->getTowerType() == TOWER_TYPE::FROSTTOWER)
+			{
+				drawText("MAX", tower->getPosition().x, tower->getPosition().y);
+			}
+			if (game.getMoneys() < tower->getUpgradeCosts() || tower->getLevel() == tower->getMaxLevel()
+				|| tower->getTowerType() == TOWER_TYPE::HURRICANETOWER || tower->getTowerType() == TOWER_TYPE::LAVATOWER 
+				|| tower->getTowerType() == TOWER_TYPE::STORMTOWER || tower->getTowerType() == TOWER_TYPE::FROSTTOWER)
 			{
 				tower->setOpacity(100.f);
 			}
@@ -660,8 +706,8 @@ void gameUpdate(void)
 				{
 					if (CP_Input_MouseTriggered(MOUSE_BUTTON_1))
 					{
-						tower->levelUp();
 						game.loseMoneys(tower->getUpgradeCosts());
+						tower->levelUp();
 					}
 				}
 				
@@ -728,28 +774,4 @@ void gameExit(void)
 	SoundManager::GetInstance()->stopBGM();
 }
 
-void drawRect(float posX, float posY, float rectWidth, float rectHeight, float angle, float cornerRadius, CP_Color rectColor)
-{
-	CP_Settings_Fill(rectColor);
-	CP_Graphics_DrawRectAdvanced(posX, posY, rectWidth, rectHeight, angle,cornerRadius);
-	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-}
-
-void drawText(const char* text, float xPos,float yPos)
-{
-	CP_Font_DrawTextBox(text, xPos, yPos, sizeof(text) * game.getFontSize());
-		game.takeDamage(1);
-	
-	if (CP_Input_KeyDown(KEY_F))
-	{
-		game.setFontSize(game.getFontSize() + 1);
-		CP_Settings_TextSize(game.getFontSize());
-	}
-	else if (CP_Input_KeyDown(KEY_G))
-	{
-		game.setFontSize(game.getFontSize() - 1);
-		CP_Settings_TextSize(game.getFontSize());
-	}
-	//drawText("hoorah",CP_Input_GetMouseX(), CP_Input_GetMouseY());
-}
 
