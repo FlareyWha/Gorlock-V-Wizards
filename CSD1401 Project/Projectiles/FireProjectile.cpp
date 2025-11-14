@@ -24,7 +24,7 @@ void FireProjectile::onHit(BaseEnemy* enemy)
 
 void FireProjectile::SpawnParticles()
 {
-    for (int i = 0; i < 2; ++i)
+    for (int i = 0; i < 1; ++i)
     {
         CP_Vector vel = CP_Vector_Set(
             ((rand() % 20) - 10) * 0.05f,

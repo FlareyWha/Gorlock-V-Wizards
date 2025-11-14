@@ -39,6 +39,7 @@ private:
 	float imageScaling = 6.0f;
 	CP_Vector spawnLocation = CP_Vector_Set(24.0f, 24.0f);
 public:
+	bool toggle = false;
 	void drawRect(float posX, float posY, float rectWidth, float rectHeight, float angle = 0.0f, float cornerRadius = 0.0f, CP_Color rectColor = { 100,100,100,255 });
 	void drawText(const char* text, float xPos, float yPos);
 

@@ -218,6 +218,7 @@ void gameInit(void)
 
 	game.levelUpUI.image = CP_Image_Load("./Assets/UI/levelup.png");
 	game.levelUpUI.pos = CP_Vector_Set(1500, 800);
+	game.levelUpUI.selection = LEVELUP;
 	game.levelUpUI.towerCost = 0;
 
 	game.uiElements[0] = game.fireTowerUI;
@@ -240,7 +241,7 @@ void gameInit(void)
 
 void gameUpdate(void)
 {
-
+	printf("%d\n", game.currSelect);
 	CP_Graphics_ClearBackground(CP_Color_Create(132, 198, 105, 255));
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 
@@ -251,26 +252,23 @@ void gameUpdate(void)
 
 	for (int i = 0; i < (sizeof(game.uiElements) / sizeof(game.uiElements[0])); i++)
 	{
-		if (game.getMoneys() < game.uiElements[i].towerCost)
+		if (CP_Input_MouseTriggered(MOUSE_BUTTON_1))
+		{
+			if ((isAreaClicked(game.uiElements[i].pos, game.uiElements[i].size, game.uiElements[i].size, CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY()))) && game.getMoneys() >= game.uiElements[i].towerCost)
+			{
+				if (game.currSelect != game.uiElements[i].selection)
+					game.currSelect = game.uiElements[i].selection;
+				else
+					game.currSelect = NONE_TOWER;
+			}
+		}
+		if (game.getMoneys() < game.uiElements[i].towerCost || game.currSelect == game.uiElements[i].selection)
 		{
 			game.uiElements[i].opacity = 100;
 		}
 		else
 			game.uiElements[i].opacity = 255;
 		CP_Image_Draw(game.uiElements[i].image, game.uiElements[i].pos.x, game.uiElements[i].pos.y, game.uiElements[i].size, game.uiElements[i].size, game.uiElements[i].opacity);
-	}
-	// MOUSE CLICKED
-	if (CP_Input_MouseTriggered(MOUSE_BUTTON_1))
-	{
-		for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]); i++)
-		{
-			if( (isAreaClicked(game.uiElements[i].pos,game.uiElements[i].size,game.uiElements[i].size,CP_Vector_Set(CP_Input_GetMouseX(),CP_Input_GetMouseY()))) && game.getMoneys() >= game.uiElements[i].towerCost)
-			{
-				game.currSelect = game.uiElements[i].selection;
-				game.uiElements[i].opacity = 100;
-			}
-
-		}
 	}
 	
 	// MOUSE DOWN
@@ -302,7 +300,7 @@ void gameUpdate(void)
 			for (BaseTower* tower : towerList)
 			{
 				float dist = CP_Vector_Distance(tower->getPosition(), CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY()));
-				if (dist <= 24.f && !game.grabbingTower)
+				if (dist <= 24.f && !game.grabbingTower && game.currSelect!=LEVELUP)
 				{
 					if (tower->getTowerType() == TOWER_TYPE::FIRETOWER
 						|| tower->getTowerType() == TOWER_TYPE::ICETOWER
@@ -314,7 +312,6 @@ void gameUpdate(void)
 					}
 				}
 			}
-
 			if (game.currentTower->getImage() != NULL && game.grabbingTower)
 				CP_Image_Draw(game.currentTower->getImage(), CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
 		}
@@ -325,10 +322,6 @@ void gameUpdate(void)
 	{
 		if (game.currSelect != NONE_TOWER && game.currSelect != LEVELUP)
 		{
-			for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]); i++)
-			{
-				game.uiElements[i].opacity = 255;
-			}
 			if ((CP_Input_GetMouseX() >= 0 && CP_Input_GetMouseX() <= gameMap->getTileSize() * mapSize.x)
 				&& (CP_Input_GetMouseY() >= 0 && CP_Input_GetMouseY() <= gameMap->getTileSize() * mapSize.y))
 			{
@@ -337,7 +330,7 @@ void gameUpdate(void)
 				{
 					CP_Vector tempPos = gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).pos;
 					bool notOverlapping = true;
-					printf("%d", game.currSelect);
+					
 					if (towerList.empty())
 					{
 						switch (game.currSelect)
@@ -365,7 +358,7 @@ void gameUpdate(void)
 						}
 						for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]); i++)
 						{
-							if (game.currSelect == game.uiElements[i].selection)
+							if (game.currSelect != LEVELUP)
 							{
 								game.loseMoneys(game.uiElements[i].towerCost);
 								break;
@@ -407,7 +400,7 @@ void gameUpdate(void)
 							}
 							for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]); i++)
 							{
-								if (game.currSelect == game.uiElements[i].selection)
+								if (game.currSelect != LEVELUP)
 								{
 									game.loseMoneys(game.uiElements[i].towerCost);
 									break;
@@ -416,36 +409,38 @@ void gameUpdate(void)
 							game.currSelect = NONE_TOWER;
 							SoundManager::GetInstance()->playSFX(TOWER_PLACE_SFX);
 						}
-						else
-						{
-							// Merging
-							BaseTower* toDelete = towerList[mergeId];
-							towerList.erase(towerList.begin() + mergeId);
-							//delete toDelete;
-							toDelete = nullptr;
-
-							switch (game.currSelect)
-							{
-							case FIRETOWER:
-								towerList.push_back(new LavaTower(tempPos));
-								break;
-							case ICETOWER:
-								towerList.push_back(new FrostTower(tempPos));
-								break;
-							case LIGHTNINGTOWER:
-								towerList.push_back(new LightningTower(tempPos)); // REPLACE WITH STORMTOWER WHEN TOWER CLASS IS MADE
-								break;
-							case WINDTOWER:
-								towerList.push_back(new WindTower(tempPos)); // REPLACE WITH HURRICANETOWER WHEN TOWER CLASS IS MADE
-								break;
-							}
-
-							SoundManager::GetInstance()->playSFX(TOWER_MERGE_SFX);
-						}
+						//else
+						//{
+						//	// Merging
+						//	BaseTower* toDelete = towerList[mergeId];
+						//	towerList.erase(towerList.begin() + mergeId);
+						//	//delete toDelete;
+						//	toDelete = nullptr;
+						//
+						//	switch (game.currSelect)
+						//	{
+						//	case FIRETOWER:
+						//		towerList.push_back(new LavaTower(tempPos));
+						//		break;
+						//	case ICETOWER:
+						//		towerList.push_back(new FrostTower(tempPos));
+						//		break;
+						//	case LIGHTNINGTOWER:
+						//		towerList.push_back(new LightningTower(tempPos)); // REPLACE WITH STORMTOWER WHEN TOWER CLASS IS MADE
+						//		break;
+						//	case WINDTOWER:
+						//		towerList.push_back(new WindTower(tempPos)); // REPLACE WITH HURRICANETOWER WHEN TOWER CLASS IS MADE
+						//		break;
+						//	}
+						//
+						//	SoundManager::GetInstance()->playSFX(TOWER_MERGE_SFX);
+						//}
 					}
 				}
 			}
+			game.currSelect = NONE_TOWER;
 		}
+		
 		else if (game.grabbingTower && game.currentTower)
 		{
 			int targetId = -1;
@@ -473,7 +468,7 @@ void gameUpdate(void)
 				BaseTower* dragged = game.currentTower;
 				BaseTower* target = towerList[targetId];
 
-				if (dragged->getTowerType() == target->getTowerType())
+				if (dragged->getTowerType() == target->getTowerType() && dragged->getLevel() == dragged->getMaxLevel() && target->getLevel() == target->getMaxLevel())
 				{
 					CP_Vector mergedPos = target->getPosition();
 					TOWER_TYPE type = target->getTowerType();
@@ -526,19 +521,7 @@ void gameUpdate(void)
 
 	game.waveManager->Update(&enemiesList);
 
-	if (CP_Input_KeyReleased(KEY_SPACE))
-	{
-		CP_Vector dir = CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY());
-		if (towerList.size())
-		{
-			for (BaseTower* tower : towerList)
-			{
-				tower->Update();
-				tower->Render();
-				projectileList.push_back(new BaseProjectile(tower->getPosition(),dir,tower->getDamage(),tower->getSpeed(), tower->getColor()));
-			}
-		}
-	}
+		//game.waveManager->SpawnWave(game.getSpawnLocation());
 	if (CP_Input_KeyReleased(KEY_1))
 		enemiesList.push_back(new BasicEnemy(game.getSpawnLocation()));
 	if (CP_Input_KeyReleased(KEY_2))
@@ -662,6 +645,35 @@ void gameUpdate(void)
 				printf("Boss left range, resetting cooldown\n");
 				tower->ResetCooldown();
 			}
+		}
+
+		//check if my current selected is leveling up
+		if (game.currSelect == LEVELUP )
+		{
+			if (game.getMoneys() < tower->getUpgradeCosts() || tower->getLevel() == tower->getMaxLevel())
+			{
+				tower->setOpacity(100.f);
+			}
+			else
+			{
+				tower->setOpacity(255.f);
+				CP_Vector tempPos = gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).pos;
+
+				float dist = CP_Vector_Distance(tower->getPosition(), CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY()));
+				if (dist <= 24.f)
+				{
+					if (CP_Input_MouseTriggered(MOUSE_BUTTON_1))
+					{
+						tower->levelUp();
+						game.loseMoneys(tower->getUpgradeCosts());
+					}
+				}
+				
+			}
+		}
+		else if (game.currSelect != LEVELUP)
+		{
+			tower->setOpacity(255.f);
 		}
 	}
 

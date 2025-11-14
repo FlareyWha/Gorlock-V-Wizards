@@ -10,6 +10,9 @@ FireTower::FireTower(CP_Vector position)
 	this->setSpeed(100.f);
 	setCooldown(1.0f);
 	setTowerType(TOWER_TYPE::FIRETOWER);
+	setLevel(1);
+	setMaxLevel(3);
+	setUpgradeCosts(50);
 }
 
 FireTower::~FireTower()

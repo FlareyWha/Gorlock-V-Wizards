@@ -130,9 +130,41 @@ void BaseTower::setLevel(int level)
 	CP_Math_ClampInt(this->level, 0, 5);
 }
 
+void BaseTower::setMaxLevel(int level)
+{
+	this->maxLevel = level;
+}
+
+void BaseTower::levelUp()
+{
+	this->level++;
+	this->setUpgradeCosts(levelUpCosts * level);
+	CP_Math_ClampInt(level, 1, maxLevel);
+}
+
 int BaseTower::getLevel()
 {
 	return this->level;
+}
+
+int BaseTower::getMaxLevel()
+{
+	return this->maxLevel;
+}
+
+int BaseTower::getUpgradeCosts()
+{
+	return levelUpCosts;
+}
+
+void BaseTower::setUpgradeCosts(int cost)
+{
+	this->levelUpCosts = cost;
+}
+
+void BaseTower::setOpacity(float opacity)
+{
+	this->towerOpacity = opacity;
 }
 
 CP_Color BaseTower::getColor()
@@ -174,7 +206,7 @@ void BaseTower::Update()
 
 void BaseTower::Render()
 {
-	CP_Image_Draw(towerSprite, position.x, position.y, spriteSize, spriteSize, 255);
+	CP_Image_Draw(towerSprite, position.x, position.y, spriteSize, spriteSize, towerOpacity);
 }
 
 void BaseTower::ApplySlowdown(float multiplier)

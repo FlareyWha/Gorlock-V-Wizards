@@ -27,9 +27,10 @@ bool BaseEnemy::IsSlowed()
     return slowed;
 }
 
-void BaseEnemy::Slow(bool slow)
+void BaseEnemy::Slow(bool slow,float slowFactor)
 {
     this->slowed = slow;
+    this->slowFactor = slowFactor;
 }
 
 bool BaseEnemy::IsBurned()
@@ -166,7 +167,7 @@ void BaseEnemy::Move(Map* map)
     }
     else
     {
-        SetSpeed(GetMaxSpeed() / 2.0f);
+        SetSpeed(GetMaxSpeed() * slowFactor);
     }
     if (burned == true)
     {
@@ -179,7 +180,6 @@ void BaseEnemy::Move(Map* map)
     if (dotTimer <=0 && burnTimer > 0 && isBurning)
     {
         SetHealth(GetHealth() - (burnDamage * burnStacks));
-        printf("Burn Damage: %f\n", burnDamage * burnStacks);
         if (burnTimer >= maxDOTTimer)
         {
             dotTimer = maxDOTTimer;

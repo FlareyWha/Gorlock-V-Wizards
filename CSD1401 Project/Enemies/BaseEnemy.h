@@ -25,6 +25,7 @@ protected:
 	float slowTimer = 0.f;
 	float maxSlowTimer = 3.f;
 	bool slowed = false;
+	float slowFactor = 0.75f;
 
 	float dotTimer = 0.f;
 	float maxDOTTimer = 1.f;
@@ -41,7 +42,7 @@ public:
 	void SetMaxHealth(float health);
 
 	bool IsSlowed();
-	void Slow(bool slow);
+	void Slow(bool slow,float slowFactor);
 
 	bool IsBurned();
 	void Burn(bool burned);

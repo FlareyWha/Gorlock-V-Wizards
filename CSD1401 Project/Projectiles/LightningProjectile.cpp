@@ -26,7 +26,6 @@ LightningProjectile::~LightningProjectile()
 
 void LightningProjectile::onHit(BaseEnemy* enemy)
 {
-	printf("chained: %d\n", counter);
 	enemy->SetHealth(enemy->GetHealth() - getProjDamage());
 	SoundManager::GetInstance()->playSFX(TOWER_LIGHTNING_ATTACK_SFX);
 }
@@ -37,11 +36,11 @@ void LightningProjectile::chainHit(std::vector<BaseEnemy*> enemyList,BaseEnemy* 
 	{
 		if (counter < maxChain)
 		{
-			if (!areCirclesIntersecting(specificEnemy->GetLocation(), specificEnemy->GetSpriteSize() / 2.0f, enemyList[i]->GetLocation(), enemyList[i]->GetSpriteSize() / 2.0f))
+			if (!areCirclesIntersecting(specificEnemy->GetLocation(), chainRadius, enemyList[i]->GetLocation(), enemyList[i]->GetSpriteSize() / 2.0f))
 			{
 				continue;
 			}
-			else if (areCirclesIntersecting(specificEnemy->GetLocation(), specificEnemy->GetSpriteSize() / 2.0f, enemyList[i]->GetLocation(), enemyList[i]->GetSpriteSize() / 2.0f))
+			else if (areCirclesIntersecting(specificEnemy->GetLocation(), chainRadius, enemyList[i]->GetLocation(), enemyList[i]->GetSpriteSize() / 2.0f))
 			{
 				onHit(enemyList[i]);
 				specificEnemy = enemyList[i];
