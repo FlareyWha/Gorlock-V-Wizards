@@ -20,39 +20,60 @@ FrostTower::~FrostTower()
 
 void FrostTower::Update()
 {
-	bool attackingEnemy = false;
-	if (trackedEnemy != nullptr)
+	cooldownTime -= 1.f * CP_System_GetDt();
+
+	if (trackedEnemy)
 	{
-		if (CP_Vector_Distance(getPosition(), trackedEnemy->GetLocation()) <= 150.f)
-		{
-			attackingEnemy = true;
-		}
-		else
-		{
-			attackingEnemy = false;
-		}
-
-
+		//printf("%f %f\n", trackedEnemy->GetLocation().x, trackedEnemy->GetLocation().y);
+		
 		CP_Vector unNormDirection = CP_Vector_Set(trackedEnemy->GetLocation().x - getPosition().x, trackedEnemy->GetLocation().y - getPosition().y);
 		CP_Vector direction = CP_Vector_Normalize(CP_Vector_Set(trackedEnemy->GetLocation().x - getPosition().x, trackedEnemy->GetLocation().y - getPosition().y));
 		float angle = CP_Math_Degrees(atan2f(direction.y, direction.x));		
 
-		if (attackingEnemy)
-		{
-			printf("tracking enemy at %.2f %.2f\n", trackedEnemy->GetLocation().x, trackedEnemy->GetLocation().y);
-			CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255));
-			CP_Settings_RectMode(CP_POSITION_CORNER);
-			CP_Graphics_DrawRectAdvanced(this->getPosition().x, this->getPosition().y, CP_Vector_Length(unNormDirection), 10.f, angle, 10.f);
-			CP_Settings_RectMode(CP_POSITION_CENTER);
-		}
+		CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255));
+		CP_Settings_RectMode(CP_POSITION_CORNER);
+		CP_Graphics_DrawRectAdvanced(this->getPosition().x, this->getPosition().y, CP_Vector_Length(unNormDirection), 10.f, angle, 10.f);
+		CP_Settings_RectMode(CP_POSITION_CENTER);
 	}
 }
 
 BaseProjectile* FrostTower::Attack(BaseEnemy* enemy)
 {
-	trackedEnemy = enemy;
-	CP_Vector direction = CP_Vector_Normalize(CP_Vector_Set(trackedEnemy->GetLocation().x - getPosition().x, trackedEnemy->GetLocation().y - getPosition().y));
+	CP_Vector direction = CP_Vector_Normalize(CP_Vector_Set(enemy->GetLocation().x - getPosition().x, enemy->GetLocation().y - getPosition().y));
 	
 	setCooldownTime(getCooldown());
-	return new IceProjectile(trackedEnemy->GetLocation(), direction, this->getDamage(), this->getSpeed(), this->getColor());
+
+	return new IceProjectile(enemy->GetLocation(), direction, this->getDamage(), this->getSpeed(), this->getColor());
+}
+
+void FrostTower::TrackEnemy(std::vector<BaseEnemy*>& enemyList)
+{
+	bool withinRange = false;
+	if (trackedEnemy)
+	{
+		for (BaseEnemy* enemy : enemyList)
+		{
+			if (CP_Vector_Distance(getPosition(), trackedEnemy->GetLocation()) <= 150.f)
+			{
+				withinRange = true;
+				break;
+			}
+		}
+	}
+
+	if (!withinRange)
+	{
+		trackedEnemy = nullptr;
+
+		for (BaseEnemy* enemy : enemyList)
+		{
+			if (CP_Vector_Distance(getPosition(), enemy->GetLocation()) <= 150.f)
+			{
+				trackedEnemy = enemy;
+				break;
+			}
+
+		}
+	}
+
 }

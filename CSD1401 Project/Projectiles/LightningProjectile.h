@@ -6,6 +6,7 @@ class LightningProjectile:public virtual BaseProjectile
 private:
 	int maxChain = 3;
 	int counter = 0;
+	float chainRadius = 50.f;
 public:
 	LightningProjectile();
 	LightningProjectile(CP_Vector position, CP_Vector direction, float damage, float speed, CP_Color color);

@@ -50,6 +50,7 @@
     <ClCompile Include="Particles\WindParticle.cpp" />
     <ClCompile Include="Projectiles\LightningProjectile.cpp" />
     <ClCompile Include="Towers\FrostTower.cpp" />
+    <ClCompile Include="Towers\HurricaneTower.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Towers\BaseTower.h">
@@ -102,6 +103,7 @@
     <ClInclude Include="Particles\WindParticle.h" />
     <ClInclude Include="Projectiles\LightningProjectile.h" />
     <ClInclude Include="Towers\FrostTower.h" />
+    <ClInclude Include="Towers\HurricaneTower.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

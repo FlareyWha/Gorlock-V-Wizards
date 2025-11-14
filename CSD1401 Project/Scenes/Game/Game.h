@@ -8,6 +8,7 @@
 #include "cprocessing.h"
 #include "../../System/WaveManager.h"
 #include "../../Towers/BaseTower.h"	
+#include "../../Utils/Button.h"
 #include <string>
 enum currSelected {
 	FIRETOWER,
@@ -32,9 +33,12 @@ private:
 	int health = 3;
 	float fontSize = 12.0f;
 	int moneys = 300;
+	Button* quit;
+	Button* settings;
 
 	float imageScaling = 6.0f;
 public:
+	bool toggle = false;
 	void drawRect(float posX, float posY, float rectWidth, float rectHeight, float angle = 0.0f, float cornerRadius = 0.0f, CP_Color rectColor = { 100,100,100,255 });
 	void drawText(const char* text, float xPos, float yPos);
 
@@ -46,6 +50,9 @@ public:
 	void loseMoneys(int moneyAmt);
 	void gainMoneys(int moneyAmt);
 	void drawMoneys(float x,float y);
+
+	void ButtonInit();
+	void ButtonDraw();
 
 	void drawHeart(float x,float y);
 	int getHealth(void);

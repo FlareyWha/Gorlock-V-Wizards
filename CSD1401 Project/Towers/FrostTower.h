@@ -13,5 +13,6 @@ public:
 
 	BaseProjectile* Attack(BaseEnemy* enemy) override;
 
-	BaseEnemy* trackedEnemy = nullptr;
+	void TrackEnemy(std::vector<BaseEnemy*>& enemyList);
+	BaseEnemy* trackedEnemy;
 };

@@ -44,6 +44,7 @@ protected:
 	ATTACK_TYPE attack = ATTACK_TYPE::NONE;
 	float damage = 0;
 	int level = 1;
+	int maxLevel = 3;
 	float detectionDistance = 150.f;
 	float spriteSize = 48.0f;
 	float cooldown = 2.0f;
@@ -51,6 +52,10 @@ protected:
 	CP_Color color;
 	float projSpeed = 150;
 	float baseCooldown;
+	bool isSlowed = false;
+	int levelUpCosts = 150;
+	float towerOpacity = 255.f;
+
 public:
 	CP_Image towerSprite;
 
@@ -77,8 +82,16 @@ public:
 	void setDamage(float damage);
 
 	void setLevel(int level);
+	void setMaxLevel(int level);
+	void virtual levelUp();
 	int getLevel();
+	int getMaxLevel();
 
+	int getUpgradeCosts();
+	void setUpgradeCosts(int cost);
+
+	void setOpacity(float opacity);
+	
 	void setColor(CP_Color color);
 	CP_Color getColor();
 
@@ -93,7 +106,8 @@ public:
 	void InitCooldown(float time) { baseCooldown = cooldown = time; }
 	void ApplySlowdown(float multiplier);
 	void ResetCooldown();
-	bool slowed = false;
+	bool slowed();
+
 };
 
 /*
