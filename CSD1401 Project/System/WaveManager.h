@@ -1,9 +1,9 @@
 #pragma once
 #include "cprocessing.h"
-#include "../../Enemies/BaseEnemy.h"
-#include "../../Enemies/BasicEnemy.h"
-#include "../../Enemies/SpeedsterEnemy.h"
-#include "../../Enemies/TankEnemy.h"
+#include "../Enemies/BaseEnemy.h"
+#include "../Enemies/BasicEnemy.h"
+#include "../Enemies/SpeedsterEnemy.h"
+#include "../Enemies/TankEnemy.h"
 
 #include <string>
 #include <fstream>

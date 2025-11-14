@@ -17,6 +17,7 @@
 
 Button back(0, 0, 0, 0, "");
 Button save(0, 0, 0, 0, "");
+Button play(0, 0, 0, 0, "");
 Button startpointSwitch(0, 0, 0, 0, "");
 Button roadSwitch(0, 0, 0, 0, "");
 Button endpointSwitch(0, 0, 0, 0, "");
@@ -38,6 +39,8 @@ float savedTextTimer = 0.f;
 SpeedsterEnemy* testEnemy;
 bool testing = false;
 
+bool playable = false;
+
 void mapEditorInit(void)
 {
 	mapEditorMap = Map::GetInstance();
@@ -50,7 +53,8 @@ void mapEditorInit(void)
 	CP_Settings_ImageMode(CP_POSITION_CENTER);
 
 	//Init buttons
-	save = Button(1450, 700, 150, 40, "Test & Save");
+	save = Button(1450, 650, 150, 40, "Test & Save");
+	play = Button(1450, 750, 150, 40, "Play");
 	back = Button(1520, 875, 150, 40, "Back");
 	startpointSwitch = Button(1450, 300, 200, 40, "Startpoint Editor");
 	roadSwitch = Button(1450, 350, 200, 40, "Road Editor");

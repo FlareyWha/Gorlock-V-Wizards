@@ -1,6 +1,6 @@
 #include "FrostTower.h"
-#include "../../Projectiles/IceProjectile.h"
-#include "../../Projectiles/BaseProjectile.h"
+#include "../Projectiles/IceProjectile.h"
+#include "../Projectiles/BaseProjectile.h"
 
 FrostTower::FrostTower(CP_Vector position)
 {

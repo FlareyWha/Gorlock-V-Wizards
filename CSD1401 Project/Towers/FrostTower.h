@@ -1,6 +1,6 @@
 #pragma once
 #include "BaseTower.h"
-#include "../../Projectiles/BaseProjectile.h"
+#include "../Projectiles/BaseProjectile.h"
 #include "../Enemies/BaseEnemy.h"
 
 class FrostTower : public BaseTower

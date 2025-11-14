@@ -1,6 +1,6 @@
 #pragma once
 #include "cprocessing.h"
-#include "../../System/Map.h"
+#include "../System/Map.h"
 #include <vector>
 
 enum EnemyType

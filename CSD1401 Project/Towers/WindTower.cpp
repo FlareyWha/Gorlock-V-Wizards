@@ -1,6 +1,6 @@
 #include "WindTower.h"
-#include "../../Projectiles/WindProjectile.h"
-#include "../../Projectiles/BaseProjectile.h"
+#include "../Projectiles/WindProjectile.h"
+#include "../Projectiles/BaseProjectile.h"
 #include <stdio.h>
 WindTower::WindTower(CP_Vector position)
 {

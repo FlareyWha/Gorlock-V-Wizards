@@ -1,6 +1,6 @@
 #include "LightningProjectile.h"
 #include "../Utils/Utils.h"
-#include "../../System/SoundManager.h"
+#include "../System/SoundManager.h"
 #include <stdio.h>
 #include <math.h>
 

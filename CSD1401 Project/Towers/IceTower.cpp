@@ -1,6 +1,6 @@
 #include "IceTower.h"
 #include "../Projectiles/IceProjectile.h"
-#include "../../Projectiles/BaseProjectile.h"
+#include "../Projectiles/BaseProjectile.h"
 
 #include <math.h>
 IceTower::IceTower(CP_Vector position)
