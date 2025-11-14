@@ -68,8 +68,7 @@ private:
 	Tile** map;
 
 	std::vector<TILE_TYPE> tileTypesVector;
-
-	std::vector<CP_Vector> path;
+	CP_Vector spawnpoint;
 
 	std::string getImageFilePath(TILE_TYPE tileType);
 	void loadMapTileImages(void);
@@ -105,9 +104,7 @@ public:
 	CP_Vector getDimensions();
 	int getTileSize();
 
+	CP_Vector getSpawnpoint(void);
+
 	std::map<TILE_TYPE, CP_Image> imageMap;
-
-	void createPath(CP_Vector pos, CP_Vector oldPos);
-	std::vector<CP_Vector> getPath();
-
 };

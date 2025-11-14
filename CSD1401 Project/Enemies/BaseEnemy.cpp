@@ -142,18 +142,53 @@ void BaseEnemy::Move(Map* map)
     dotTimer += -1 * CP_System_GetDt();
     slowTimer += -1 * CP_System_GetDt();
     burnTimer += -1 * CP_System_GetDt();
-    std::vector<CP_Vector> path = map->getPath();
 
-    if (path.size() == pathId) return;
+    // Start movement if enemy just spawned
+    if (directionVector.x == 0 && directionVector.y == 0)
+    {
+        for (int x = -1; x < 2; x += 2)    // Check left and right
+        {
+            TILE_TYPE tileType = map->getTile(location.x + spriteSize * x, location.y).tileType;
+            if (tileType >= MIDDLE_ROAD && tileType < STARTPOINT)
+                directionVector.x = x;
+        }
+        for(int y = -1; y < 2; y += 2)    // Check up and down
+        {
+            if (directionVector.x != 0) break;
+            TILE_TYPE tileType = map->getTile(location.x, location.y + spriteSize * y).tileType;
+            if (tileType >= MIDDLE_ROAD && tileType < STARTPOINT)
+                directionVector.y = y;
+        }
+    }
 
-    // Move toward next location in queue
-    SetDirectionVector(CP_Vector_Normalize(CP_Vector_Set(path[pathId].x - location.x, path[pathId].y - location.y)));
+    // Get tile under enemy
+    TILE_TYPE tileType = TOTAL;
+    if (directionVector.x > 0) tileType = map->getTile(location.x - spriteSize * 0.5f, location.y).tileType;
+    else if (directionVector.y > 0) tileType = map->getTile(location.x, location.y - spriteSize * 0.5f).tileType;
+    else if (directionVector.x < 0) tileType = map->getTile(location.x + spriteSize * 0.5f, location.y).tileType;
+    else if (directionVector.y < 0)
+        tileType = map->getTile(location.x, location.y + spriteSize * 0.5f).tileType;
 
+    switch (tileType)
+    {
+    case CORNER_TOP_LEFT_ROAD:
+        if (directionVector.y < 0) directionVector = CP_Vector_Set(1, 0);
+        else if (directionVector.x < 0) directionVector = CP_Vector_Set(0, 1);
+        break;
+    case CORNER_TOP_RIGHT_ROAD:
+        if (directionVector.y < 0) directionVector = CP_Vector_Set(-1, 0);
+        else if (directionVector.x > 0) directionVector = CP_Vector_Set(0, 1);
+        break;
+    case CORNER_BOTTOM_LEFT_ROAD:
+        if (directionVector.y > 0) directionVector = CP_Vector_Set(1, 0);
+        else if (directionVector.x < 0) directionVector = CP_Vector_Set(0, -1);
+        break;
+    case CORNER_BOTTOM_RIGHT_ROAD:
+        if (directionVector.y > 0) directionVector = CP_Vector_Set(-1, 0);
+        else if (directionVector.x > 0) directionVector = CP_Vector_Set(0, -1);
+        break;
+    }
     location = CP_Vector_Add(location, CP_Vector_Scale(directionVector, speed * CP_System_GetDt()));
-
-    // Remove location from queue when reached
-    if (CP_Vector_Distance(location, path[pathId]) <= spriteSize * 0.25f)
-        ++pathId;
 
     if (slowed == true)
     {
@@ -194,9 +229,9 @@ void BaseEnemy::Move(Map* map)
 
 void BaseEnemy::Render(void)
 {
-    if (directionVector.x > 0)
+    if (directionVector.x >= 0)
         CP_Image_Draw(sprite, location.x, location.y, spriteSize, spriteSize, 255);
-    else if (directionVector.x < 0)
+    else if (directionVector.x <= 0)
         CP_Image_Draw(spriteLeft, location.x, location.y, spriteSize, spriteSize, 255);
 
     CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));

@@ -156,11 +156,6 @@ void Game::takeDamage(int hp)
 	health = CP_Math_ClampInt(health, 0, game.getMaxHealth());
 }
 
-CP_Vector Game::getSpawnLocation()
-{
-	return spawnLocation;
-}
-
 void gameInit(void)
 {	
 	font = CP_Font_Load(FILE_PATH);
@@ -173,10 +168,9 @@ void gameInit(void)
 	CP_Settings_TextSize(game.getFontSize());
 
 	gameMap = Map::GetInstance();
-	gameMap->loadMap("Map3");
+	gameMap->loadMap("Edit2");
 
 	mapSize = gameMap->getDimensions();
-	gameMap->createPath(game.getSpawnLocation(), game.getSpawnLocation());
 
 	game.healthImage = CP_Image_Load("./Assets/UI/full_heart.png");
 	game.emptyHeartImage = CP_Image_Load("./Assets/UI/empty_heart.png");
@@ -215,7 +209,7 @@ void gameInit(void)
 
 	
 
-	game.waveManager = new WaveManager(game.getSpawnLocation());
+	game.waveManager = new WaveManager(gameMap->getSpawnpoint());
 
 	game.currentTower = new BaseTower();
 	//CP_Font_DrawText("YIBBBEEE", 10, 10);
@@ -524,15 +518,15 @@ void gameUpdate(void)
 		}
 	}
 	if (CP_Input_KeyReleased(KEY_1))
-		enemiesList.push_back(new BasicEnemy(game.getSpawnLocation()));
+		enemiesList.push_back(new BasicEnemy(gameMap->getSpawnpoint()));
 	if (CP_Input_KeyReleased(KEY_2))
-		enemiesList.push_back(new TankEnemy(game.getSpawnLocation()));
+		enemiesList.push_back(new TankEnemy(gameMap->getSpawnpoint()));
 	if (CP_Input_KeyReleased(KEY_3))
-		enemiesList.push_back(new SpeedsterEnemy(game.getSpawnLocation()));
+		enemiesList.push_back(new SpeedsterEnemy(gameMap->getSpawnpoint()));
 	if (CP_Input_KeyReleased(KEY_4))
-		enemiesList.push_back(new BossEnemy(game.getSpawnLocation()));
+		enemiesList.push_back(new BossEnemy(gameMap->getSpawnpoint()));
 	if (CP_Input_KeyReleased(KEY_SPACE))
-		game.waveManager->SpawnWave(game.getSpawnLocation());
+		game.waveManager->SpawnWave(gameMap->getSpawnpoint());
 
 
 	// enemy movement

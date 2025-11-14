@@ -288,6 +288,9 @@ bool Map::loadMap(std::string fileName)
 			//mapData must be reversed cus the vector is gae
 			map[i][j].tileType = static_cast<TILE_TYPE>(mapData[j][i]);
 			map[i][j].pos = CP_Vector_Set((TILE_WIDTH * 0.5f) + TILE_WIDTH * i, (TILE_HEIGHT * 0.5f) + TILE_HEIGHT * j);
+
+			if (map[i][j].tileType == STARTPOINT)
+				spawnpoint = map[i][j].pos;
 		}
 	}
 
@@ -366,8 +369,6 @@ void Map::resetMap(bool clear)
 			map[i][j].pos = CP_Vector_Zero();
 		}
 	}
-
-	while (!path.empty()) path.pop_back();
 }
 
 /*!
@@ -429,55 +430,12 @@ int Map::getTileSize()
 }
 
 /*!
-@brief	Create a path for enemy pathfinding uses
-@param	pos - current pos
-@param	oldPos - old pos
-@return void
+@brief	Get spawnpoint of the enemies
+@param	void
+@return CP_Vector - vector of spawnpoint
 *//*______________________________________________________________*/
-void Map::createPath(CP_Vector pos, CP_Vector oldPos)
+CP_Vector Map::getSpawnpoint(void)
 {
-	TILE_TYPE tileType = TILE_TYPE::NONE;
-	for (int i = 0; i < 4; ++i)
-	{
-		switch (i)
-		{
-		case 0: // Up
-			(pos.y - TILE_HEIGHT) >= 0 ? tileType = getTile(pos.x, pos.y - TILE_HEIGHT).tileType : tileType;
-			if (((tileType > 100 && tileType <= 200) || tileType == 202) && CP_Vector_Distance(CP_Vector_Set(pos.x, pos.y - TILE_HEIGHT), oldPos) != 0)
-			{
-				path.push_back(CP_Vector_Set(pos.x, pos.y - TILE_HEIGHT));
-				createPath(CP_Vector_Set(pos.x, pos.y - TILE_HEIGHT), pos);
-			}
-			break;
-		case 1: // Left
-			(pos.x - TILE_WIDTH) >= 0 ? tileType = getTile(pos.x - TILE_WIDTH, pos.y).tileType : tileType;
-			if (((tileType > 100 && tileType <= 200) || tileType == 202) && CP_Vector_Distance(CP_Vector_Set(pos.x - TILE_WIDTH, pos.y), oldPos) != 0)
-			{
-				path.push_back(CP_Vector_Set(pos.x - TILE_WIDTH, pos.y));
-				createPath(CP_Vector_Set(pos.x - TILE_WIDTH, pos.y), pos);
-			}
-			break;
-		case 2: // Down
-			tileType = getTile(pos.x, pos.y + TILE_HEIGHT).tileType;
-			if (((tileType > 100 && tileType <= 200) || tileType == 202) && CP_Vector_Distance(CP_Vector_Set(pos.x, pos.y + TILE_HEIGHT), oldPos) != 0)
-			{
-				path.push_back(CP_Vector_Set(pos.x, pos.y + TILE_HEIGHT));
-				createPath(CP_Vector_Set(pos.x, pos.y + TILE_HEIGHT), pos);
-			}
-			break;
-		case 3: // Right
-			tileType = getTile(pos.x + TILE_WIDTH, pos.y).tileType;
-			if (((tileType > 100 && tileType <= 200) || tileType == 202) && CP_Vector_Distance(CP_Vector_Set(pos.x + TILE_WIDTH, pos.y), oldPos) != 0)
-			{
-				path.push_back(CP_Vector_Set(pos.x + TILE_WIDTH, pos.y));
-				createPath(CP_Vector_Set(pos.x + TILE_WIDTH, pos.y), pos);
-			}
-			break;
-		}
-	}
+	return spawnpoint;
 }
 
-std::vector<CP_Vector> Map::getPath()
-{
-	return path;
-}
