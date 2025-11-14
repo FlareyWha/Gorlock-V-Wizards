@@ -21,6 +21,7 @@ protected:
 	int pathId = 0;
 	int reward;
 	EnemyType type;
+	bool turn = false;
 
 	float slowTimer = 0.f;
 	float maxSlowTimer = 3.f;
@@ -71,6 +72,8 @@ public:
 
 	EnemyType GetEnemyType(void);
 	void SetEnemyType(EnemyType type);
+
+	void RandomizeTurn(void);
 
 	void Move(Map* map);
 	virtual void Render(void);

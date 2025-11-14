@@ -11,6 +11,7 @@ BasicEnemy::BasicEnemy(CP_Vector location)
 	SetSpriteLeft(CP_Image_Load("Assets/Enemies/Basic_Left.png"));
 	SetReward(25);
 	SetEnemyType(EnemyType::BASIC);
+	RandomizeTurn();
 }
 
 BasicEnemy::~BasicEnemy()

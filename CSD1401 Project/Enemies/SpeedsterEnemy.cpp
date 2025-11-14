@@ -11,6 +11,7 @@ SpeedsterEnemy::SpeedsterEnemy(CP_Vector location)
 	SetSpriteLeft(CP_Image_Load("Assets/Enemies/Speedster_Left.png"));
 	SetReward(50);
 	SetEnemyType(EnemyType::SPEEDSTER);
+	RandomizeTurn();
 }
 
 SpeedsterEnemy::~SpeedsterEnemy()
