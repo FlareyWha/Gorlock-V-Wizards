@@ -28,3 +28,7 @@ void switchEditorState(EDITOR_STATE newState);
 void checkRoadTileChanges(CP_Vector tilePos, bool checkInitital);
 
 void setUpdatedRoadTile(CP_Vector initialTilePos, std::map<TILE_RELATIVE_POSITION, Tile> surroundingTiles);
+
+void testMap(void);
+
+void updateTestEnemy(void);

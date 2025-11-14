@@ -193,16 +193,6 @@ void BaseEnemy::Move(Map* map)
         if (directionVector.y > 0) directionVector = CP_Vector_Set(-1, 0);
         else if (directionVector.x > 0) directionVector = CP_Vector_Set(0, -1);
         break;
-    case JUNCTION_MIDDLE_BOTTOM_ROAD:
-        if (directionVector.x != 0 && turn)
-            SetDirectionVector(0, -1);
-        else if (directionVector.x == 0 && directionVector.y == 1)
-        {
-            if (turn)
-                SetDirectionVector(1, 0);
-            else SetDirectionVector(-1, 0);
-        }
-        break;
     }
     location = CP_Vector_Add(location, CP_Vector_Scale(directionVector, speed * CP_System_GetDt()));
 

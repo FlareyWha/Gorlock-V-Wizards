@@ -16,9 +16,9 @@ BossEnemy::BossEnemy(CP_Vector location)
 
 void BossEnemy::Render(void)
 {
-	if (directionVector.x > 0)
+	if (directionVector.x >= 0)
 		CP_Image_Draw(sprite, location.x, location.y, spriteSize, spriteSize, 255);
-	else if (directionVector.x < 0)
+	else if (directionVector.x <= 0)
 		CP_Image_Draw(spriteLeft, location.x, location.y, spriteSize, spriteSize, 255);
 
 	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));

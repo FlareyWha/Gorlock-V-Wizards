@@ -13,6 +13,7 @@
 #include "../../Utils/Utils.h"
 #include <iostream>
 #include <map>
+#include "../../Enemies/SpeedsterEnemy.h"
 
 Button back(0, 0, 0, 0, "");
 Button save(0, 0, 0, 0, "");
@@ -20,20 +21,22 @@ Button startpointSwitch(0, 0, 0, 0, "");
 Button roadSwitch(0, 0, 0, 0, "");
 Button endpointSwitch(0, 0, 0, 0, "");
 Map* mapEditorMap;
-CP_Vector prevMousePos = CP_Vector_Zero();
 CP_Vector currentTilePos = CP_Vector_Zero();
 bool placedTile = false;
 EDITOR_STATE currentEditorState = ROAD_EDIT;
 CP_Font mapEditorFont;
 
-CP_Vector startpointTilePos;
+CP_Vector startpointTilePos = CP_Vector_Zero();
 bool startpointActive = false;
-CP_Vector endpointTilePos;
+CP_Vector endpointTilePos = CP_Vector_Zero();
 bool endpointActive = false;
 
 bool showSavedText = false;
 bool saveSucessful = false;
 float savedTextTimer = 0.f;
+
+SpeedsterEnemy* testEnemy;
+bool testing = false;
 
 void mapEditorInit(void)
 {
@@ -47,11 +50,14 @@ void mapEditorInit(void)
 	CP_Settings_ImageMode(CP_POSITION_CENTER);
 
 	//Init buttons
-	save = Button(1450, 700, 150, 40, "Save");
+	save = Button(1450, 700, 150, 40, "Test & Save");
 	back = Button(1520, 875, 150, 40, "Back");
 	startpointSwitch = Button(1450, 300, 200, 40, "Startpoint Editor");
 	roadSwitch = Button(1450, 350, 200, 40, "Road Editor");
 	endpointSwitch = Button(1450, 400, 200, 40, "Endpoint Editor");
+
+	startpointTilePos = mapEditorMap->testTileActive(STARTPOINT);
+	endpointTilePos = mapEditorMap->testTileActive(ENDPOINT);
 }
 
 void mapEditorUpdate(void)
@@ -67,7 +73,7 @@ void mapEditorUpdate(void)
 	else if (save.IsClicked())
 	{
 		//Save map
-		saveSucessful = mapEditorMap->saveMap("Edit");
+		testMap();
 		showSavedText = true;
 		savedTextTimer = 3.f;
 	}
@@ -98,8 +104,6 @@ void mapEditorUpdate(void)
 			deleteMapTile();
 		}
 	}
-
-	prevMousePos = CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY());
 	
 	//Render map
 	mapEditorMap->renderMap();
@@ -111,7 +115,14 @@ void mapEditorUpdate(void)
 	roadSwitch.Draw();
 	endpointSwitch.Draw();
 
+	if (testing)
+	{
+		updateTestEnemy();
+	}
+
 	CP_Font_Set(mapEditorFont);
+
+	CP_Settings_TextSize(25.f);
 	CP_Font_DrawText("Current Editor State: ", 1450, 100);
 	switch (currentEditorState)
 	{
@@ -133,22 +144,32 @@ void mapEditorUpdate(void)
 
 	if (showSavedText)
 	{
-		savedTextTimer -= CP_System_GetDt();
-
-		if (saveSucessful)
+		if (testing)
 		{
-			CP_Font_DrawText("Map sucessfully saved!", 1450, 550);
+			CP_Font_DrawText("Testing...", 1450, 550);
 		}
 		else
 		{
-			CP_Font_DrawText("Map UNSUCESSFULLY saved!", 1450, 550);
+			savedTextTimer -= CP_System_GetDt();
+
+			if (saveSucessful)
+			{
+				CP_Font_DrawText("Map SUCESSFULLY saved!", 1450, 550);
+			}
+			else
+			{
+				CP_Font_DrawText("Map UNSUCESSFULLY saved!", 1450, 550);
+			}
+
+			if (savedTextTimer <= 0.f)
+			{
+				showSavedText = false;
+			}
 		}
 
-		if (savedTextTimer <= 0.f)
-		{
-			showSavedText = false;
-		}
 	}
+
+	CP_Settings_TextSize(20.f);
 }
 
 void mapEditorExit(void)
@@ -392,4 +413,39 @@ void setUpdatedRoadTile(CP_Vector initialTilePos, std::map<TILE_RELATIVE_POSITIO
 	{
 		mapEditorMap->setTile(MIDDLE_ROAD, initialTilePos.x, initialTilePos.y);
 	}
+}
+
+void testMap(void)
+{
+	mapEditorMap->setSpawnpoint(mapEditorMap->getTileWorldPos(startpointTilePos));
+
+	testEnemy = new SpeedsterEnemy(mapEditorMap->getSpawnpoint());
+
+	testing = true;
+}
+
+void updateTestEnemy(void)
+{
+	if (mapEditorMap->getTile(testEnemy->GetLocation().x, testEnemy->GetLocation().y).tileType == TILE_TYPE::ENDPOINT)
+	{
+		testing = false;
+
+		delete testEnemy;
+
+		saveSucessful = mapEditorMap->saveMap("Edit");
+	}
+	else if (mapEditorMap->getTile(testEnemy->GetLocation().x, testEnemy->GetLocation().y).tileType == TILE_TYPE::GROUND)
+	{
+		testing = false;
+
+		delete testEnemy;
+
+		saveSucessful = false;
+	}
+	else
+	{
+		testEnemy->Move(mapEditorMap);
+		testEnemy->Render();
+	}
+
 }
