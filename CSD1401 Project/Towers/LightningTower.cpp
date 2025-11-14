@@ -3,7 +3,7 @@
 LightningTower::LightningTower(CP_Vector position)
 {
 	this->setColor(CP_Color_Create(255, 255, 0, 255));
-	this->setDamage(10.f);
+	this->setDamage(5.f);
 	this->setSpeed(750.f);
 	setPos(position.x, position.y);
 	towerSprite = CP_Image_Load("Assets/Towers/lightningTower.png");

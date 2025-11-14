@@ -184,7 +184,7 @@ void gameInit(void)
 	game.ButtonInit();
 
 	gameMap = Map::GetInstance();
-	gameMap->loadMap("Edit3");
+	gameMap->loadMap("Edit2");
 
 	mapSize = gameMap->getDimensions();
 
@@ -237,7 +237,7 @@ void gameInit(void)
 
 void gameUpdate(void)
 {
-	printf("%d\n", game.currSelect);
+	//printf("%d\n", game.currSelect);
 	CP_Graphics_ClearBackground(CP_Color_Create(132, 198, 105, 255));
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 
