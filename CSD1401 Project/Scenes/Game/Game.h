@@ -86,6 +86,7 @@ public:
 	Tower uiElements[5];
 
 	WaveManager* waveManager;
+	Button* nextWave;
 };
 void gameInit(void);
 void gameUpdate(void);

@@ -158,14 +158,16 @@ void Game::takeDamage(int hp)
 
 void Game::ButtonInit()
 {
-	quit = new Button(1380, 850, 130, 50, "Quit");
+	quit = new Button(1380, 800, 130, 50, "Quit");
 	settings = new Button(1380, 750, 130, 50, "Settings");
+	nextWave = new Button(1380, 850, 130, 50, "Next Wave");
 }
 
 void Game::ButtonDraw()
 {
 	quit->Draw();
 	settings->Draw();
+	nextWave->Draw();
 }
 
 void gameInit(void)
@@ -524,7 +526,7 @@ void gameUpdate(void)
 		enemiesList.push_back(new SpeedsterEnemy(gameMap->getSpawnpoint()));
 	if (CP_Input_KeyReleased(KEY_4))
 		enemiesList.push_back(new BossEnemy(gameMap->getSpawnpoint()));
-	if (CP_Input_KeyReleased(KEY_SPACE))
+	if (game.nextWave->IsClicked())
 		game.waveManager->SpawnWave(gameMap->getSpawnpoint());
 
 

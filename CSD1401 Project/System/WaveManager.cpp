@@ -37,6 +37,8 @@ void WaveManager::Update(std::vector<BaseEnemy*>* enemyList)
 		}
 		enemyQueue->pop();
 	}
+	else if (enemyQueue->empty())
+		waveInProgress = false;
 }
 
 void WaveManager::ReadWaveFile(std::ifstream *file, CP_Vector spawnLocation)
@@ -85,6 +87,14 @@ void WaveManager::ReadWaveFile(std::ifstream *file, CP_Vector spawnLocation)
 
 void WaveManager::SpawnWave(CP_Vector spawnLocation)
 {
+	if (waveInProgress) return;
+
 	WaveInfo info = waveMap.at(waveId++);
 	enemyQueue = info.waveQueue;
+	waveInProgress = true;
+}
+
+bool WaveManager::GetWaveInProgress(void)
+{
+	return waveInProgress;
 }
