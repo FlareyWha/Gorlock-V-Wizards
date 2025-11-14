@@ -22,7 +22,7 @@ SceneManager* sceneManager;
 
 void game_init(void)
 {
-
+	//Test
 	logo = CP_Image_Load("Assets/DigiPen_Singapore_WEB_RED.png");
 	CP_System_SetWindowSize(1600, 900);
 	CP_Graphics_ClearBackground(CP_Color_Create(100, 100, 100, 255));
