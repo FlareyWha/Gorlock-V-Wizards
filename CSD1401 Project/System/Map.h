@@ -65,6 +65,8 @@ private:
 	const int NUM_COLUMN = 18;
 	const int NUM_ROW = 26;
 
+	bool loadEditedMap = false;
+
 	Tile** map;
 
 	std::vector<TILE_TYPE> tileTypesVector;
@@ -81,6 +83,7 @@ public:
 	Tile getTile(float xPos, float yPos);
 	Tile getTileFromTilePos(int xPos, int yPos);
 	CP_Vector getTilePos(float xPos, float yPos);
+	CP_Vector getTileWorldPos(CP_Vector tilePos);
 	void setTile(TILE_TYPE tile, int rowPos, int columnPos);
 
 	std::map<TILE_RELATIVE_POSITION, Tile> getSurroundingTiles(CP_Vector tilePos);
@@ -104,7 +107,10 @@ public:
 	CP_Vector getDimensions();
 	int getTileSize();
 
+	void setLoadEditedMap(bool loadEditedMap);
+
 	CP_Vector getSpawnpoint(void);
+	void setSpawnpoint(CP_Vector spawnpoint);
 
 	std::map<TILE_TYPE, CP_Image> imageMap;
 };
