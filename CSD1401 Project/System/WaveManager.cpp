@@ -1,6 +1,7 @@
 #include "WaveManager.h"
 
 #include <iostream>
+#include "SoundManager.h"
 
 WaveManager::WaveManager(CP_Vector spawnLocation)
 {
@@ -92,6 +93,7 @@ void WaveManager::SpawnWave(CP_Vector spawnLocation)
 	{
 		if (bossSpawned) return;
 
+		SoundManager::GetInstance()->queueNextBGM(GAME_02_BGM);
 		enemyQueue->push(new BossEnemy(spawnLocation));
 		bossSpawned = true;
 		return;
