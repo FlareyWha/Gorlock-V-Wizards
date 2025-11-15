@@ -108,6 +108,7 @@ void mainMenuInit(void) {
 	mainMenuFont = CP_Font_Load("./Assets/Fonts/KenneyFonts/Kenney Mini.ttf");
 	menu.ButtonInit();
 	scene = SceneManager::GetInstance();
+	SoundManager::GetInstance()->playBGM(MAIN_MENU_BGM);
 }
 
 void mainMenuUpdate()

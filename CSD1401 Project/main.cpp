@@ -38,8 +38,6 @@ void game_init(void)
 	//menu.StartButtonInit();
 	sceneManager->ChangeScenes(Scenes::MAIN_MENU_SCENE);
 	//map = Map::GetInstance();
-
-	SoundManager::GetInstance()->playBGM(MAIN_MENU_BGM);
 }
 
 void game_update(void)

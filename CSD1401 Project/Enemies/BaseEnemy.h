@@ -7,7 +7,8 @@ enum EnemyType
 {
 	BASIC = 0,
 	SPEEDSTER,
-	TANK
+	TANK,
+	BOSS
 };
 
 class BaseEnemy

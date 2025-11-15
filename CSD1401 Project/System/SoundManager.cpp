@@ -21,7 +21,7 @@ SoundManager::SoundManager()
 	loadAllSounds();
 	timer = 0.f;
 	bgm_00_length = 24.f;
-	bgm_00_length = 22.f;
+	bgm_01_length = 22.f;
 }
 
 void SoundManager::Update(void)
@@ -80,6 +80,12 @@ std::string SoundManager::getSFXFilePath(SFX_TYPE sfxType)
 	case ENEMY_TANK_DEATH_SFX:
 		filePath += "tank_death.wav";
 		break;
+	case ENEMY_BOSS_DEATH_1_SFX:
+		filePath += "gorlock_death00.wav";
+		break;
+	case ENEMY_BOSS_DEATH_2_SFX:
+		filePath += "gorlock_death01.wav";
+		break;
 	case TOWER_WIND_ATTACK_SFX:
 		filePath += "wind_attack.wav";
 		break;
@@ -88,6 +94,9 @@ std::string SoundManager::getSFXFilePath(SFX_TYPE sfxType)
 		break;
 	case TOWER_LIGHTNING_ATTACK_SFX:
 		filePath += "lightning_attack.wav";
+		break;
+	case GAME_WIN_SFX:
+		filePath += "win.wav";
 		break;
 	default:
 		break;
@@ -134,7 +143,8 @@ std::string SoundManager::getBGMFilePath(BGM_TYPE bgmType)
 void SoundManager::loadAllSounds(void)
 {
 	sfxTypeVector = { TEST_SFX, TOWER_PLACE_SFX, TOWER_MERGE_SFX, ENEMY_BASIC_DEATH_SFX, ENEMY_SPEEDSTER_DEATH_SFX, ENEMY_TANK_DEATH_SFX,
-					TOWER_WIND_ATTACK_SFX, TOWER_FIRE_ATTACK_SFX, TOWER_LIGHTNING_ATTACK_SFX };
+					ENEMY_BOSS_DEATH_1_SFX, ENEMY_BOSS_DEATH_2_SFX, TOWER_WIND_ATTACK_SFX, TOWER_FIRE_ATTACK_SFX, TOWER_LIGHTNING_ATTACK_SFX,
+					GAME_WIN_SFX };
 	bgmTypeVector = { TEST_BGM, MAIN_MENU_BGM, GAME_00_BGM, GAME_01_BGM };
 
 	for (int i = 0; i < sfxTypeVector.size(); i++)

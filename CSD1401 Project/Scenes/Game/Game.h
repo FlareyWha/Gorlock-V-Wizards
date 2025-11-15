@@ -37,6 +37,7 @@ private:
 	Button* settings;
 
 	float imageScaling = 6.0f;
+	bool winScreen = false;
 public:
 	bool toggle = false;
 	void drawRect(float posX, float posY, float rectWidth, float rectHeight, float angle = 0.0f, float cornerRadius = 0.0f, CP_Color rectColor = { 100,100,100,255 });
@@ -87,6 +88,10 @@ public:
 
 	WaveManager* waveManager;
 	Button* nextWave;
+	Button* back;
+
+	bool shouldShowWinscreen(void);
+	void setWin(bool win);
 };
 void gameInit(void);
 void gameUpdate(void);

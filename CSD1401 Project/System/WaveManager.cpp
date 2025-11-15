@@ -88,6 +88,14 @@ void WaveManager::ReadWaveFile(std::ifstream *file, CP_Vector spawnLocation)
 void WaveManager::SpawnWave(CP_Vector spawnLocation)
 {
 	if (waveInProgress) return;
+	if (waveId > waveMap.size())
+	{
+		if (bossSpawned) return;
+
+		enemyQueue->push(new BossEnemy(spawnLocation));
+		bossSpawned = true;
+		return;
+	}
 
 	WaveInfo info = waveMap.at(waveId++);
 	enemyQueue = info.waveQueue;

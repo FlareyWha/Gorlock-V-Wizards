@@ -11,6 +11,7 @@ BossEnemy::BossEnemy(CP_Vector location)
 	SetSprite(CP_Image_Load("Assets/Enemies/Boss.png"));
 	SetSpriteLeft(CP_Image_Load("Assets/Enemies/Boss_Left.png"));
 	SetReward(10000);
+	SetEnemyType(EnemyType::BOSS);
 	RandomizeTurn();
 }
 

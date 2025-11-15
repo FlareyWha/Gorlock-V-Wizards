@@ -6,6 +6,7 @@
 
 #include "../../System/Map.h"
 #include "../../System/SoundManager.h"
+#include "../../System/SceneManager.h"
 
 #include "../../Enemies/BasicEnemy.h"
 #include "../../Enemies/TankEnemy.h"
@@ -46,7 +47,7 @@ std::vector<BaseProjectile*> projectileList;
 Game game;
 void Game::drawRect(float posX, float posY, float rectWidth, float rectHeight, float angle, float cornerRadius, CP_Color rectColor)
 {
-	CP_Settings_Fill(CP_Color_Create(255,255,255,255));
+	CP_Settings_Fill(rectColor);
 	CP_Graphics_DrawRectAdvanced(posX, posY, rectWidth, rectHeight, angle,cornerRadius);
 	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 }
@@ -157,11 +158,22 @@ void Game::takeDamage(int hp)
 	health = CP_Math_ClampInt(health, 0, game.getMaxHealth());
 }
 
+bool Game::shouldShowWinscreen(void)
+{
+	return winScreen;
+}
+
+void Game::setWin(bool win)
+{
+	winScreen = win;
+}
+
 void Game::ButtonInit()
 {
 	quit = new Button(1380, 800, 130, 50, "Quit");
 	settings = new Button(1380, 750, 130, 50, "Settings");
 	nextWave = new Button(1380, 850, 130, 50, "Next Wave");
+	back = new Button(CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.5f, 260, 100, "Back");
 }
 
 void Game::ButtonDraw()
@@ -581,6 +593,13 @@ void gameUpdate(void)
 			case EnemyType::TANK:
 				SoundManager::GetInstance()->playSFX(ENEMY_TANK_DEATH_SFX);
 				break;
+			case EnemyType::BOSS:
+				SoundManager::GetInstance()->playSFX(ENEMY_BOSS_DEATH_1_SFX);
+				SoundManager::GetInstance()->playSFX(ENEMY_BOSS_DEATH_2_SFX);
+				SoundManager::GetInstance()->playSFX(GAME_WIN_SFX);
+				SoundManager::GetInstance()->stopBGM();
+				game.setWin(true);
+				break;
 			}
 			delete enemy;
 		}
@@ -758,6 +777,25 @@ void gameUpdate(void)
 			}
 		}
 
+	}
+
+	if (game.shouldShowWinscreen())
+	{
+		game.drawRect(CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.5f,
+			CP_System_GetWindowWidth(), CP_System_GetWindowHeight(), 0.f, 0.f, CP_Color_Create(0, 0, 0, 125));
+		
+		CP_Settings_TextSize(game.getFontSize() * 4);
+		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+		CP_Font_DrawTextBox("You win!", CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.25f, sizeof("You win!") * game.getFontSize() * 4);
+		CP_Settings_TextSize(game.getFontSize());
+		CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
+
+		game.back->Draw();
+
+		if (game.back->IsClicked())
+		{
+			SceneManager::GetInstance()->ChangeScenes(Scenes::MAIN_MENU_SCENE);
+		}
 	}
 }
 
