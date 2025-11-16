@@ -846,7 +846,6 @@
 
 		void gameExit(void)
 		{
-		
 		}
 
 

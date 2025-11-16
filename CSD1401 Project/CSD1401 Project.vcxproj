@@ -16,6 +16,7 @@
     <ClCompile Include="Scenes\PauseMenu\PauseMenu.cpp" />
     <ClCompile Include="Projectiles\HomingProjectile.cpp" />
     <ClCompile Include="Projectiles\HurricaneProjectile.cpp" />
+    <ClCompile Include="Particles\SnowParticle.cpp" />
     <ClCompile Include="Towers\StormTower.cpp" />
     <ClCompile Include="Towers\HurricaneTower.cpp" />
     <ClCompile Include="Towers\FrostTower.cpp" />
@@ -60,6 +61,7 @@
     <ClInclude Include="Scenes\PauseMenu\PauseMenu.h" />
     <ClInclude Include="Projectiles\HomingProjectile.h" />
     <ClInclude Include="Projectiles\HurricaneProjectile.h" />
+    <ClInclude Include="Particles\SnowParticle.h" />
     <ClInclude Include="Towers\StormTower.h" />
     <ClInclude Include="Towers\HurricaneTower.h" />
     <ClInclude Include="Towers\FrostTower.h" />
