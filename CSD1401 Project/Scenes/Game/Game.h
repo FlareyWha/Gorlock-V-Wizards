@@ -32,7 +32,7 @@ private:
 	int maxHealth = 3;
 	int health = 3;
 	float fontSize = 12.0f;
-	int moneys = 300;
+	int moneys = 99999999;
 	Button* quit;
 	Button* settings;
 

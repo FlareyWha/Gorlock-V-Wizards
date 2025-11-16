@@ -20,6 +20,7 @@
 
 #include "../../Towers/LavaTower.h"
 #include "../../Towers/FrostTower.h"
+#include "../../Towers/StormTower.h"
 #include "../../Towers/HurricaneTower.h"
 
 #include "../../Projectiles/BaseProjectile.h"
@@ -265,7 +266,6 @@ void gameInit(void)
 	game.waveManager = new WaveManager(gameMap->getSpawnpoint());
 
 	game.currentTower = new BaseTower();
-	//CP_Font_DrawText("YIBBBEEE", 10, 10);
 
 	SoundManager::GetInstance()->playBGM(GAME_00_BGM);
 	SoundManager::GetInstance()->queueNextBGM(GAME_01_BGM);
@@ -273,7 +273,6 @@ void gameInit(void)
 
 void gameUpdate(void)
 {
-	//printf("%d\n", game.currSelect);
 	CP_Graphics_ClearBackground(CP_Color_Create(132, 198, 105, 255));
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 
@@ -347,6 +346,11 @@ void gameUpdate(void)
 			if (game.currentTower->getImage() != NULL && game.grabbingTower)
 				CP_Image_Draw(game.currentTower->getImage(), CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
 		}
+	}
+
+	if (game.currSelect == LEVELUP)
+	{
+		CP_Image_Draw(CP_Image_Load("./Assets/UI/levelupcursor.png"), CP_Input_GetMouseX() + 25, CP_Input_GetMouseY() - 10, 75, 75, 255);
 	}
 	
 	// MOUSE RELEASED
@@ -514,10 +518,10 @@ void gameUpdate(void)
 						towerList.push_back(new FrostTower(mergedPos));
 						break;
 					case TOWER_TYPE::LIGHTNINGTOWER:
-						towerList.push_back(new LightningTower(mergedPos)); // REPLACE WITH STORMTOWER WHEN TOWER CLASS IS MADE
+						towerList.push_back(new StormTower(mergedPos)); // REPLACE WITH STORMTOWER WHEN TOWER CLASS IS MADE
 						break;
 					case TOWER_TYPE::WINDTOWER:
-						towerList.push_back(new HurricaneTower(mergedPos)); // REPLACE WITH HURRICANETOWER WHEN TOWER CLASS IS MADE
+						towerList.push_back(new HurricaneTower(mergedPos));
 						break;
 					}
 
@@ -625,7 +629,6 @@ void gameUpdate(void)
 
 			if (frostTower->getCooldownTime() <= 0.f && frostTower->trackedEnemy)
 			{
-				printf("%f %f\n", frostTower->trackedEnemy->GetLocation().x, frostTower->trackedEnemy->GetLocation().y);
 				projectileList.push_back(frostTower->Attack(frostTower->trackedEnemy));
 			}
 

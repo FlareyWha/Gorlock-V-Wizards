@@ -14,6 +14,7 @@
     <ClCompile Include="Enemies\BossEnemy.cpp" />
     <ClCompile Include="Projectiles\HomingProjectile.cpp" />
     <ClCompile Include="Projectiles\HurricaneProjectile.cpp" />
+    <ClCompile Include="Towers\StormTower.cpp" />
     <ClCompile Include="Towers\HurricaneTower.cpp" />
     <ClCompile Include="Towers\FrostTower.cpp" />
     <ClCompile Include="Particles\FireParticle.cpp" />
@@ -55,6 +56,7 @@
     <ClInclude Include="Enemies\BossEnemy.h" />
     <ClInclude Include="Projectiles\HomingProjectile.h" />
     <ClInclude Include="Projectiles\HurricaneProjectile.h" />
+    <ClInclude Include="Towers\StormTower.h" />
     <ClInclude Include="Towers\HurricaneTower.h" />
     <ClInclude Include="Towers\FrostTower.h" />
     <ClInclude Include="Particles\FireParticle.h" />
