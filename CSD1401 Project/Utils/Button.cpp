@@ -16,14 +16,12 @@ Button::Button(float x, float y, float width, float height, const char* text)
 
 void Button::Draw() const
 {
-    // draw button background
-    
     CP_Image_Draw(sprite, x, y, w, h, 255);
     CP_Font_Set(mainMenuFont);
-    // draw centered text
-    CP_Settings_TextSize((int)(h * 0.45f)); // text size scales with height
+
+    CP_Settings_TextSize((int)(h * 0.45f));
     CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
-    CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255)); // white text
+    CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 
     CP_Font_DrawText(label, x, y);
 }

@@ -38,8 +38,14 @@ private:
 
 	float imageScaling = 6.0f;
 	bool winScreen = false;
+	bool paused = false;
 public:
-	bool toggle = false;
+	void PauseGame() { paused = true; }
+	void ResumeGame() { paused = false; }
+	void SetPaused(bool p) { paused = p; }
+	bool IsPaused() const { return paused; }
+	void CleanUpGame();
+
 	void drawRect(float posX, float posY, float rectWidth, float rectHeight, float angle = 0.0f, float cornerRadius = 0.0f, CP_Color rectColor = { 100,100,100,255 });
 	void drawText(const char* text, float xPos, float yPos);
 

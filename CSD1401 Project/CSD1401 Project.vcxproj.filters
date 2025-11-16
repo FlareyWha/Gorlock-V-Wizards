@@ -55,6 +55,7 @@
     <ClCompile Include="Projectiles\HurricaneProjectile.cpp" />
     <ClCompile Include="Utils\Rand.cpp" />
     <ClCompile Include="Towers\StormTower.cpp" />
+    <ClCompile Include="Scenes\PauseMenu\PauseMenu.cpp" />
     <ClCompile Include="Projectiles\LavaWall.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -114,6 +115,7 @@
     <ClInclude Include="Utils\Rand.h" />
     <ClInclude Include="Projectiles\LavaWall.h" />
     <ClInclude Include="Towers\StormTower.h" />
+    <ClInclude Include="Scenes\PauseMenu\PauseMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

@@ -101,10 +101,9 @@ void settingsUpdate(void)
 	CP_Font_DrawText(buffer, 800, 500);
 
 	Backbutton.Draw();
-
-	if (Backbutton.IsClicked())
-	{
-		scenes->ChangeScenes(Scenes::MAIN_MENU_SCENE);
+	if (Backbutton.IsClicked()) {  // dot, not arrow
+		Scenes previous = SceneManager::GetInstance()->GetPreviousScene();
+		SceneManager::GetInstance()->ChangeScenes(previous);
 	}
 
 }

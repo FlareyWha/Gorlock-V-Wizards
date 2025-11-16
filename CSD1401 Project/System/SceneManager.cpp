@@ -10,6 +10,7 @@
 #include "../Scenes/Game/Game.h"
 #include "../Scenes/Settings/Settings.h"
 #include "../Scenes/MapEditor/MapEditor.h"
+#include "../../Scenes/PauseMenu/PauseMenu.h"
 
 /*!
 @brief      Changes the current active scene
@@ -22,19 +23,27 @@ in the parameters.
 */
 void SceneManager::ChangeScenes(Scenes scene)
 {
-	switch (scene)
-	{
-	case Scenes::MAIN_MENU_SCENE:
-		CP_Engine_SetNextGameState(mainMenuInit, mainMenuUpdate, mainMenuExit);
-		break;
-	case Scenes::GAME_SCENE:
-		CP_Engine_SetNextGameState(gameInit, gameUpdate, gameExit);
-		break;
-	case Scenes::SETTINGS_SCENE:
-		CP_Engine_SetNextGameState(settingsInit, settingsUpdate, settingsExit);
-		break;
-	case Scenes::MAP_EDITOR_SCENE:
-		CP_Engine_SetNextGameState(mapEditorInit, mapEditorUpdate, mapEditorExit);
-		break;
-	}
+    previousScene = currentScene;
+    currentScene = scene;
+
+    switch (scene)
+    {
+    case Scenes::MAIN_MENU_SCENE:
+        CP_Engine_SetNextGameState(mainMenuInit, mainMenuUpdate, mainMenuExit);
+        break;
+    case Scenes::GAME_SCENE:
+        CP_Engine_SetNextGameState(gameInit, gameUpdate, gameExit);
+        break;
+    case Scenes::SETTINGS_SCENE:
+        CP_Engine_SetNextGameState(settingsInit, settingsUpdate, settingsExit);
+        break;
+    case Scenes::MAP_EDITOR_SCENE:
+        CP_Engine_SetNextGameState(mapEditorInit, mapEditorUpdate, mapEditorExit);
+        break;
+    case Scenes::PAUSE_MENU_SCENE:
+        CP_Engine_SetNextGameState(PauseMenuInit, PauseMenuUpdate, PauseMenuExit);
+        break;
+    }
 }
+
+

@@ -18,7 +18,6 @@ protected:
     float buttonWidth = 250;
     float buttonHeight = 70;
 
-    // Offscreen animation positions
     float buttonTargetX;
     float buttonTopY, buttonBottomY, buttonLeftX, buttonRightX;
     float buttonY1, buttonY2, buttonY3, buttonY4;
