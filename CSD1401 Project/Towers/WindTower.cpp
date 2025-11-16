@@ -29,10 +29,17 @@ BaseProjectile* WindTower::Attack(BaseEnemy* enemy)
 
 void WindTower::levelUp()
 {
-	if (level != maxLevel)
-	{
-		this->level++;
-		this->setUpgradeCosts(levelUpCosts * level);
-		CP_Math_ClampInt(level, 1, maxLevel);
+	BaseTower::levelUp();
+	this->setDamage(0.25f * level);
+	switch (level) {
+	case 2:
+		setCooldown(0.20f);
+		break;
+	case 3:
+		setCooldown(0.1f);
+		break;
+	default:
+		setCooldown(0.25f);
+		break;
 	}
 }

@@ -7,7 +7,7 @@ FireTower::FireTower(CP_Vector position)
 	towerSprite = CP_Image_Load("Assets/Towers/fireTower.png");
 	this->setColor(CP_Color_Create(255, 0, 0, 255));
 	this->setDamage(1.0f);
-	this->setSpeed(100.f);
+	this->setSpeed(500.f);
 	setCooldown(1.0f);
 	setTowerType(TOWER_TYPE::FIRETOWER);
 	setLevel(1);
@@ -26,4 +26,10 @@ BaseProjectile* FireTower::Attack(BaseEnemy* enemy)
 	setCooldownTime(getCooldown());
 	SoundManager::GetInstance()->playSFX(TOWER_FIRE_ATTACK_SFX);
 	return new FireProjectile(getPosition(), direction, this->getDamage(), this->getSpeed(), this->getColor());
+}
+
+void FireTower::levelUp()
+{
+	BaseTower::levelUp();
+	this->setDamage(1.0f * this->getLevel());
 }

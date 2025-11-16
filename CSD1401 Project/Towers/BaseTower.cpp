@@ -137,8 +137,6 @@ void BaseTower::setMaxLevel(int level)
 
 void BaseTower::levelUp()
 {
-	printf("Level: %d\n", this->getLevel());
-	printf("UpgradeCosts: %d\n", this->getUpgradeCosts());
 	if (level != maxLevel)
 	{
 		this->level++;
@@ -193,30 +191,30 @@ BaseProjectile* BaseTower::Attack(BaseEnemy* enemy)
 	setCooldownTime(getCooldown());
 	return new BaseProjectile(this->getPosition(),direction,this->damage,this->projSpeed,this->getColor());
 }
-BaseProjectile* BaseTower::SpawnMissiles(BaseEnemy* enemy)
+BaseProjectile* BaseTower::SpawnSecondary(BaseEnemy* enemy)
 {
 	CP_Vector direction = CP_Vector_Normalize(CP_Vector_Set(enemy->GetLocation().x - getPosition().x, enemy->GetLocation().y - getPosition().y));
 	setCooldownTime(getCooldown());
 	return new BaseProjectile(this->getPosition(), direction, this->damage, this->projSpeed, this->getColor());
 }
-float BaseTower::getMaxMissileCD()
+float BaseTower::getMaxSecondaryCD()
 {
-	return maxMissileCooldown;
+	return maxSecondaryCooldown;
 }
 
-float BaseTower::getMissileCD()
+float BaseTower::getSecondaryCD()
 {
-	return missileCooldown;
+	return secondaryCooldown;
 }
 
-void BaseTower::setMaxMissileCD(float maxCD)
+void BaseTower::setMaxSecondaryCD(float maxCD)
 {
-	this->maxMissileCooldown = maxCD;
+	this->maxSecondaryCooldown = maxCD;
 }
 
-void BaseTower::setMissleCD(float cd)
+void BaseTower::setSecondaryCD(float cd)
 {
-	this->missileCooldown = cd;
+	this->secondaryCooldown = cd;
 }
 
 
@@ -232,7 +230,7 @@ void BaseTower::Init()
 void BaseTower::Update()
 {
 	cooldownTime -= 1.f * CP_System_GetDt();
-	missileCooldown -= 1.f * CP_System_GetDt();
+	secondaryCooldown -= 1.f * CP_System_GetDt();
 }
 
 void BaseTower::Render()

@@ -7,4 +7,5 @@ public:
 	FireTower(CP_Vector position);
 	~FireTower();
 	BaseProjectile* Attack(BaseEnemy* enemy) override;
+	void levelUp() override;
 };

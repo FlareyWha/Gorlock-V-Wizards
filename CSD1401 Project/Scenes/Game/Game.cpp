@@ -659,11 +659,11 @@ void gameUpdate(void)
 					tower->getCooldownTime() <= 0.f)
 				{
 					projectileList.push_back(tower->Attack(enemy));
-					if (tower->getTowerType() == TOWER_TYPE::HURRICANETOWER)
+					if (tower->getTowerType() == TOWER_TYPE::HURRICANETOWER || tower->getTowerType() == TOWER_TYPE::LAVATOWER)
 					{
-						if (tower->getMissileCD() <= 0.f)
+						if (tower->getSecondaryCD() <= 0.f)
 						{
-							projectileList.push_back(tower->SpawnMissiles(enemy));
+							projectileList.push_back(tower->SpawnSecondary(enemy));
 						}
 					}
 					break;
@@ -770,8 +770,11 @@ void gameUpdate(void)
 					else
 						projectileList[i]->onHit(enemy);
 
-					BaseProjectile* proj = projectileList[i];
-					projectileList.erase(projectileList.begin() + i);
+					if (projectileList[i]->getProjType() != PROJECTILE_TYPE::DAMAGEOVERTIME)
+					{
+						BaseProjectile* proj = projectileList[i];
+						projectileList.erase(projectileList.begin() + i);
+					}
 					//delete proj;
 
 					break;

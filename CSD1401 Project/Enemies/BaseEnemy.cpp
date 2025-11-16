@@ -30,7 +30,10 @@ bool BaseEnemy::IsSlowed()
 void BaseEnemy::Slow(bool slow,float slowFactor)
 {
     this->slowed = slow;
-    this->slowFactor = slowFactor;
+    if (this->slowFactor > slowFactor)
+    {
+        this->slowFactor = slowFactor;
+    }
 }
 
 bool BaseEnemy::IsBurned()
@@ -204,11 +207,13 @@ void BaseEnemy::Move(Map* map)
     if (slowTimer <= 0)
     {
         speed = GetMaxSpeed();
+        slowFactor = 0.75f;
     }
     else
     {
         SetSpeed(GetMaxSpeed() * slowFactor);
     }
+
     if (burned == true)
     {
         //dotTimer = maxDOTTimer;

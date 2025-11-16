@@ -6,6 +6,10 @@ FireProjectile::FireProjectile(CP_Vector position, CP_Vector direction, float da
     : BaseProjectile(position, direction, damage, speed, color)
 {
     FireParticle::LoadImage("Assets/Particles/Fire.png");
+    this->setProjColor(color);
+    this->setProjSpeed(speed);
+    this->setProjDamage(damage);
+
 }
 
 FireProjectile::~FireProjectile()
@@ -17,7 +21,7 @@ FireProjectile::~FireProjectile()
 
 void FireProjectile::onHit(BaseEnemy* enemy)
 {
-   
+    enemy->SetHealth(enemy->GetHealth() - this->getProjDamage());
     if (!enemy->IsBurned())
         enemy->Burn(true);
 }

@@ -39,8 +39,9 @@ public:
 	float GetRadius();
 	CP_Color getProjColor();
 	PROJECTILE_TYPE getProjType();
-	void setProjType(PROJECTILE_TYPE type);
+	CP_Vector getDirection();
 	
+	void setProjType(PROJECTILE_TYPE type);
 	void setProjDamage(float damage);
 	void setProjSpeed(int speed);
 	void setPosition(CP_Vector pos);

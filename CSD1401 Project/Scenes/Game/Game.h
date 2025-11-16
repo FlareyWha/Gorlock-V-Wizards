@@ -19,8 +19,8 @@ enum currSelected {
 	NONE_TOWER
 };
 typedef struct TowerUIs {
-	int towerCost;
-	CP_Vector pos;
+	int towerCost = 0;
+	CP_Vector pos = CP_Vector_Set(0,0);
 	float size = 96.f;
 	CP_Image image;
 	float radius = size / 2.0f;

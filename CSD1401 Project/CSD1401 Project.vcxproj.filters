@@ -55,6 +55,7 @@
     <ClCompile Include="Projectiles\HurricaneProjectile.cpp" />
     <ClCompile Include="Utils\Rand.cpp" />
     <ClCompile Include="Towers\StormTower.cpp" />
+    <ClCompile Include="Projectiles\LavaWall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Towers\BaseTower.h">
@@ -111,6 +112,7 @@
     <ClInclude Include="Projectiles\HomingProjectile.h" />
     <ClInclude Include="Projectiles\HurricaneProjectile.h" />
     <ClInclude Include="Utils\Rand.h" />
+    <ClInclude Include="Projectiles\LavaWall.h" />
     <ClInclude Include="Towers\StormTower.h" />
   </ItemGroup>
   <ItemGroup>

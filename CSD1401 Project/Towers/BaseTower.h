@@ -56,8 +56,8 @@ protected:
 	int levelUpCosts = 150;
 	float towerOpacity = 255.f;
 
-	float maxMissileCooldown = 2.f;
-	float missileCooldown = 0.f;
+	float maxSecondaryCooldown = 2.f;
+	float secondaryCooldown = 0.f;
 
 public:
 	CP_Image towerSprite;
@@ -104,13 +104,13 @@ public:
 	void Init();
 	virtual void Update();
 	virtual BaseProjectile* Attack(BaseEnemy* enemy);
-	virtual BaseProjectile* SpawnMissiles(BaseEnemy* enemy);
+	virtual BaseProjectile* SpawnSecondary(BaseEnemy* enemy);
 
 
-	float getMaxMissileCD();
-	float getMissileCD();
-	void setMaxMissileCD(float maxCD = 2.f);
-	void setMissleCD(float cd);
+	float getMaxSecondaryCD();
+	float getSecondaryCD();
+	void setMaxSecondaryCD(float maxCD = 2.f);
+	void setSecondaryCD(float cd);
 
 
 	void Render(void);

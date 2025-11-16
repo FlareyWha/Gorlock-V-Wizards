@@ -10,6 +10,6 @@ public:
 	~HurricaneTower();
 
 	BaseProjectile* Attack(BaseEnemy* enemy) override;
-	BaseProjectile* SpawnMissiles(BaseEnemy* enemy) override;
+	BaseProjectile* SpawnSecondary(BaseEnemy* enemy) override;
 };
 

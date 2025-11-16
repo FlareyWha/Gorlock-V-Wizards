@@ -71,6 +71,11 @@ PROJECTILE_TYPE BaseProjectile::getProjType()
 	return projectile;
 }
 
+CP_Vector BaseProjectile::getDirection()
+{
+	return direction;
+}
+
 void BaseProjectile::setProjType(PROJECTILE_TYPE type)
 {
 	this->projectile = type;
@@ -114,7 +119,6 @@ void BaseProjectile::setLifespan(float lifespan)
 void BaseProjectile::onHit(BaseEnemy* enemy)
 {
 	enemy->SetHealth(enemy->GetHealth() - this->getProjDamage());
-	printf("hitting");
 }
 
 void BaseProjectile::chainHit(std::vector<BaseEnemy*> enemyList,BaseEnemy* specificEnemy)

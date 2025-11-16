@@ -12,7 +12,7 @@ IceProjectile::IceProjectile(CP_Vector position, CP_Vector direction, float dama
 	setPosition(position);
 	setDirection(direction);
 	setProjColor(color);
-
+	this->level = level;
 	setLifespan(5.0f);
 }
 
@@ -22,10 +22,10 @@ IceProjectile::~IceProjectile()
 
 void IceProjectile::onHit(BaseEnemy* enemy)
 {
-	enemy->SetHealth(enemy->GetHealth() - getProjDamage());
+	enemy->SetHealth(enemy->GetHealth() - this->getProjDamage());
 	if (enemy->IsSlowed() == false)
 	{ 
-		switch (level)
+		switch (this->level)
 		{
 		case 1:
 			slowFactor = 0.75f;

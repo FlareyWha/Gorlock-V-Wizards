@@ -32,11 +32,11 @@ BaseProjectile* IceTower::Attack(BaseEnemy* enemy)
 	//CP_Settings_RectMode(CP_POSITION_CENTER);
 	
 	setCooldownTime(getCooldown());
-	return new IceProjectile(getPosition(), direction, this->getDamage(), this->getSpeed(), this->getColor(),level);
+	return new IceProjectile(getPosition(), direction, this->getDamage(), this->getSpeed(), this->getColor(),this->getLevel());
 }
 
 void IceTower::levelUp()
 {
-	level++;
-	CP_Math_ClampInt(level, 1, maxLevel);
+	BaseTower::levelUp();
+	this->setDamage(1.0f * ((float)this->getLevel()* 0.65f));
 }
