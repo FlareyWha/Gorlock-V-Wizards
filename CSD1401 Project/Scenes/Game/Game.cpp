@@ -245,9 +245,12 @@
 				gameMap->resetMap(true);
 			}
 
+			game.setWin(false);
+			game.setLose(false);
+
 			// Reset player stats
 			health = maxHealth;
-			moneys = 0;
+			moneys = 500;
 			currSelect = NONE_TOWER;
 			grabbingTower = false;
 		}
@@ -851,8 +854,8 @@
 
 				if (game.back->IsClicked())
 				{
-					SceneManager::GetInstance()->ChangeScenes(Scenes::MAIN_MENU_SCENE);
 					game.CleanUpGame();
+					SceneManager::GetInstance()->ChangeScenes(Scenes::MAIN_MENU_SCENE);
 				}
 
 				if (game.shouldShowWinscreen())
