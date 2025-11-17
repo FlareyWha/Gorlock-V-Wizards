@@ -8,11 +8,13 @@ LavaTower::LavaTower(CP_Vector position)
 	towerSprite = CP_Image_Load("Assets/Towers/lavaTower.png");
 	this->setColor(CP_Color_Create(255, 0, 0, 255));
 	this->setDamage(1.0f);
-	this->setSpeed(100.f);
+	this->setSpeed(500.f);
 	this->setSecondaryCD(1.0f);
-	this->setMaxSecondaryCD(10.f);
+	this->setMaxSecondaryCD(5.f);
 	setCooldown(1.0f);
 	setTowerType(TOWER_TYPE::LAVATOWER);
+
+	
 }
 
 LavaTower::~LavaTower()
@@ -31,7 +33,7 @@ BaseProjectile* LavaTower::Attack(BaseEnemy* enemy)
 BaseProjectile* LavaTower::SpawnSecondary(BaseEnemy* enemy)
 {
 	CP_Vector direction = CP_Vector_Normalize(CP_Vector_Set(enemy->GetLocation().x - getPosition().x, enemy->GetLocation().y - getPosition().y));
-	setSecondaryCD(2.f);
-	return new LavaWall(enemy->GetLocation(), enemy->GetDirectionVector(), this->getDamage(), 0, this->getColor());
+	setSecondaryCD(getMaxSecondaryCD());
+	return new LavaWall(enemy->GetLocation(), enemy->GetDirectionVector(), this->getDamage(), 0, CP_Color_Create(255,100,0,255));
 }
 
