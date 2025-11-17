@@ -15,4 +15,7 @@ public:
 
 	void TrackEnemy(std::vector<BaseEnemy*>& enemyList);
 	BaseEnemy* trackedEnemy;
+
+	float beamLength = 0.f;
+	float beamAngle = 0.f;
 };
