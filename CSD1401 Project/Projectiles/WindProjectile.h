@@ -4,7 +4,7 @@
 #include "cprocessing.h"
 #include <vector>
 
-class WindProjectile : public virtual BaseProjectile
+class WindProjectile : public BaseProjectile
 {
 public:
     WindProjectile();

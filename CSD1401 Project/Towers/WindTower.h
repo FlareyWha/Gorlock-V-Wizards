@@ -1,7 +1,7 @@
 #pragma once
 #include "BaseTower.h"
 #include "../Projectiles/BaseProjectile.h"
-class WindTower : public virtual BaseTower
+class WindTower : public BaseTower
 {
 private:
 	float baseDamage = 0.25f;

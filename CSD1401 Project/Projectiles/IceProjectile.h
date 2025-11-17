@@ -4,7 +4,7 @@
 #include "IceProjectile.h"
 #include "../Particles/SnowParticle.h"
 #include <cstdlib>
-class IceProjectile:public virtual BaseProjectile
+class IceProjectile: public BaseProjectile
 {
 private:
 	float slowFactor;

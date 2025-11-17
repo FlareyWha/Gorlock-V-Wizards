@@ -56,9 +56,22 @@
 			CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 		}
 
+
 		void Game::drawText(const char* text, float xPos,float yPos)
 		{
-			CP_Font_DrawTextBox(text, xPos, yPos, sizeof(text) * fontSize);
+			CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_LEFT, CP_TEXT_ALIGN_V_MIDDLE);
+			CP_Font_DrawTextBox(text, xPos, yPos, sizeof(text) * game.getFontSize());
+			CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+			if (CP_Input_KeyDown(KEY_F))
+			{
+				game.setFontSize(game.getFontSize() + 1);
+				CP_Settings_TextSize(game.getFontSize());
+			}
+			else if (CP_Input_KeyDown(KEY_G))
+			{
+				game.setFontSize(game.getFontSize() - 1);
+				CP_Settings_TextSize(game.getFontSize());
+			}
 		}
 
 		void Game::setFontSize(float size)
@@ -89,9 +102,11 @@
 
 		void Game::drawMoneys(float x, float y)
 		{
-			std::string money = "Money: " + std::to_string(game.getMoneys());
+			std::string money = ": " + std::to_string(game.getMoneys());
 			CP_Image_Draw(game.moneysImage, x, y, 16 * imageScaling, 16 * imageScaling, 255);
-			game.drawText(money.c_str(), x, y);
+			CP_Settings_TextSize(35.f);
+			game.drawText(money.c_str(), x+60, y);
+			CP_Settings_TextSize(20.f);
 		}
 
 		void Game::drawHeart(float x, float y)
@@ -200,30 +215,6 @@
 			nextWave->Draw();
 		}
 
-		void drawRect(float posX, float posY, float rectWidth, float rectHeight, float angle, float cornerRadius, CP_Color rectColor)
-		{
-			CP_Settings_Fill(rectColor);
-			CP_Graphics_DrawRectAdvanced(posX, posY, rectWidth, rectHeight, angle, cornerRadius);
-			CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-		}
-
-		void drawText(const char* text, float xPos, float yPos)
-		{
-			CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_LEFT, CP_TEXT_ALIGN_V_MIDDLE);
-			CP_Font_DrawTextBox(text, xPos, yPos, sizeof(text) * game.getFontSize());
-			if (CP_Input_KeyDown(KEY_F))
-			{
-				game.setFontSize(game.getFontSize() + 1);
-				CP_Settings_TextSize(game.getFontSize());
-			}
-			else if (CP_Input_KeyDown(KEY_G))
-			{
-				game.setFontSize(game.getFontSize() - 1);
-				CP_Settings_TextSize(game.getFontSize());
-			}
-			//drawText("hoorah",CP_Input_GetMouseX(), CP_Input_GetMouseY());
-		}
-
 		void Game::CleanUpGame() {
 			// Delete all enemies
 			for (BaseEnemy* enemy : enemiesList) {
@@ -254,9 +245,12 @@
 				gameMap->resetMap(true);
 			}
 
+			game.setWin(false);
+			game.setLose(false);
+
 			// Reset player stats
 			health = maxHealth;
-			moneys = 0;
+			moneys = 500;
 			currSelect = NONE_TOWER;
 			grabbingTower = false;
 		}
@@ -291,17 +285,17 @@
 			game.windTowerUI.image = CP_Image_Load("./Assets/Towers/windTower.png");
 			game.windTowerUI.pos = CP_Vector_Add(game.fireTowerUI.pos,CP_Vector_Set(0,100));
 			game.windTowerUI.selection = WINDTOWER;
-			game.windTowerUI.towerCost = 101;
+			game.windTowerUI.towerCost = 150;
 
 			game.iceTowerUI.image = CP_Image_Load("./Assets/Towers/iceTower.png");
 			game.iceTowerUI.pos = CP_Vector_Add(game.windTowerUI.pos, CP_Vector_Set(0, 100));
 			game.iceTowerUI.selection = ICETOWER;
-			game.iceTowerUI.towerCost = 102;
+			game.iceTowerUI.towerCost = 125;
 
 			game.lightningTowerUI.image = CP_Image_Load("./Assets/Towers/lightningTower.png");
 			game.lightningTowerUI.pos = CP_Vector_Add(game.iceTowerUI.pos, CP_Vector_Set(0, 100));
 			game.lightningTowerUI.selection = LIGHTNINGTOWER;
-			game.lightningTowerUI.towerCost = 103;
+			game.lightningTowerUI.towerCost = 200;
 
 			game.levelUpUI.image = CP_Image_Load("./Assets/UI/levelup.png");
 			game.levelUpUI.pos = CP_Vector_Set(1500, 800);
@@ -359,6 +353,13 @@
 				else
 					game.uiElements[i].opacity = 255;
 				CP_Image_Draw(game.uiElements[i].image, game.uiElements[i].pos.x, game.uiElements[i].pos.y, game.uiElements[i].size, game.uiElements[i].size, game.uiElements[i].opacity);
+				if (game.uiElements[i].selection != LEVELUP)
+				{
+					std::string costs = std::to_string(game.uiElements[i].towerCost);
+					CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_RIGHT, CP_TEXT_ALIGN_V_MIDDLE);
+					game.drawText(costs.c_str(), game.uiElements[i].pos.x + 10, game.uiElements[i].pos.y + 35);
+					CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_LEFT, CP_TEXT_ALIGN_V_MIDDLE);
+				}
 			}
 	
 			// MOUSE DOWN
@@ -453,7 +454,7 @@
 								}
 								for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]); i++)
 								{
-									if (game.currSelect != LEVELUP)
+									if (game.currSelect == game.uiElements[i].selection)
 									{
 										game.loseMoneys(game.uiElements[i].towerCost);
 										break;
@@ -495,7 +496,7 @@
 									}
 									for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]); i++)
 									{	
-										if (game.currSelect != LEVELUP)
+										if (game.currSelect == game.uiElements[i].selection)
 										{
 											game.loseMoneys(game.uiElements[i].towerCost);
 											break;
@@ -763,13 +764,13 @@
 						&& tower->getTowerType() != TOWER_TYPE::LAVATOWER && tower->getTowerType() != TOWER_TYPE::STORMTOWER
 						&& tower->getTowerType() != TOWER_TYPE::FROSTTOWER)
 					{
-							drawText(cost.c_str(), tower->getPosition().x, tower->getPosition().y);
+							game.drawText(cost.c_str(), tower->getPosition().x, tower->getPosition().y);
 					}
 					else if (tower->getLevel() == tower->getMaxLevel() || tower->getTowerType() == TOWER_TYPE::HURRICANETOWER
 						|| tower->getTowerType() == TOWER_TYPE::LAVATOWER || tower->getTowerType() == TOWER_TYPE::STORMTOWER
 						|| tower->getTowerType() == TOWER_TYPE::FROSTTOWER)
 					{
-						drawText("MAX", tower->getPosition().x, tower->getPosition().y);
+						game.drawText("MAX", tower->getPosition().x, tower->getPosition().y);
 					}
 					if (game.getMoneys() < tower->getUpgradeCosts() || tower->getLevel() == tower->getMaxLevel()
 						|| tower->getTowerType() == TOWER_TYPE::HURRICANETOWER || tower->getTowerType() == TOWER_TYPE::LAVATOWER 
@@ -828,9 +829,12 @@
 							}
 							else
 								projectileList[i]->onHit(enemy);
-
-							BaseProjectile* proj = projectileList[i];
-							projectileList.erase(projectileList.begin() + i);
+							
+							if (projectileList[i]->getProjType() != PROJECTILE_TYPE::DAMAGEOVERTIME)
+							{
+								BaseProjectile* proj = projectileList[i];
+								projectileList.erase(projectileList.begin() + i);
+							}
 							//delete proj;
 
 							break;
@@ -850,6 +854,7 @@
 
 				if (game.back->IsClicked())
 				{
+					game.CleanUpGame();
 					SceneManager::GetInstance()->ChangeScenes(Scenes::MAIN_MENU_SCENE);
 				}
 

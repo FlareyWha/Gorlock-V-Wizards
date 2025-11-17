@@ -1,7 +1,7 @@
 #pragma once
 #include "BaseTower.h"
 #include "cprocessing.h"
-class HurricaneTower : public virtual BaseTower
+class HurricaneTower : public BaseTower
 {
 private: 
 

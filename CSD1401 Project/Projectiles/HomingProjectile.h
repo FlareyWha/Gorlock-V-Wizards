@@ -2,7 +2,7 @@
 #include "BaseProjectile.h"
 #include "../Enemies/BaseEnemy.h"
 #include "cprocessing.h"
-class HomingProjectile : public virtual BaseProjectile
+class HomingProjectile : public BaseProjectile
 {
 private:
 	float timer = 3.f;

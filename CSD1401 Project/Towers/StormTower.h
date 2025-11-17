@@ -1,7 +1,7 @@
 #pragma once
 #include "BaseTower.h"
 
-class StormTower : public virtual BaseTower
+class StormTower : public BaseTower
 {
 public:
 	StormTower(CP_Vector position);

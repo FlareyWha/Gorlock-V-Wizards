@@ -1,7 +1,7 @@
 #pragma once
 #include "BaseTower.h"
 #include "../Projectiles/BaseProjectile.h"
-class IceTower:public virtual BaseTower
+class IceTower: public BaseTower
 {
 public:
 	IceTower(CP_Vector position);

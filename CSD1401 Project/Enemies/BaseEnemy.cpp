@@ -219,8 +219,8 @@ void BaseEnemy::Move(Map* map)
         //dotTimer = maxDOTTimer;
         burnStacks++;
         burnTimer = maxBurnTimer;
-        burned = false;
         isBurning = true;
+        burned = false;
     }
     if (dotTimer <=0 && burnTimer > 0 && isBurning)
     {

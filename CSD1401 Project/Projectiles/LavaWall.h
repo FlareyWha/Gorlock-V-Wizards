@@ -1,7 +1,7 @@
 #pragma once
 #include "BaseProjectile.h"
 
-class LavaWall :public virtual BaseProjectile
+class LavaWall :public BaseProjectile
 {
 private:
 	float hitCD = 0.f;
