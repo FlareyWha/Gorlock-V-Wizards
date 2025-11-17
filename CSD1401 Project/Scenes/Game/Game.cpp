@@ -275,7 +275,7 @@
 			game.ButtonInit();
 
 			gameMap = Map::GetInstance();
-			gameMap->loadMap("Edit3");
+			gameMap->loadMap("NewMap");
 
 			mapSize = gameMap->getDimensions();
 
