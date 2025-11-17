@@ -1,7 +1,7 @@
 #pragma once
 #include "BaseProjectile.h"
 #include "../Enemies/BaseEnemy.h"
-class LightningProjectile:public virtual BaseProjectile
+class LightningProjectile: public BaseProjectile
 {
 private:
 	int maxChain = 3;

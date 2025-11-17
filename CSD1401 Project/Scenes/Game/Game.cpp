@@ -851,6 +851,7 @@
 				if (game.back->IsClicked())
 				{
 					SceneManager::GetInstance()->ChangeScenes(Scenes::MAIN_MENU_SCENE);
+					game.CleanUpGame();
 				}
 
 				if (game.shouldShowWinscreen())
