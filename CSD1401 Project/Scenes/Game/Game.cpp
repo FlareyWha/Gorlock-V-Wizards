@@ -160,6 +160,13 @@
 			health -= hp;
 			//CP_Image_Draw(game.healthImage, CP_System_GetWindowWidth() / 2.0, 100, 128, 128, 255);
 			health = CP_Math_ClampInt(health, 0, game.getMaxHealth());
+
+			if (health <= 0 && !game.shouldShowLosescreen())
+			{
+				game.setLose(true);
+				SoundManager::GetInstance()->playSFX(GAME_LOSE_SFX);
+				SoundManager::GetInstance()->stopBGM();
+			}
 		}
 
 		bool Game::shouldShowWinscreen(void)
@@ -167,9 +174,19 @@
 			return winScreen;
 		}
 
+		bool Game::shouldShowLosescreen(void)
+		{
+			return loseScreen;
+		}
+
 		void Game::setWin(bool win)
 		{
 			winScreen = win;
+		}
+
+		void Game::setLose(bool lose)
+		{
+			loseScreen = lose;
 		}
 
 		void Game::ButtonInit()
@@ -824,22 +841,33 @@
 
 			}
 
-			if (game.shouldShowWinscreen())
+			if (game.shouldShowWinscreen() || game.shouldShowLosescreen())
 			{
 				game.drawRect(CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.5f,
 					CP_System_GetWindowWidth(), CP_System_GetWindowHeight(), 0.f, 0.f, CP_Color_Create(0, 0, 0, 125));
-		
-				CP_Settings_TextSize(game.getFontSize() * 4);
-				CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
-				CP_Font_DrawTextBox("You win!", CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.25f, sizeof("You win!") * game.getFontSize() * 4);
-				CP_Settings_TextSize(game.getFontSize());
-				CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 
 				game.back->Draw();
 
 				if (game.back->IsClicked())
 				{
 					SceneManager::GetInstance()->ChangeScenes(Scenes::MAIN_MENU_SCENE);
+				}
+
+				if (game.shouldShowWinscreen())
+				{
+					CP_Settings_TextSize(game.getFontSize() * 4);
+					CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+					CP_Font_DrawTextBox("You win!", CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.25f, sizeof("You win!") * game.getFontSize() * 4);
+					CP_Settings_TextSize(game.getFontSize());
+					CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
+				}
+				else
+				{
+					CP_Settings_TextSize(game.getFontSize() * 4);
+					CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+					CP_Font_DrawTextBox("You lose", CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.25f, sizeof("You lose")* game.getFontSize() * 4);
+					CP_Settings_TextSize(game.getFontSize());
+					CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 				}
 			}
 		}

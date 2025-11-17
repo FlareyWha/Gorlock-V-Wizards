@@ -38,6 +38,7 @@ private:
 
 	float imageScaling = 6.0f;
 	bool winScreen = false;
+	bool loseScreen = false;
 	bool paused = false;
 public:
 	void PauseGame() { paused = true; }
@@ -97,7 +98,9 @@ public:
 	Button* back;
 
 	bool shouldShowWinscreen(void);
+	bool shouldShowLosescreen(void);
 	void setWin(bool win);
+	void setLose(bool lose);
 };
 void gameInit(void);
 void gameUpdate(void);
