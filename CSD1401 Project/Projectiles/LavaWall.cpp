@@ -27,7 +27,7 @@ void LavaWall::Render()
 {
 	CP_Settings_Fill(getProjColor());
 	float angle = CP_Math_Degrees(atan2f(this->getDirection().y, this->getDirection().x));
-	angle = (angle < 90 && angle > 0) ? 0 : angle > 90 ? 0 : 90;
+	//angle = (angle < 90 && angle > 0) ? 0 : angle > 90 ? 0 : 90;
 	//printf("Angle: %f\n", angle);
 	CP_Graphics_DrawRectAdvanced(this->GetLocation().x, this->GetLocation().y, 15.f,50.f,angle,10.f);
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
@@ -35,11 +35,12 @@ void LavaWall::Render()
 
 void LavaWall::onHit(BaseEnemy* enemy)
 {
-	if (hitCD <= 0.f)
-	{
-		printf("hitting lol");
-		hitCD = hitMaxCD;
-	}
+	
+	enemy->SetHealth(enemy->GetHealth() - 0.5);
+	//if (!enemy->IsBurned())
+	//	enemy->Burn(true);
+	hitCD = hitMaxCD;
 }
+
 
 
