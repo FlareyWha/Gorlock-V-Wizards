@@ -10,6 +10,7 @@
 #include "../../System/SettingsManager.h"
 #include "../../Utils/Button.h"
 
+CP_Image mainLogo;
 CP_Font mainMenuFont;
 Map* map;
 SceneManager* scene;
@@ -106,6 +107,7 @@ void NewMainMenu::Exit()
 
 void mainMenuInit(void) {
 	mainMenuFont = CP_Font_Load("./Assets/Fonts/KenneyFonts/Kenney Mini.ttf");
+	mainLogo = CP_Image_Load("Assets/Images/mainmenu_logo.png");
 	menu.ButtonInit();
 	scene = SceneManager::GetInstance();
 	SoundManager::GetInstance()->playBGM(MAIN_MENU_BGM);
@@ -115,10 +117,11 @@ void mainMenuUpdate()
 {
 	CP_Graphics_ClearBackground(CP_Color_Create(0, 0, 0, 255));
 
+	CP_Image_Draw(mainLogo, CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.25f, 184.f * 4, 104.f * 4, 255.f);
+
 	// Title
 	CP_Font_Set(mainMenuFont);
 	CP_Settings_TextSize(25.0f);
-	CP_Font_DrawText("Main Menu", 100, 100);
 
 	// Buttons
 	menu.ButtonDraw();
