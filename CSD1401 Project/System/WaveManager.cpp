@@ -93,6 +93,7 @@ void WaveManager::SpawnWave(CP_Vector spawnLocation)
 	{
 		if (bossSpawned) return;
 
+		waveId++;
 		SoundManager::GetInstance()->queueNextBGM(GAME_02_BGM);
 		enemyQueue->push(new BossEnemy(spawnLocation));
 		bossSpawned = true;
@@ -107,4 +108,14 @@ void WaveManager::SpawnWave(CP_Vector spawnLocation)
 bool WaveManager::GetWaveInProgress(void)
 {
 	return waveInProgress;
+}
+
+int WaveManager::getWaveId(void)
+{
+	return waveId;
+}
+
+int WaveManager::getMaxWaves(void)
+{
+	return maxWaves;
 }

@@ -606,14 +606,22 @@ void gameUpdate(void)
 	game.drawHeart(1500, 700.0f);
 	game.drawMoneys(1350, 100.0f);
 
-	if (CP_Input_KeyReleased(KEY_H))
-	{
-		game.takeDamage(1);
-	}
-	if (CP_Input_MouseTriggered(MOUSE_BUTTON_2))
-	{
-		game.gainMoneys(100);
-	}
+			std::string waveString = "Wave " + std::to_string(game.waveManager->getWaveId() - 1) + "/" + std::to_string(game.waveManager->getMaxWaves());
+
+			CP_Settings_TextSize(game.getFontSize() * 2);
+			CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
+			CP_Font_DrawText(waveString.c_str(), 1350, 25);
+			CP_Settings_TextSize(game.getFontSize());
+			CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
+
+			if (CP_Input_KeyReleased(KEY_H))
+			{
+				game.takeDamage(1);
+			}
+			if (CP_Input_MouseTriggered(MOUSE_BUTTON_2))
+			{
+				game.gainMoneys(100);
+			}
 
 	game.waveManager->Update(&enemiesList);
 

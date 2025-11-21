@@ -23,7 +23,7 @@ private:
 	std::string const fileName = "Assets/waves.txt";
 	std::map<int, WaveInfo> waveMap;
 	std::queue<BaseEnemy*>* enemyQueue = new std::queue<BaseEnemy*>();
-	int waveId = 1;
+	int waveId = 1, maxWaves = 10;
 	float spawnCooldown = 1.f, basicCooldown = 0.5f, speedCooldown = 0.25f, tankCooldown = 1.f;
 	bool waveInProgress = false;
 	bool bossSpawned = false;
@@ -35,5 +35,7 @@ public:
 	void ReadWaveFile(std::ifstream *file, CP_Vector spawnLocation);
 	void SpawnWave(CP_Vector spawnLocation);
 	bool GetWaveInProgress(void);
+	int getWaveId(void);
+	int getMaxWaves(void);
 };
 
