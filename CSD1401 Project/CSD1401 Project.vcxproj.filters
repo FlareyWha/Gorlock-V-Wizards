@@ -58,6 +58,7 @@
     <ClCompile Include="Scenes\PauseMenu\PauseMenu.cpp" />
     <ClCompile Include="Projectiles\LavaWall.cpp" />
     <ClCompile Include="Particles\SnowParticle.cpp" />
+    <ClCompile Include="Scenes\Credits\Credits.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Towers\BaseTower.h">
@@ -118,6 +119,7 @@
     <ClInclude Include="Towers\StormTower.h" />
     <ClInclude Include="Scenes\PauseMenu\PauseMenu.h" />
     <ClInclude Include="Particles\SnowParticle.h" />
+    <ClInclude Include="Scenes\Credits\Credits.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

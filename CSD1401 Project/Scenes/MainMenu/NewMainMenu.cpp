@@ -32,13 +32,15 @@ void NewMainMenu::ButtonInit()
 
 	buttonY1 = windowHeight / 2;
 	buttonY2 = buttonY1 + 100;
-	buttonY3 = buttonY1 + 300;
+	buttonY3 = buttonY1 + 400;
 	buttonY4 = buttonY1 + 200;
+	buttonY5 = buttonY1 + 300;
 
 	// Create buttons
 	startButton = new Button(buttonRightX, buttonTopY, buttonWidth, buttonHeight, "Start");
 	settingsButton = new Button(buttonLeftX, buttonY2, buttonWidth, buttonHeight, "Settings");
 	mapEditorButton = new Button(buttonRightX, buttonY4, buttonWidth, buttonHeight, "Map Editor");
+	creditsButton = new Button(buttonRightX, buttonY5, buttonWidth, buttonHeight, "Credits");
 	quitButton = new Button(buttonLeftX, buttonBottomY, buttonWidth, buttonHeight, "Quit");
 }
 
@@ -56,12 +58,14 @@ void NewMainMenu::ButtonDraw()
 	startButton->SetPosition(buttonRightX, buttonTopY);
 	settingsButton->SetPosition(buttonLeftX, buttonY2);
 	mapEditorButton->SetPosition(buttonRightX, buttonY4);
-	quitButton->SetPosition(buttonLeftX, buttonBottomY);
+	creditsButton->SetPosition(buttonLeftX, buttonY5);
+	quitButton->SetPosition(buttonRightX, buttonBottomY);
 
 	// Draw all buttons
 	startButton->Draw();
 	settingsButton->Draw();
 	mapEditorButton->Draw();
+	creditsButton->Draw();
 	quitButton->Draw();
 }
 
@@ -80,6 +84,8 @@ void NewMainMenu::HandleClicks()
 	else if (mapEditorButton->IsClicked())
 		scene->ChangeScenes(Scenes::MAP_EDITOR_SCENE);
 
+	else if (creditsButton->IsClicked())
+		scene->ChangeScenes(Scenes::CREDITS_SCENE);
 	else if (quitButton->IsClicked())
 	{
 		SoundManager::GetInstance()->freeAllSounds();

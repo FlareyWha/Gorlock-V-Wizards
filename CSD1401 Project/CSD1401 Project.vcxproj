@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Scenes\Credits\Credits.cpp" />
     <ClCompile Include="Enemies\BossEnemy.cpp" />
     <ClCompile Include="Projectiles\LavaWall.cpp" />
     <ClCompile Include="Scenes\PauseMenu\PauseMenu.cpp" />
@@ -56,6 +57,7 @@
     <ClCompile Include="Particles\WindParticle.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Scenes\Credits\Credits.h" />
     <ClInclude Include="Enemies\BossEnemy.h" />
     <ClInclude Include="Projectiles\LavaWall.h" />
     <ClInclude Include="Scenes\PauseMenu\PauseMenu.h" />

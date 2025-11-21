@@ -13,6 +13,7 @@ protected:
     Button* startButton;
     Button* settingsButton;
     Button* mapEditorButton;
+    Button* creditsButton;
     Button* quitButton;
 
     float buttonWidth = 250;
@@ -20,7 +21,7 @@ protected:
 
     float buttonTargetX;
     float buttonTopY, buttonBottomY, buttonLeftX, buttonRightX;
-    float buttonY1, buttonY2, buttonY3, buttonY4;
+    float buttonY1, buttonY2, buttonY3, buttonY4 , buttonY5;
 };
 
 void mainMenuInit(void);

@@ -10,6 +10,7 @@
 #include "../Scenes/Game/Game.h"
 #include "../Scenes/Settings/Settings.h"
 #include "../Scenes/MapEditor/MapEditor.h"
+#include "../Scenes/Credits/Credits.h"
 #include "../Scenes/PauseMenu/PauseMenu.h"
 
 /*!
@@ -39,6 +40,9 @@ void SceneManager::ChangeScenes(Scenes scene)
         break;
     case Scenes::MAP_EDITOR_SCENE:
         CP_Engine_SetNextGameState(mapEditorInit, mapEditorUpdate, mapEditorExit);
+        break;
+    case Scenes::CREDITS_SCENE:
+        CP_Engine_SetNextGameState(creditsInit, creditsUpdate, creditsExit);
         break;
     case Scenes::PAUSE_MENU_SCENE:
         CP_Engine_SetNextGameState(PauseMenuInit, PauseMenuUpdate, PauseMenuExit);
