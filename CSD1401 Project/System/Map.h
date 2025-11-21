@@ -81,10 +81,10 @@ protected:
 public:
 
 	Tile getTile(float xPos, float yPos);
-	Tile getTileFromTilePos(int xPos, int yPos);
+	Tile getTileFromTilePos(float xPos, float yPos);
 	CP_Vector getTilePos(float xPos, float yPos);
 	CP_Vector getTileWorldPos(CP_Vector tilePos);
-	void setTile(TILE_TYPE tile, int rowPos, int columnPos);
+	void setTile(TILE_TYPE tile, float rowPos, float columnPos);
 
 	std::map<TILE_RELATIVE_POSITION, Tile> getSurroundingTiles(CP_Vector tilePos);
 

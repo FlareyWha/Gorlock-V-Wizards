@@ -142,9 +142,9 @@ Tile Map::getTile(float xPos, float yPos)
 @param	yPos - y tile position
 @return Tile
 *//*______________________________________________________________*/
-Tile Map::getTileFromTilePos(int xPos, int yPos)
+Tile Map::getTileFromTilePos(float xPos, float yPos)
 {
-	Tile tile = map[xPos][yPos];
+	Tile tile = map[(int)xPos][(int)yPos];
 
 	return tile;
 }
@@ -196,9 +196,9 @@ CP_Vector Map::getTileWorldPos(CP_Vector tilePos)
 @param	columnPos - tile grid column pos
 @return void
 *//*______________________________________________________________*/
-void Map::setTile(TILE_TYPE tile, int rowPos, int columnPos)
+void Map::setTile(TILE_TYPE tile, float rowPos, float columnPos)
 {
-	map[rowPos][columnPos].tileType = tile;
+	map[(int)rowPos][(int)columnPos].tileType = tile;
 }
 
 /*!

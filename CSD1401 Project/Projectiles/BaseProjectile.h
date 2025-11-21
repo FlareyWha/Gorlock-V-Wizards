@@ -43,7 +43,7 @@ public:
 	
 	void setProjType(PROJECTILE_TYPE type);
 	void setProjDamage(float damage);
-	void setProjSpeed(int speed);
+	void setProjSpeed(float speed);
 	void setPosition(CP_Vector pos);
 	void setRadius(float rad);
 	void setProjColor(CP_Color color);

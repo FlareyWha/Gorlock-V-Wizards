@@ -84,7 +84,7 @@ This function sets the current X and Y position on the map to specific coordinat
 @param      int xPosition, int yPosition
 @return     none
 *//*______________________________________________________________*/
-void BaseTower::setPos(int xPosition, int yPosition)
+void BaseTower::setPos(float xPosition, float yPosition)
 {
 	position = CP_Vector_Set(xPosition, yPosition);
 }

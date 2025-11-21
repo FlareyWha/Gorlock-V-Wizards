@@ -18,8 +18,8 @@ private:
 	std::string const sfxFile = "Assets/Settings/sfx.txt";
 
 	//Value from 0-100
-	int sfxVolume = 100;
-	int bgmVolume = 100;
+	float sfxVolume = 100;
+	float bgmVolume = 100;
 
 public:
 

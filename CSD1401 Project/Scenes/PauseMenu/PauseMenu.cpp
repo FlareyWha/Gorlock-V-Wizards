@@ -59,7 +59,7 @@ void PauseMenuInit() {
 void PauseMenuUpdate() {
     CP_Settings_Fill(CP_Color_Create(0, 0, 0, 150));
     CP_Graphics_DrawRect(CP_System_GetWindowWidth() / 2.0f, CP_System_GetWindowHeight() / 2.0f,
-        CP_System_GetWindowWidth(), CP_System_GetWindowHeight());
+        (float)CP_System_GetWindowWidth(), (float)CP_System_GetWindowHeight());
 
     pauseMenu.ButtonDraw();
     pauseMenu.HandleInput();

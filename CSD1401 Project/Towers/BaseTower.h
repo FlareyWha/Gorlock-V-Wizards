@@ -76,7 +76,7 @@ public:
 
 	float getDamage();
 	// Setters
-	void setPos(int xPosition, int yPosition);
+	void setPos(float xPosition, float yPosition);
 	void setImage(CP_Image inputImage);
 	void setTowerType(TOWER_TYPE type);
 	void setCooldownTime(float time);

@@ -86,7 +86,7 @@ void BaseProjectile::setProjDamage(float damage)
 	this->damage = damage;
 }
 
-void BaseProjectile::setProjSpeed(int speed)
+void BaseProjectile::setProjSpeed(float speed)
 {
 	this->projectileSpeed = speed;
 }

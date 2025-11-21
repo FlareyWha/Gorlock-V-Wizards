@@ -33,5 +33,5 @@ void SnowParticle::Draw() const
 
     float size = 50.0f * (2.0f - t) + 4.0f;
 
-    CP_Image_Draw(particleImage, position.x, position.y, size, size, 255 * t);
+    CP_Image_Draw(particleImage, position.x, position.y, size, size, (int)(255 * t));
 }

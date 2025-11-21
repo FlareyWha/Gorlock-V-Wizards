@@ -36,7 +36,7 @@ void settingsInit(void)
 
 	scenes = SceneManager::GetInstance();
 
-	Backbutton = Button(CP_System_GetWindowWidth()/2, 750, 150, 50, "Back");
+	Backbutton = Button((float)CP_System_GetWindowWidth()/2, 750, 150, 50, "Back");
 }
 
 void settingsUpdate(void)
