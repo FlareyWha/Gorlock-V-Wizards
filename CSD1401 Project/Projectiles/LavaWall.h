@@ -6,6 +6,7 @@ class LavaWall :public BaseProjectile
 private:
 	float hitCD = 0.f;
 	float hitMaxCD = 1.f;
+	float sfxTimer = 0.f, sfxMaxTimer = 1.f;
 public:
 	LavaWall(CP_Vector position, CP_Vector direction, float damage, float speed, CP_Color color);
 	~LavaWall();

@@ -566,6 +566,8 @@ void gameUpdate(void)
 
 				if (dragged->getTowerType() == target->getTowerType() && dragged->getLevel() == dragged->getMaxLevel() && target->getLevel() == target->getMaxLevel())
 				{
+					SoundManager::GetInstance()->playSFX(TOWER_MERGE_SFX);
+
 					CP_Vector mergedPos = target->getPosition();
 					TOWER_TYPE type = target->getTowerType();
 
@@ -578,7 +580,7 @@ void gameUpdate(void)
 						towerList.push_back(new FrostTower(mergedPos));
 						break;
 					case TOWER_TYPE::LIGHTNINGTOWER:
-						towerList.push_back(new StormTower(mergedPos)); // REPLACE WITH STORMTOWER WHEN TOWER CLASS IS MADE
+						towerList.push_back(new StormTower(mergedPos));
 						break;
 					case TOWER_TYPE::WINDTOWER:
 						towerList.push_back(new HurricaneTower(mergedPos));
@@ -594,8 +596,6 @@ void gameUpdate(void)
 							towerList.erase(towerList.begin() + i);
 						}
 					}
-
-
 				}
 			}
 			game.grabbingTower = false;
@@ -606,22 +606,22 @@ void gameUpdate(void)
 	game.drawHeart(1500, 700.0f);
 	game.drawMoneys(1350, 100.0f);
 
-			std::string waveString = "Wave " + std::to_string(game.waveManager->getWaveId() - 1) + "/" + std::to_string(game.waveManager->getMaxWaves());
+	std::string waveString = "Wave " + std::to_string(game.waveManager->getWaveId() - 1) + "/" + std::to_string(game.waveManager->getMaxWaves());
 
-			CP_Settings_TextSize(game.getFontSize() * 2);
-			CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-			CP_Font_DrawText(waveString.c_str(), 1350, 25);
-			CP_Settings_TextSize(game.getFontSize());
-			CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
+	CP_Settings_TextSize(game.getFontSize() * 2);
+	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
+	CP_Font_DrawText(waveString.c_str(), 1350, 25);
+	CP_Settings_TextSize(game.getFontSize());
+	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 
-			if (CP_Input_KeyReleased(KEY_H))
-			{
-				game.takeDamage(1);
-			}
-			if (CP_Input_MouseTriggered(MOUSE_BUTTON_2))
-			{
-				game.gainMoneys(100);
-			}
+	if (CP_Input_KeyReleased(KEY_H))
+	{
+		game.takeDamage(1);
+	}
+	if (CP_Input_MouseTriggered(MOUSE_BUTTON_2))
+	{
+		game.gainMoneys(100);
+	}
 
 	game.waveManager->Update(&enemiesList);
 

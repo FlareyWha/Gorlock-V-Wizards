@@ -1,5 +1,7 @@
 #include "LavaWall.h"
 
+#include "../System/SoundManager.h"
+
 LavaWall::LavaWall(CP_Vector position, CP_Vector direction, float damage, float speed, CP_Color color)
 {
 	setPosition(position);
@@ -21,6 +23,8 @@ void LavaWall::Update()
 	BaseProjectile::Update();
 	hitCD += -1 * CP_System_GetDt();
 
+	sfxTimer -= CP_System_GetDt();
+	sfxTimer = CP_Math_ClampFloat(sfxTimer, 0.f, 1.f);
 }
 
 void LavaWall::Render()
@@ -40,6 +44,12 @@ void LavaWall::onHit(BaseEnemy* enemy)
 	//if (!enemy->IsBurned())
 	//	enemy->Burn(true);
 	hitCD = hitMaxCD;
+
+	if (sfxTimer <= 0.f)
+	{
+		SoundManager::GetInstance()->playSFX(TOWER_LAVA_ATTACK_SFX);
+		sfxTimer = sfxMaxTimer;
+	}
 }
 
 

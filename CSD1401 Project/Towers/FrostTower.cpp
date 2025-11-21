@@ -1,6 +1,7 @@
 #include "FrostTower.h"
 #include "../Projectiles/IceProjectile.h"
 #include "../Projectiles/BaseProjectile.h"
+#include "../System/SoundManager.h"
 
 FrostTower::FrostTower(CP_Vector position)
 {
@@ -73,6 +74,7 @@ void FrostTower::TrackEnemy(std::vector<BaseEnemy*>& enemyList)
 			if (CP_Vector_Distance(getPosition(), enemy->GetLocation()) <= 150.f)
 			{
 				trackedEnemy = enemy;
+				SoundManager::GetInstance()->playSFX(TOWER_FREEZE_ATTACK_SFX);
 				break;
 			}
 

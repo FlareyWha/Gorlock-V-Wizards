@@ -1,6 +1,7 @@
 #include "IceTower.h"
 #include "../Projectiles/IceProjectile.h"
 #include "../Projectiles/BaseProjectile.h"
+#include "../System/SoundManager.h"
 
 #include <math.h>
 IceTower::IceTower(CP_Vector position)
@@ -31,6 +32,7 @@ BaseProjectile* IceTower::Attack(BaseEnemy* enemy)
 	//CP_Graphics_DrawRectAdvanced(this->getPosition().x, this->getPosition().y, CP_Vector_Length(unNormDirection), 10.f, angle, 10.f);
 	//CP_Settings_RectMode(CP_POSITION_CENTER);
 	
+	SoundManager::GetInstance()->playSFX(TOWER_ICE_ATTACK_SFX);
 	setCooldownTime(getCooldown());
 	return new IceProjectile(getPosition(), direction, this->getDamage(), this->getSpeed(), this->getColor(),this->getLevel());
 }
