@@ -90,7 +90,7 @@ public:
 
 	bool checkSurroundingTile(CP_Vector tilePos);
 
-	CP_Vector testTileActive(TILE_TYPE tileType);
+	bool testTileActive(CP_Vector* tilePos, TILE_TYPE tileType);
 
 	Tile** getMap(void);
 	int getNumCol(void);

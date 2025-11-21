@@ -10,7 +10,7 @@
 #include "../Scenes/Game/Game.h"
 #include "../Scenes/Settings/Settings.h"
 #include "../Scenes/MapEditor/MapEditor.h"
-#include "../../Scenes/PauseMenu/PauseMenu.h"
+#include "../Scenes/PauseMenu/PauseMenu.h"
 
 /*!
 @brief      Changes the current active scene

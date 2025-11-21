@@ -243,11 +243,12 @@ bool Map::checkSurroundingTile(CP_Vector tilePos)
 }
 
 /*!
-@brief	Check whether tile of given tileType is active when entering map for first	  time
+@brief	Check whether tile of given tileType is active when entering map for first time
+@param	CP_Vector* tilePos - pointer to store tilePos (if any)
 @param	TILE_TYPE tileType - tile to check for
-@return CP_Vector - return tile pos if active, else return zero vector
+@return bool - true if tile exists, false if not
 *//*______________________________________________________________*/
-CP_Vector Map::testTileActive(TILE_TYPE tileType)
+bool Map::testTileActive(CP_Vector* tilePos, TILE_TYPE tileType)
 {
 	for (int i = 0; i < NUM_ROW; i++)
 	{
@@ -255,12 +256,14 @@ CP_Vector Map::testTileActive(TILE_TYPE tileType)
 		{
 			if (map[i][j].tileType == tileType)
 			{
-				return getTilePos(map[i][j].pos.x, map[i][j].pos.y);
+				*tilePos = getTilePos(map[i][j].pos.x, map[i][j].pos.y);
+				return true;
 			}
 		}
 	}
 
-	return CP_Vector_Zero();
+	*tilePos = CP_Vector_Zero();
+	return false;
 }
 
 /*!

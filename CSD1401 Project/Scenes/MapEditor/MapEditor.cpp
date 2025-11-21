@@ -60,8 +60,8 @@ void mapEditorInit(void)
 	roadSwitch = Button(1450, 350, 200, 40, "Road Editor");
 	endpointSwitch = Button(1450, 400, 200, 40, "Endpoint Editor");
 
-	startpointTilePos = mapEditorMap->testTileActive(STARTPOINT);
-	endpointTilePos = mapEditorMap->testTileActive(ENDPOINT);
+	startpointActive = mapEditorMap->testTileActive(&startpointTilePos, STARTPOINT);
+	endpointActive = mapEditorMap->testTileActive(&endpointTilePos, ENDPOINT);
 }
 
 void mapEditorUpdate(void)
