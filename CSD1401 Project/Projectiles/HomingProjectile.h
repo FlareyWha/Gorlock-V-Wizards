@@ -10,10 +10,11 @@ private:
 
 	float homingSpeed;
 public:
+	std::vector<BaseEnemy*> *enemyList;
 	void Update() override;
 	BaseEnemy* trackingEnemy;
 	void setHomingSpeed(float speed);
 	float getHomingSpeed();
-	HomingProjectile(BaseEnemy* enemy,CP_Vector initialPos,CP_Vector initialDirection,float damage, float speed, CP_Color color = CP_Color_Create(0,255,0,255));
+	HomingProjectile(BaseEnemy* specificEnemy, std::vector<BaseEnemy*>* enemyList,CP_Vector initialPos,CP_Vector initialDirection,float damage, float speed, CP_Color color = CP_Color_Create(0,255,0,255));
 };
 

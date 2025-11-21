@@ -126,7 +126,7 @@ void Game::drawHeart(float x, float y)
 		startOfTimer = 1.75f;
 		break;
 	}
-	
+
 	if (timer > 0)
 	{
 		timer += -1 * CP_System_GetDt();
@@ -302,14 +302,20 @@ void gameInit(void)
 	game.levelUpUI.selection = LEVELUP;
 	game.levelUpUI.towerCost = 0;
 
+	game.mergeUI.image = CP_Image_Load("./Assets/UI/merge.png");
+	game.mergeUI.pos = CP_Vector_Set(1400, 800);
+	game.mergeUI.selection = MERGE;
+	game.mergeUI.towerCost = 0;
+
 	game.uiElements[0] = game.fireTowerUI;
 	game.uiElements[1] = game.windTowerUI;
 	game.uiElements[2] = game.iceTowerUI;
 	game.uiElements[3] = game.lightningTowerUI;
 	game.uiElements[4] = game.levelUpUI;
+	game.uiElements[5] = game.mergeUI;
 	CP_Settings_TextSize(game.getFontSize());
 
-	
+
 
 	game.waveManager = new WaveManager(gameMap->getSpawnpoint());
 
@@ -330,8 +336,22 @@ void gameUpdate(void)
 	if (CP_Input_KeyTriggered(KEY_ESCAPE)) {
 		SceneManager::GetInstance()->ChangeScenes(Scenes::PAUSE_MENU_SCENE);
 		return;
-	}			
-									
+	}
+	if (CP_Input_KeyReleased(KEY_H))
+	{
+		game.takeDamage(1);
+	}
+	if (CP_Input_MouseTriggered(MOUSE_BUTTON_2))
+	{
+		game.gainMoneys(10000);
+		game.currSelect = NONE_TOWER;
+		for (int i = 0; i < towerList.size(); i++)
+		{
+			BaseTower* tower = towerList[i];
+			tower->setOpacity(255.f);
+		}
+	}
+
 	game.ButtonDraw();
 
 	for (int i = 0; i < (sizeof(game.uiElements) / sizeof(game.uiElements[0])); i++)
@@ -353,7 +373,7 @@ void gameUpdate(void)
 		else
 			game.uiElements[i].opacity = 255;
 		CP_Image_Draw(game.uiElements[i].image, game.uiElements[i].pos.x, game.uiElements[i].pos.y, game.uiElements[i].size, game.uiElements[i].size, game.uiElements[i].opacity);
-		if (game.uiElements[i].selection != LEVELUP)
+		if (game.uiElements[i].selection != LEVELUP && game.uiElements[i].selection != MERGE)
 		{
 			std::string costs = std::to_string(game.uiElements[i].towerCost);
 			CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_RIGHT, CP_TEXT_ALIGN_V_MIDDLE);
@@ -361,7 +381,7 @@ void gameUpdate(void)
 			CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_LEFT, CP_TEXT_ALIGN_V_MIDDLE);
 		}
 	}
-	
+
 	// MOUSE DOWN
 	if (CP_Input_MouseDown(MOUSE_BUTTON_1))
 	{
@@ -369,54 +389,89 @@ void gameUpdate(void)
 		{
 		case FIRETOWER:
 			CP_Image_Draw(game.fireTowerUI.image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
+			CP_Settings_Fill(CP_Color_Create(255, 255, 255, 55));
+			CP_Graphics_DrawCircle(CP_Input_GetMouseX(), CP_Input_GetMouseY(), 300.f);
+			CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 			break;
 		case WINDTOWER:
 			CP_Image_Draw(game.windTowerUI.image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
+			CP_Settings_Fill(CP_Color_Create(255, 255, 255, 55));
+			CP_Graphics_DrawCircle(CP_Input_GetMouseX(), CP_Input_GetMouseY(), 300.f);
+			CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 			break;
 		case ICETOWER:
 			CP_Image_Draw(game.iceTowerUI.image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
+			CP_Settings_Fill(CP_Color_Create(255, 255, 255, 55));
+			CP_Graphics_DrawCircle(CP_Input_GetMouseX(), CP_Input_GetMouseY(), 300.f);
+			CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 			break;
 		case LIGHTNINGTOWER:
 			CP_Image_Draw(game.lightningTowerUI.image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
+			CP_Settings_Fill(CP_Color_Create(255, 255, 255, 55));
+			CP_Graphics_DrawCircle(CP_Input_GetMouseX(), CP_Input_GetMouseY(), 300.f);
+			CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+			break;
+		case MERGE:
+			// render "ghost" tower for dragging existing towers
+			if ((CP_Input_GetMouseX() >= 0 && CP_Input_GetMouseX() <= gameMap->getTileSize() * mapSize.x)
+				&& (CP_Input_GetMouseY() >= 0 && CP_Input_GetMouseY() <= gameMap->getTileSize() * mapSize.y))
+			{
+				// unholy fuck ahh code that should not exist
+				for (BaseTower* tower : towerList)
+				{
+
+					float dist = CP_Vector_Distance(tower->getPosition(), CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY()));
+					if (dist <= 24.f && !game.grabbingTower && game.currSelect == MERGE)
+					{
+						if ((tower->getTowerType() == TOWER_TYPE::FIRETOWER
+							|| tower->getTowerType() == TOWER_TYPE::ICETOWER
+							|| tower->getTowerType() == TOWER_TYPE::LIGHTNINGTOWER
+							|| tower->getTowerType() == TOWER_TYPE::WINDTOWER) && tower->getLevel() == tower->getMaxLevel())
+						{
+							game.currentTower = tower;
+							game.grabbingTower = true;
+						}
+					}
+					//tower->setOpacity(255.f);
+					if (game.currentTower->getTowerType() != tower->getTowerType() && game.currentTower->getTowerType() != TOWER_TYPE::BASETOWER)
+					{
+						tower->setOpacity(155.f);
+
+					}
+				}
+				if (game.currentTower->getImage() != NULL && game.grabbingTower)
+					CP_Image_Draw(game.currentTower->getImage(), CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
+			}
+			break;
+		case NONE_TOWER:
+			if ((CP_Input_GetMouseX() >= 0 && CP_Input_GetMouseX() <= gameMap->getTileSize() * mapSize.x)
+				&& (CP_Input_GetMouseY() >= 0 && CP_Input_GetMouseY() <= gameMap->getTileSize() * mapSize.y))
+			{
+				for (BaseTower* tower : towerList)
+				{
+					float dist = CP_Vector_Distance(tower->getPosition(), CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY()));
+					if (dist <= 24.f && !game.grabbingTower)
+					{
+						CP_Settings_Fill(CP_Color_Create(255, 255, 255, 55));
+						CP_Graphics_DrawCircle(tower->getPosition().x, tower->getPosition().y, tower->getDetectionDistance() * 2.f);
+						CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+					}
+				}
+			}
 			break;
 		default:
 			break;
 		}
-
-		// render "ghost" tower for dragging existing towers
-		if ((CP_Input_GetMouseX() >= 0 && CP_Input_GetMouseX() <= gameMap->getTileSize() * mapSize.x)
-			&& (CP_Input_GetMouseY() >= 0 && CP_Input_GetMouseY() <= gameMap->getTileSize() * mapSize.y))
-		{
-			// unholy fuck ahh code that should not exist
-			for (BaseTower* tower : towerList)
-			{
-				float dist = CP_Vector_Distance(tower->getPosition(), CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY()));
-				if (dist <= 24.f && !game.grabbingTower && game.currSelect!=LEVELUP)
-				{
-					if (tower->getTowerType() == TOWER_TYPE::FIRETOWER
-						|| tower->getTowerType() == TOWER_TYPE::ICETOWER
-						|| tower->getTowerType() == TOWER_TYPE::LIGHTNINGTOWER
-						|| tower->getTowerType() == TOWER_TYPE::WINDTOWER)
-					{
-						game.currentTower = tower;
-						game.grabbingTower = true;
-					}
-				}
-			}
-			if (game.currentTower->getImage() != NULL && game.grabbingTower)
-				CP_Image_Draw(game.currentTower->getImage(), CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
-		}
 	}
-
 	if (game.currSelect == LEVELUP)
 	{
 		CP_Image_Draw(CP_Image_Load("./Assets/UI/levelupcursor.png"), CP_Input_GetMouseX() + 25, CP_Input_GetMouseY() - 10, 75, 75, 255);
 	}
-	
+
 	// MOUSE RELEASED
 	if (CP_Input_MouseReleased(MOUSE_BUTTON_1))
 	{
-		if (game.currSelect != NONE_TOWER && game.currSelect != LEVELUP)
+		if (game.currSelect != NONE_TOWER && game.currSelect != LEVELUP && game.currSelect != MERGE)
 		{
 			if ((CP_Input_GetMouseX() >= 0 && CP_Input_GetMouseX() <= gameMap->getTileSize() * mapSize.x)
 				&& (CP_Input_GetMouseY() >= 0 && CP_Input_GetMouseY() <= gameMap->getTileSize() * mapSize.y))
@@ -426,7 +481,7 @@ void gameUpdate(void)
 				{
 					CP_Vector tempPos = gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).pos;
 					bool notOverlapping = true;
-					
+
 					if (towerList.empty())
 					{
 						switch (game.currSelect)
@@ -495,7 +550,7 @@ void gameUpdate(void)
 								break;
 							}
 							for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]); i++)
-							{	
+							{
 								if (game.currSelect == game.uiElements[i].selection)
 								{
 									game.loseMoneys(game.uiElements[i].towerCost);
@@ -536,73 +591,109 @@ void gameUpdate(void)
 			}
 			game.currSelect = NONE_TOWER;
 		}
-		
-		else if (game.grabbingTower && game.currentTower)
+
+		else if (game.grabbingTower)
 		{
-			int targetId = -1;
-
-			CP_Vector tempPos = gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).pos;
-
-			for (int i = 0; i < towerList.size(); i++)
+			BaseTower* dragged = game.currentTower;
+			if (game.currentTower)
 			{
-				BaseTower* tower = towerList[i];
+				int targetId = -1;
 
-				if (tower == game.currentTower)
-					continue;
+				CP_Vector tempPos = gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).pos;
 
-				float distance = CP_Vector_Distance(tower->getPosition(), tempPos);
-				if (distance <= 24.f)
+				for (int i = 0; i < towerList.size(); i++)
 				{
-					targetId = i;
-					break;
-				}
-			}
+					BaseTower* tower = towerList[i];
+					if (tower == game.currentTower)
+						continue;
 
-					// delete both towers, spawn fused tower where mergeId2 is
-			if (targetId != -1)
-			{
-				BaseTower* dragged = game.currentTower;
-				BaseTower* target = towerList[targetId];
-
-				if (dragged->getTowerType() == target->getTowerType() && dragged->getLevel() == dragged->getMaxLevel() && target->getLevel() == target->getMaxLevel())
-				{
-					SoundManager::GetInstance()->playSFX(TOWER_MERGE_SFX);
-
-					CP_Vector mergedPos = target->getPosition();
-					TOWER_TYPE type = target->getTowerType();
-
-					switch (type)
+					float distance = CP_Vector_Distance(tower->getPosition(), tempPos);
+					if (distance <= 24.f)
 					{
-					case TOWER_TYPE::FIRETOWER:
-						towerList.push_back(new LavaTower(mergedPos));
-						break;
-					case TOWER_TYPE::ICETOWER:
-						towerList.push_back(new FrostTower(mergedPos));
-						break;
-					case TOWER_TYPE::LIGHTNINGTOWER:
-						towerList.push_back(new StormTower(mergedPos));
-						break;
-					case TOWER_TYPE::WINDTOWER:
-						towerList.push_back(new HurricaneTower(mergedPos));
+						targetId = i;
 						break;
 					}
+				}
 
-					// Erase both current and target towers zzzzzzzz
-					for (int i = (int)towerList.size() - 1; i >= 0; --i)
+				// delete both towers, spawn fused tower where mergeId2 is
+				if (targetId != -1)
+				{
+					BaseTower* target = towerList[targetId];
+
+					if (dragged->getTowerType() == target->getTowerType() && dragged->getLevel() == dragged->getMaxLevel() && target->getLevel() == target->getMaxLevel())
 					{
-						if (towerList[i] == dragged || towerList[i] == target)
+						SoundManager::GetInstance()->playSFX(TOWER_MERGE_SFX);
+
+						CP_Vector mergedPos = target->getPosition();
+						TOWER_TYPE type = target->getTowerType();
+
+						switch (type)
 						{
-							towerList[i] = nullptr;
-							towerList.erase(towerList.begin() + i);
+						case TOWER_TYPE::FIRETOWER:
+							towerList.push_back(new LavaTower(mergedPos));
+							break;
+						case TOWER_TYPE::ICETOWER:
+							towerList.push_back(new FrostTower(mergedPos));
+							break;
+						case TOWER_TYPE::LIGHTNINGTOWER:
+							towerList.push_back(new StormTower(mergedPos));
+							break;
+						case TOWER_TYPE::WINDTOWER:
+							towerList.push_back(new HurricaneTower(mergedPos));
+							break;
 						}
+
+						// Erase both current and target towers zzzzzzzz
+						for (int i = towerList.size() - 1; i >= 0; --i)
+						{
+							if (towerList[i] == dragged || towerList[i] == target)
+							{
+								towerList[i] = nullptr;
+								towerList.erase(towerList.begin() + i);
+							}
+						}
+
+
 					}
 				}
+				game.grabbingTower = false;
+				game.currentTower = new BaseTower();
+				//game.currentTower->setImage(NULL);
 			}
-			game.grabbingTower = false;
-			//game.currentTower->setImage(NULL);
+		}
+		for (int i = 0; i < towerList.size(); i++)
+		{
+			BaseTower* tower = towerList[i];
+			if (game.currSelect == LEVELUP)
+			{
+				if (tower->getUpgradeCosts() > game.getMoneys())
+				{
+					tower->setOpacity(155.f);
+				}
+				else
+				{
+					tower->setOpacity(255.f);
+				}
+			}
+			else if (game.currSelect == MERGE)
+			{
+
+				if (towerList[i]->getLevel() != towerList[i]->getMaxLevel())
+				{
+					tower->setOpacity(155.f);
+				}
+				else
+				{
+					tower->setOpacity(255.f);
+				}
+
+			}
+			else if (game.currSelect == NONE_TOWER)
+			{
+				tower->setOpacity(255.f);
+			}
 		}
 	}
-
 	game.drawHeart(1500, 700.0f);
 	game.drawMoneys(1350, 100.0f);
 
@@ -623,9 +714,13 @@ void gameUpdate(void)
 		game.gainMoneys(100);
 	}
 
+	game.drawHeart(1500, 700.0f);
+	game.drawMoneys(1350, 100.0f);
+
+
 	game.waveManager->Update(&enemiesList);
 
-		//game.waveManager->SpawnWave(game.getSpawnLocation());
+	//game.waveManager->SpawnWave(game.getSpawnLocation());
 	if (CP_Input_KeyReleased(KEY_1))
 		enemiesList.push_back(new BasicEnemy(gameMap->getSpawnpoint()));
 	if (CP_Input_KeyReleased(KEY_2))
@@ -687,6 +782,7 @@ void gameUpdate(void)
 	// render and update towers, check for nearby enemies and target them
 	for (BaseTower* tower : towerList)
 	{
+
 		bool bossNearby = false;
 
 		FrostTower* frostTower = dynamic_cast<FrostTower*>(tower);
@@ -727,7 +823,14 @@ void gameUpdate(void)
 					tower->getCooldownTime() <= 0.f)
 				{
 					projectileList.push_back(tower->Attack(enemy));
-					if (tower->getTowerType() == TOWER_TYPE::HURRICANETOWER || tower->getTowerType() == TOWER_TYPE::LAVATOWER)
+					if (tower->getTowerType() == TOWER_TYPE::HURRICANETOWER)
+					{
+						if (tower->getSecondaryCD() <= 0.f)
+						{
+							projectileList.push_back(tower->SpawnSecondary(&enemiesList, enemy));
+						}
+					}
+					else if (tower->getTowerType() == TOWER_TYPE::LAVATOWER)
 					{
 						if (tower->getSecondaryCD() <= 0.f)
 						{
@@ -772,7 +875,7 @@ void gameUpdate(void)
 				&& tower->getTowerType() != TOWER_TYPE::LAVATOWER && tower->getTowerType() != TOWER_TYPE::STORMTOWER
 				&& tower->getTowerType() != TOWER_TYPE::FROSTTOWER)
 			{
-					game.drawText(cost.c_str(), tower->getPosition().x, tower->getPosition().y);
+				game.drawText(cost.c_str(), tower->getPosition().x, tower->getPosition().y);
 			}
 			else if (tower->getLevel() == tower->getMaxLevel() || tower->getTowerType() == TOWER_TYPE::HURRICANETOWER
 				|| tower->getTowerType() == TOWER_TYPE::LAVATOWER || tower->getTowerType() == TOWER_TYPE::STORMTOWER
@@ -781,7 +884,7 @@ void gameUpdate(void)
 				game.drawText("MAX", tower->getPosition().x, tower->getPosition().y);
 			}
 			if (game.getMoneys() < tower->getUpgradeCosts() || tower->getLevel() == tower->getMaxLevel()
-				|| tower->getTowerType() == TOWER_TYPE::HURRICANETOWER || tower->getTowerType() == TOWER_TYPE::LAVATOWER 
+				|| tower->getTowerType() == TOWER_TYPE::HURRICANETOWER || tower->getTowerType() == TOWER_TYPE::LAVATOWER
 				|| tower->getTowerType() == TOWER_TYPE::STORMTOWER || tower->getTowerType() == TOWER_TYPE::FROSTTOWER)
 			{
 				tower->setOpacity(100);
@@ -800,13 +903,13 @@ void gameUpdate(void)
 						tower->levelUp();
 					}
 				}
-				
+
 			}
 		}
-		else if (game.currSelect != LEVELUP)
-		{
-			tower->setOpacity(255);
-		}
+		//else if (game.currSelect != LEVELUP)
+		//{
+		//	tower->setOpacity(255);
+		//}
 	}
 
 	// projectile collision
@@ -817,7 +920,7 @@ void gameUpdate(void)
 
 		if (projectileList[i]->GetLifespan() <= 0.f ||
 			(projectileList[i]->GetLocation().x >= gameMap->getTileSize() * mapSize.x ||
-				projectileList[i]->GetLocation().y >= gameMap->getTileSize() * mapSize.y))
+				projectileList[i]->GetLocation().y >= gameMap->getTileSize() * mapSize.y) || (projectileList[i]->GetLocation().x < 0 || projectileList[i]->GetLocation().y < 0))
 		{
 			BaseProjectile* proj = projectileList[i];
 			projectileList.erase(projectileList.begin() + i);
@@ -828,16 +931,16 @@ void gameUpdate(void)
 			for (int j = 0; j < enemiesList.size(); j++)
 			{
 				BaseEnemy* enemy = enemiesList[j];
-				if (areCirclesIntersecting(projectileList[i]->GetLocation(), projectileList[i]->GetRadius(), enemy->GetLocation(), enemy->GetSpriteSize()/2.0f))
+				if (areCirclesIntersecting(projectileList[i]->GetLocation(), projectileList[i]->GetRadius(), enemy->GetLocation(), enemy->GetSpriteSize() / 2.0f))
 				{
 					//enemy->SetHealth(enemy->GetHealth() - projectileList[i]->getProjectileDamage());
 					if (projectileList[i]->getProjType() == PROJECTILE_TYPE::CHAIN)
 					{
-						projectileList[i]->chainHit(enemiesList,enemy);	
+						projectileList[i]->chainHit(enemiesList, enemy);
 					}
 					else
 						projectileList[i]->onHit(enemy);
-							
+
 					if (projectileList[i]->getProjType() != PROJECTILE_TYPE::DAMAGEOVERTIME)
 					{
 						BaseProjectile* proj = projectileList[i];
@@ -847,7 +950,7 @@ void gameUpdate(void)
 
 					break;
 				}
-				
+
 			}
 		}
 
@@ -878,11 +981,12 @@ void gameUpdate(void)
 		{
 			CP_Settings_TextSize(game.getFontSize() * 4);
 			CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
-			CP_Font_DrawTextBox("You lose", CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.25f, sizeof("You lose")* game.getFontSize() * 4);
+			CP_Font_DrawTextBox("You lose", CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.25f, sizeof("You lose") * game.getFontSize() * 4);
 			CP_Settings_TextSize(game.getFontSize());
 			CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 		}
 	}
+	
 }
 
 void gameExit(void)

@@ -26,11 +26,11 @@ BaseProjectile* HurricaneTower::Attack(BaseEnemy* enemy)
 	return new HurricaneProjectile(this->getPosition(),direction,this->getDamage(),this->getSpeed(),this->getColor());
 }
 
-BaseProjectile* HurricaneTower::SpawnSecondary(BaseEnemy* enemy)
+BaseProjectile* HurricaneTower::SpawnSecondary(std::vector<BaseEnemy*>* enemyList,BaseEnemy* specificEnemy)
 {
-	CP_Vector initialDirection = CP_Vector_Negate( CP_Vector_Normalize(CP_Vector_Set(enemy->GetLocation().x - getPosition().x, enemy->GetLocation().y - getPosition().y)));
+	CP_Vector initialDirection = CP_Vector_Negate( CP_Vector_Normalize(CP_Vector_Set(specificEnemy->GetLocation().x - getPosition().x, specificEnemy->GetLocation().y - getPosition().y)));
 	this->setSecondaryCD(this->getMaxSecondaryCD());
-	return new HomingProjectile(enemy,this->getPosition(),initialDirection,this->getDamage(),this->getSpeed(),this->getColor());
+	return new HomingProjectile(specificEnemy,enemyList, this->getPosition(), initialDirection, this->getDamage(), this->getSpeed(), this->getColor());
 }
 
 

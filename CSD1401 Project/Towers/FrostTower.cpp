@@ -47,7 +47,7 @@ BaseProjectile* FrostTower::Attack(BaseEnemy* enemy)
 	
 	setCooldownTime(getCooldown());
 
-	return new IceProjectile(enemy->GetLocation(), direction, this->getDamage(), this->getSpeed(), this->getColor());
+	return new IceProjectile(enemy->GetLocation(), direction, this->getDamage(), this->getSpeed(), this->getColor() , 3);
 }
 
 void FrostTower::TrackEnemy(std::vector<BaseEnemy*>& enemyList)

@@ -197,6 +197,10 @@ BaseProjectile* BaseTower::SpawnSecondary(BaseEnemy* enemy)
 	setCooldownTime(getCooldown());
 	return new BaseProjectile(this->getPosition(), direction, this->damage, this->projSpeed, this->getColor());
 }
+BaseProjectile* BaseTower::SpawnSecondary(std::vector<BaseEnemy*>* enemyList,BaseEnemy* specificEnemy)
+{
+	return nullptr;
+}
 float BaseTower::getMaxSecondaryCD()
 {
 	return maxSecondaryCooldown;
@@ -235,7 +239,11 @@ void BaseTower::Update()
 
 void BaseTower::Render()
 {
+	//CP_Settings_Fill(CP_Color_Create(255,255,255,55));
+	//CP_Graphics_DrawCircle(position.x, position.y, detectionDistance * 2.f);
+	//CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 	CP_Image_Draw(towerSprite, position.x, position.y, spriteSize, spriteSize, towerOpacity);
+
 }
 
 void BaseTower::ApplySlowdown(float multiplier)

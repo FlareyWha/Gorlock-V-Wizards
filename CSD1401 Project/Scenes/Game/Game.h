@@ -16,6 +16,7 @@ enum currSelected {
 	ICETOWER,
 	LIGHTNINGTOWER,
 	LEVELUP,
+	MERGE,
 	NONE_TOWER
 };
 typedef struct TowerUIs {
@@ -86,12 +87,13 @@ public:
 	Tower windTowerUI;
 	Tower lightningTowerUI;
 	Tower levelUpUI;
+	Tower mergeUI;
 
 	bool grabbingTower = false;
 
 	BaseTower* currentTower = nullptr;
 
-	Tower uiElements[5];
+	Tower uiElements[6];
 
 	WaveManager* waveManager;
 	Button* nextWave;

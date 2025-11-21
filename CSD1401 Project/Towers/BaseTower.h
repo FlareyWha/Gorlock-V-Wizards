@@ -32,6 +32,8 @@ enum class TOWER_TYPE
 	STORMTOWER,
 	HURRICANETOWER,
 
+	NONETOWER,
+
 	BASETOWER
 
 };
@@ -105,6 +107,7 @@ public:
 	virtual void Update();
 	virtual BaseProjectile* Attack(BaseEnemy* enemy);
 	virtual BaseProjectile* SpawnSecondary(BaseEnemy* enemy);
+	virtual BaseProjectile* SpawnSecondary(std::vector<BaseEnemy*>* enemyList, BaseEnemy* specificEnemy);
 
 
 	float getMaxSecondaryCD();

@@ -39,8 +39,8 @@ void LavaWall::Render()
 
 void LavaWall::onHit(BaseEnemy* enemy)
 {
-	
-	enemy->SetHealth(enemy->GetHealth() - 0.5f);
+	enemy->Burn(true);
+	//enemy->SetHealth(enemy->GetHealth() - enemy->GetMaxHealth() * .010f);
 	//if (!enemy->IsBurned())
 	//	enemy->Burn(true);
 	hitCD = hitMaxCD;
