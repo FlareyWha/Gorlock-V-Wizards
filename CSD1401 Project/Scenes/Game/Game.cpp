@@ -149,9 +149,9 @@ void Game::drawHeart(float x, float y)
 	}
 
 	
-	double heartSize = (double)game.getHealth() / (double)game.getMaxHealth() * heartBeatScale;
+	float heartSize = (float)game.getHealth() / (float)game.getMaxHealth() * heartBeatScale;
 	CP_Image_Draw(game.emptyHeartImage, x, y, CP_Image_GetWidth(game.healthImage) * imageScaling, CP_Image_GetHeight(game.healthImage) * imageScaling, 255);
-	CP_Image_Draw(game.healthImage, x, y, CP_Image_GetWidth(game.healthImage) * imageScaling * heartSize,CP_Image_GetHeight(game.healthImage) * imageScaling *heartSize,255);
+	CP_Image_Draw(game.healthImage, x, y, CP_Image_GetWidth(game.healthImage) * imageScaling * heartSize,CP_Image_GetHeight(game.healthImage) * imageScaling * heartSize,255);
 }
 
 int Game::getHealth()
@@ -588,7 +588,7 @@ void gameUpdate(void)
 					}
 
 					// Erase both current and target towers zzzzzzzz
-					for (int i = towerList.size() - 1; i >= 0; --i)
+					for (int i = (int)towerList.size() - 1; i >= 0; --i)
 					{
 						if (towerList[i] == dragged || towerList[i] == target)
 						{
@@ -784,11 +784,11 @@ void gameUpdate(void)
 				|| tower->getTowerType() == TOWER_TYPE::HURRICANETOWER || tower->getTowerType() == TOWER_TYPE::LAVATOWER 
 				|| tower->getTowerType() == TOWER_TYPE::STORMTOWER || tower->getTowerType() == TOWER_TYPE::FROSTTOWER)
 			{
-				tower->setOpacity(100.f);
+				tower->setOpacity(100);
 			}
 			else
 			{
-				tower->setOpacity(255.f);
+				tower->setOpacity(255);
 				CP_Vector tempPos = gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).pos;
 
 				float dist = CP_Vector_Distance(tower->getPosition(), CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY()));
@@ -805,7 +805,7 @@ void gameUpdate(void)
 		}
 		else if (game.currSelect != LEVELUP)
 		{
-			tower->setOpacity(255.f);
+			tower->setOpacity(255);
 		}
 	}
 
@@ -855,8 +855,8 @@ void gameUpdate(void)
 
 	if (game.shouldShowWinscreen() || game.shouldShowLosescreen())
 	{
-		game.drawRect(CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.5f,
-			CP_System_GetWindowWidth(), CP_System_GetWindowHeight(), 0.f, 0.f, CP_Color_Create(0, 0, 0, 125));
+		game.drawRect((float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f,
+			(float)CP_System_GetWindowWidth(), (float)CP_System_GetWindowHeight(), 0.f, 0.f, CP_Color_Create(0, 0, 0, 125));
 
 		game.back->Draw();
 

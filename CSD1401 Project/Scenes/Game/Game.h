@@ -25,7 +25,7 @@ typedef struct TowerUIs {
 	CP_Image image;
 	float radius = size / 2.0f;
 	currSelected selection = currSelected::NONE_TOWER;
-	float opacity = 255.f;
+	int opacity = 255;
 }Tower;
 class Game{
 private:

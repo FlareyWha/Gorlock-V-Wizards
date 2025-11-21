@@ -11,7 +11,7 @@ WindTower::WindTower(CP_Vector position)
 	towerSprite = CP_Image_Load("Assets/Towers/windTower.png");
 	setCooldown(0.25f);
 	setTowerType(TOWER_TYPE::WINDTOWER);
-	setUpgradeCosts(200.f);
+	setUpgradeCosts(200);
 }
 
 WindTower::~WindTower()

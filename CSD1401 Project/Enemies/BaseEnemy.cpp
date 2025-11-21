@@ -159,14 +159,14 @@ void BaseEnemy::Move(Map* map)
         {
             TILE_TYPE tileType = map->getTile(location.x + spriteSize * x, location.y).tileType;
             if (tileType >= MIDDLE_ROAD && tileType < STARTPOINT)
-                directionVector.x = x;
+                directionVector.x = (float)x;
         }
         for(int y = -1; y < 2; y += 2)    // Check up and down
         {
             if (directionVector.x != 0) break;
             TILE_TYPE tileType = map->getTile(location.x, location.y + spriteSize * y).tileType;
             if (tileType >= MIDDLE_ROAD && tileType < STARTPOINT)
-                directionVector.y = y;
+                directionVector.y = (float)y;
         }
     }
 

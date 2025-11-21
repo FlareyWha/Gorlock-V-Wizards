@@ -52,7 +52,7 @@ void game_update(void)
 	splashscreenTimer -= 1 * CP_System_GetDt();
 
 	CP_Graphics_ClearBackground(CP_Color_Create(0, 0, 0, 255));
-	CP_Image_Draw(logo, CP_System_GetWindowWidth() / 2.0f, CP_System_GetWindowHeight() / 2.0f, 1525.f * 0.75f, 445.f * 0.75f , splashscreenAlpha);
+	CP_Image_Draw(logo, CP_System_GetWindowWidth() / 2.0f, CP_System_GetWindowHeight() / 2.0f, 1525.f * 0.75f, 445.f * 0.75f , (int)splashscreenAlpha);
 
 	if (splashscreenTimer <= 0.f)
 	{

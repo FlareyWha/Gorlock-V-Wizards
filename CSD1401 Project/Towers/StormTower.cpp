@@ -24,7 +24,7 @@ void StormTower::Update()
 
 	if (cooldownTime >= 0 && enemyNearby)
 	{
-		CP_Settings_Fill(CP_Color_Create(255, 100, 255, 255 * (cooldownTime / cooldown) * 0.75));
+		CP_Settings_Fill(CP_Color_Create(255, 100, 255, (int)(255 * (cooldownTime / cooldown) * 0.75)));
 		CP_Settings_RectMode(CP_POSITION_CORNER);
 		CP_Graphics_DrawRectAdvanced(position.x, position.y, chainLength, 10.f, chainAngle, 10.f);
 		CP_Settings_RectMode(CP_POSITION_CENTER);

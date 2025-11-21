@@ -19,7 +19,7 @@ void Button::Draw() const
     CP_Image_Draw(sprite, x, y, w, h, 255);
     CP_Font_Set(mainMenuFont);
 
-    CP_Settings_TextSize((int)(h * 0.45f));
+    CP_Settings_TextSize(h * 0.45f);
     CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
     CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 

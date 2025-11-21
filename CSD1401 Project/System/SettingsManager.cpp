@@ -13,9 +13,9 @@
 /*!
 @brief	Gets the SFX volume and returns it
 @param	void
-@return int - the sfxVolume
+@return float - the sfxVolume
 *//*______________________________________________________________*/
-int SettingsManager::getSFXVolume(void)
+float SettingsManager::getSFXVolume(void) const
 {
 	return sfxVolume;
 }
@@ -25,7 +25,7 @@ int SettingsManager::getSFXVolume(void)
 @param	void
 @return float - the sfxVolume in lerped float form
 *//*______________________________________________________________*/
-float SettingsManager::getSFXVolumeLerp(void)
+float SettingsManager::getSFXVolumeLerp(void) const
 {
 	float volumeFloat = sfxVolume / 100.f;
 	return volumeFloat;
@@ -33,10 +33,10 @@ float SettingsManager::getSFXVolumeLerp(void)
 
 /*!
 @brief	Sets a new SFX volume
-@param	int newVolume - the new volume to set
+@param	float newVolume - the new volume to set
 @return void
 *//*______________________________________________________________*/
-void SettingsManager::setSFXVolume(int newVolume)
+void SettingsManager::setSFXVolume(float newVolume)
 {
 	std::ofstream file(sfxFile);
 	file << newVolume << "\n";
@@ -48,9 +48,9 @@ void SettingsManager::setSFXVolume(int newVolume)
 /*!
 @brief	Gets the BGM volume and returns it
 @param	void
-@return int - the bgmVolume
+@return float - the bgmVolume
 *//*______________________________________________________________*/
-int SettingsManager::getBGMVolume(void)
+float SettingsManager::getBGMVolume(void) const
 {
 	return bgmVolume;
 }
@@ -60,7 +60,7 @@ int SettingsManager::getBGMVolume(void)
 @param	void
 @return float - the bgmVolume in lerped float form
 *//*______________________________________________________________*/
-float SettingsManager::getBGMVolumeLerp(void)
+float SettingsManager::getBGMVolumeLerp(void) const
 {
 	//float volumeFloat = CP_Math_LerpFloat(0.0f, 100.0f, bgmVolume);
 
@@ -70,10 +70,10 @@ float SettingsManager::getBGMVolumeLerp(void)
 
 /*!
 @brief	Sets a new BGM volume
-@param	int newVolume - the new volume to set
+@param	float newVolume - the new volume to set
 @return void
 *//*______________________________________________________________*/
-void SettingsManager::setBGMVolume(int newVolume)
+void SettingsManager::setBGMVolume(float newVolume)
 {
 	std::ofstream file(bgmFile);
 	file << newVolume << "\n";

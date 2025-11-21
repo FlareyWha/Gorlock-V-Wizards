@@ -94,10 +94,10 @@ void settingsUpdate(void)
 	//Draw text for sliders
 	char buffer[50] = { 0 };
 
-	sprintf_s(buffer, 50, "BGM: %i", settings->getBGMVolume());
+	sprintf_s(buffer, 50, "BGM: %.0f", settings->getBGMVolume());
 	CP_Font_DrawText(buffer, 800, 200);
 
-	sprintf_s(buffer, 50, "SFX: %i", settings->getSFXVolume());
+	sprintf_s(buffer, 50, "SFX: %.0f", settings->getSFXVolume());
 	CP_Font_DrawText(buffer, 800, 500);
 
 	Backbutton.Draw();

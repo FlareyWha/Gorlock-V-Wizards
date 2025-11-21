@@ -20,8 +20,8 @@ CP_TEXT_ALIGN_VERTICAL vertical = CP_TEXT_ALIGN_V_BASELINE;
 
 void NewMainMenu::ButtonInit()
 {
-	float windowWidth = CP_System_GetWindowWidth();
-	float windowHeight = CP_System_GetWindowHeight();
+	float windowWidth = (float)CP_System_GetWindowWidth();
+	float windowHeight = (float)CP_System_GetWindowHeight();
 
 	// Animation starting positions (offscreen)
 	buttonTopY = -windowHeight;
@@ -117,7 +117,7 @@ void mainMenuUpdate()
 {
 	CP_Graphics_ClearBackground(CP_Color_Create(0, 0, 0, 255));
 
-	CP_Image_Draw(mainLogo, CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.25f, 184.f * 4, 104.f * 4, 255.f);
+	CP_Image_Draw(mainLogo, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.25f, 184.f * 4, 104.f * 4, 255);
 
 	// Title
 	CP_Font_Set(mainMenuFont);

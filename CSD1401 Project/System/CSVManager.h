@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-static class CSVManager
+class CSVManager
 {
 private:
 	static const char* MAP_FILE_PATH;

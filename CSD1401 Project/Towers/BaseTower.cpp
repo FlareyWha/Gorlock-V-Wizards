@@ -165,7 +165,7 @@ void BaseTower::setUpgradeCosts(int cost)
 	this->levelUpCosts = cost;
 }
 
-void BaseTower::setOpacity(float opacity)
+void BaseTower::setOpacity(int opacity)
 {
 	this->towerOpacity = opacity;
 }

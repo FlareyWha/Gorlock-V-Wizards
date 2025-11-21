@@ -54,7 +54,7 @@ protected:
 	float baseCooldown;
 	bool isSlowed = false;
 	int levelUpCosts = 150;
-	float towerOpacity = 255.f;
+	int towerOpacity = 255;
 
 	float maxSecondaryCooldown = 2.f;
 	float secondaryCooldown = 0.f;
@@ -93,7 +93,7 @@ public:
 	int getUpgradeCosts();
 	void setUpgradeCosts(int cost);
 
-	void setOpacity(float opacity);
+	void setOpacity(int opacity);
 	
 	void setColor(CP_Color color);
 	CP_Color getColor();

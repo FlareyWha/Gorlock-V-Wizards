@@ -159,8 +159,8 @@ CP_Vector Map::getTilePos(float xPos, float yPos)
 {
 	int rowPos = 0, columnPos = 0;
 
-	rowPos = floor(xPos / TILE_WIDTH);
-	columnPos = floor(yPos / TILE_HEIGHT);
+	rowPos = (int)floor(xPos / TILE_WIDTH);
+	columnPos = (int)floor(yPos / TILE_HEIGHT);
 
 	if (rowPos >= NUM_ROW)
 	{
@@ -180,7 +180,7 @@ CP_Vector Map::getTilePos(float xPos, float yPos)
 		columnPos = 0;
 	}
 
-	return CP_Vector_Set(rowPos, columnPos);
+	return CP_Vector_Set((float)rowPos, (float)columnPos);
 }
 
 CP_Vector Map::getTileWorldPos(CP_Vector tilePos)
@@ -281,7 +281,7 @@ Tile** Map::getMap(void)
 @param	void
 @return int - number of columns
 *//*______________________________________________________________*/
-int Map::getNumCol(void)
+int Map::getNumCol(void) const
 {
 	return NUM_COLUMN;
 }
@@ -291,7 +291,7 @@ int Map::getNumCol(void)
 @param	void
 @return int - number of rows
 *//*______________________________________________________________*/
-int Map::getNumRow(void)
+int Map::getNumRow(void) const
 {
 	return NUM_ROW;
 }
@@ -456,17 +456,17 @@ void Map::freeImages(bool free)
 @param	void
 @return CP_Vector - map dimensions
 *//*______________________________________________________________*/
-CP_Vector Map::getDimensions()
+CP_Vector Map::getDimensions(void)
 {
-	return CP_Vector_Set(NUM_ROW, NUM_COLUMN);
+	return CP_Vector_Set((float)NUM_ROW, (float)NUM_COLUMN);
 }
 
 /*!
 @brief	Get size of tile
 @param	void
-@return int - size of tile
+@return float - size of tile
 *//*______________________________________________________________*/
-int Map::getTileSize()
+float Map::getTileSize(void) const
 {
 	return TILE_WIDTH;
 }
@@ -486,7 +486,7 @@ void Map::setLoadEditedMap(bool loadEditedMap)
 @param	void
 @return CP_Vector - vector of spawnpoint
 *//*______________________________________________________________*/
-CP_Vector Map::getSpawnpoint(void)
+CP_Vector Map::getSpawnpoint(void) const
 {
 	return spawnpoint;
 }

@@ -60,8 +60,8 @@ class Map : public SingletonTemplate<Map>
 
 private:
 	static const char* TILE_ASSETS_FILE_PATH;
-	const int TILE_WIDTH = 50;
-	const int TILE_HEIGHT = 50;
+	const float TILE_WIDTH = 50.f;
+	const float TILE_HEIGHT = 50.f;
 	const int NUM_COLUMN = 18;
 	const int NUM_ROW = 26;
 
@@ -93,8 +93,8 @@ public:
 	bool testTileActive(CP_Vector* tilePos, TILE_TYPE tileType);
 
 	Tile** getMap(void);
-	int getNumCol(void);
-	int getNumRow(void);
+	int getNumCol(void) const;
+	int getNumRow(void) const;
 
 	bool loadMap(std::string fileName);
 	bool saveMap(std::string fileName);
@@ -106,12 +106,12 @@ public:
 
 	void freeImages(bool free);
 
-	CP_Vector getDimensions();
-	int getTileSize();
+	CP_Vector getDimensions(void);
+	float getTileSize(void) const;
 
 	void setLoadEditedMap(bool loadEditedMap);
 
-	CP_Vector getSpawnpoint(void);
+	CP_Vector getSpawnpoint(void) const;
 	void setSpawnpoint(CP_Vector spawnpoint);
 
 	std::map<TILE_TYPE, CP_Image> imageMap;

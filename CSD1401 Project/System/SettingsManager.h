@@ -23,12 +23,12 @@ private:
 
 public:
 
-	int getSFXVolume(void);
-	float getSFXVolumeLerp(void);
-	void setSFXVolume(int newVolume);
-	int getBGMVolume(void);
-	float getBGMVolumeLerp(void);
-	void setBGMVolume(int newVolume);
+	float getSFXVolume(void) const;
+	float getSFXVolumeLerp(void) const;
+	void setSFXVolume(float newVolume);
+	float getBGMVolume(void) const;
+	float getBGMVolumeLerp(void) const;
+	void setBGMVolume(float newVolume);
 
 	void readVolumeSettings(void);
 };
