@@ -6,6 +6,10 @@
 
 class WindProjectile : public BaseProjectile
 {
+private:
+    std::vector<WindParticle*> particles;
+    void SpawnParticles();
+
 public:
     WindProjectile();
     WindProjectile(CP_Vector position, CP_Vector direction, float damage, float speed, CP_Color color);
@@ -15,8 +19,5 @@ public:
     void Update() override;
     void Render() override;
 
-private:
-    std::vector<WindParticle*> particles;
-    void SpawnParticles();
 };
 

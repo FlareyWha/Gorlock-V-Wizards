@@ -13,6 +13,8 @@
   <ItemGroup>
     <ClCompile Include="Scenes\Credits\Credits.cpp" />
     <ClCompile Include="Enemies\BossEnemy.cpp" />
+    <ClCompile Include="Particles\HurricaneParticle.cpp" />
+    <ClCompile Include="Particles\LightningParticle.cpp" />
     <ClCompile Include="Projectiles\LavaWall.cpp" />
     <ClCompile Include="Scenes\PauseMenu\PauseMenu.cpp" />
     <ClCompile Include="Projectiles\HomingProjectile.cpp" />
@@ -59,6 +61,8 @@
   <ItemGroup>
     <ClInclude Include="Scenes\Credits\Credits.h" />
     <ClInclude Include="Enemies\BossEnemy.h" />
+    <ClInclude Include="Particles\HurricaneParticle.h" />
+    <ClInclude Include="Particles\LightningParticle.h" />
     <ClInclude Include="Projectiles\LavaWall.h" />
     <ClInclude Include="Scenes\PauseMenu\PauseMenu.h" />
     <ClInclude Include="Projectiles\HomingProjectile.h" />

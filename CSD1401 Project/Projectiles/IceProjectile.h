@@ -4,6 +4,7 @@
 #include "IceProjectile.h"
 #include "../Particles/SnowParticle.h"
 #include <cstdlib>
+
 class IceProjectile: public BaseProjectile
 {
 private:

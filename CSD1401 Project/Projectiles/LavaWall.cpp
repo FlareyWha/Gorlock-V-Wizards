@@ -1,56 +1,98 @@
 #include "LavaWall.h"
-
 #include "../System/SoundManager.h"
 
 LavaWall::LavaWall(CP_Vector position, CP_Vector direction, float damage, float speed, CP_Color color)
 {
-	setPosition(position);
-	setDirection(direction);
-	setProjDamage(damage);
-	setProjSpeed(speed);
-	setProjColor(color);
-	setLifespan(10.f);
+    // Load the particle image once
+    FireParticle::LoadImage("Assets/Particles/Fire.png");
 
-	setProjType(PROJECTILE_TYPE::DAMAGEOVERTIME);
+    setPosition(position);
+    setDirection(direction);
+    setProjDamage(damage);
+    setProjSpeed(speed);
+    setProjColor(color);
+    setLifespan(10.f);
+
+    setProjType(PROJECTILE_TYPE::DAMAGEOVERTIME);
+
+    sfxTimer = 0.f;       // initialize sound timer
+    sfxMaxTimer = 0.5f;   // sound cooldown
 }
 
 LavaWall::~LavaWall()
 {
+    for (auto p : particles)
+        delete p;
+    particles.clear();
 }
 
 void LavaWall::Update()
 {
-	BaseProjectile::Update();
-	hitCD += -1 * CP_System_GetDt();
+    BaseProjectile::Update();
+    SpawnParticles();
 
-	sfxTimer -= CP_System_GetDt();
-	sfxTimer = CP_Math_ClampFloat(sfxTimer, 0.f, 1.f);
+    for (auto it = particles.begin(); it != particles.end(); )
+    {
+        FireParticle* p = *it;
+        p->Update();
+
+        if (!p->IsAlive())
+        {
+            delete p;
+            it = particles.erase(it);
+        }
+        else
+            ++it;
+    }
+
+    hitCD -= CP_System_GetDt();
+    sfxTimer -= CP_System_GetDt();
+    sfxTimer = CP_Math_ClampFloat(sfxTimer, 0.f, sfxMaxTimer);
 }
 
 void LavaWall::Render()
 {
-	CP_Settings_Fill(getProjColor());
-	float angle = CP_Math_Degrees(atan2f(this->getDirection().y, this->getDirection().x));
-	//angle = (angle < 90 && angle > 0) ? 0 : angle > 90 ? 0 : 90;
-	//printf("Angle: %f\n", angle);
-	CP_Graphics_DrawRectAdvanced(this->GetLocation().x, this->GetLocation().y, 15.f,50.f,angle,10.f);
-	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+    // Draw the LavaWall itself
+    CP_Settings_Fill(getProjColor());
+    float angle = CP_Math_Degrees(atan2f(this->getDirection().y, this->getDirection().x));
+    CP_Graphics_DrawRectAdvanced(this->GetLocation().x, this->GetLocation().y, 15.f, 50.f, angle, 10.f);
+
+    // Draw particles using the Fire.png image
+    for (auto& p : particles)
+    {
+        p->Draw(); // FireParticle::Draw() should use the loaded image
+    }
+
+    CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255)); // reset
 }
 
 void LavaWall::onHit(BaseEnemy* enemy)
 {
-	enemy->Burn(true);
-	//enemy->SetHealth(enemy->GetHealth() - enemy->GetMaxHealth() * .010f);
-	//if (!enemy->IsBurned())
-	//	enemy->Burn(true);
-	hitCD = hitMaxCD;
+    enemy->Burn(true);
+    hitCD = hitMaxCD;
 
-	if (sfxTimer <= 0.f)
-	{
-		SoundManager::GetInstance()->playSFX(TOWER_LAVA_ATTACK_SFX);
-		sfxTimer = sfxMaxTimer;
-	}
+    if (sfxTimer <= 0.f)
+    {
+        SoundManager::GetInstance()->playSFX(TOWER_LAVA_ATTACK_SFX);
+        sfxTimer = sfxMaxTimer;
+    }
 }
+
+void LavaWall::SpawnParticles()
+{
+    // Spawn multiple particles for visual density
+    for (int i = 0; i < 5; ++i)
+    {
+        CP_Vector vel = CP_Vector_Set(
+            ((rand() % 20) - 10) * 0.05f,
+            ((rand() % 20) - 10) * 0.05f
+        );
+
+        FireParticle* p = new FireParticle(GetLocation(), vel, 60); // lifespan = 100
+        particles.push_back(p);
+    }
+}
+
 
 
 

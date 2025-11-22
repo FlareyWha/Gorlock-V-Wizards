@@ -14,7 +14,7 @@ enum class PROJECTILE_TYPE
 
 class BaseProjectile
 {
-private:
+protected:
 	PROJECTILE_TYPE projectile = PROJECTILE_TYPE::PROJECTILE;
 	CP_Vector direction;
 	CP_Vector position;

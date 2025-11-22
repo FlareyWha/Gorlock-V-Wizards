@@ -1,21 +1,27 @@
 #pragma once
+#include "../Particles/LightningParticle.h"
 #include "BaseProjectile.h"
-#include "../Enemies/BaseEnemy.h"
-class LightningProjectile: public BaseProjectile
+#include <vector>
+
+class LightningProjectile : public BaseProjectile
 {
-private:
-	int maxChain = 3;
-	int counter = 0;
-	float chainRadius = 50.f;
+protected:
+    std::vector<LightningParticle> particles;
+    bool hasHit = false;
+    float lingerTime = 0.1f;
+    int counter = 0;
+    const int maxChain = 3;
+    float chainRadius = 100.f; // max distance between chained enemies
 
 public:
-	float chainLifespan = 2.f;
-	LightningProjectile();
-	LightningProjectile(CP_Vector position, CP_Vector direction, float damage, float speed, CP_Color color);
-	~LightningProjectile();
+    LightningProjectile(CP_Vector pos, CP_Vector dir, float damage, float speed, CP_Color color);
 
-	void onHit(BaseEnemy* enemy) override;
-	void chainHit(std::vector<BaseEnemy*> enemyList, BaseEnemy* specificEnemy) override;
-
+    void Update() override;
+    void Render() override;
+    void onHit(BaseEnemy* enemy) override;
+    void chainHit(std::vector<BaseEnemy*> enemyList, BaseEnemy* specificEnemy);
+    void SpawnLightningLine(CP_Vector start, CP_Vector end);
+   
 };
+
 

@@ -27,6 +27,7 @@
 
 #include "../../Projectiles/BaseProjectile.h"
 #include "../../Utils/Utils.h"
+#include "../../Projectiles/LightningProjectile.h"
 
 /*!
 @file       Game.cpp
@@ -944,48 +945,64 @@ void gameUpdate(void)
 	}
 
 	// projectile collision
-	for (int i = 0; i < projectileList.size(); i++)
+	for (int i = (int)projectileList.size() - 1; i >= 0; i--)
 	{
-		projectileList[i]->Update();
-		projectileList[i]->Render();
+		BaseProjectile* proj = projectileList[i];
 
-		if (projectileList[i]->GetLifespan() <= 0.f ||
-			(projectileList[i]->GetLocation().x >= gameMap->getTileSize() * mapSize.x ||
-				projectileList[i]->GetLocation().y >= gameMap->getTileSize() * mapSize.y) || (projectileList[i]->GetLocation().x < 0 || projectileList[i]->GetLocation().y < 0))
+		// Update and render
+		proj->Update();
+		proj->Render();
+
+		// Erase if out of bounds or lifespan ended
+		if (proj->GetLifespan() <= 0.f ||
+			proj->GetLocation().x < 0 || proj->GetLocation().y < 0 ||
+			proj->GetLocation().x >= gameMap->getTileSize() * mapSize.x ||
+			proj->GetLocation().y >= gameMap->getTileSize() * mapSize.y)
 		{
-			BaseProjectile* proj = projectileList[i];
 			projectileList.erase(projectileList.begin() + i);
-			//delete proj;
+			continue;
 		}
-		else
+
+		// Collision with enemies
+		for (int j = 0; j < enemiesList.size(); j++)
 		{
-			for (int j = 0; j < enemiesList.size(); j++)
+			BaseEnemy* enemy = enemiesList[j];
+			if (!areCirclesIntersecting(proj->GetLocation(), proj->GetRadius(),
+				enemy->GetLocation(), enemy->GetSpriteSize() / 2.0f))
+				continue;
+
+			// Chain lightning
+			if (proj->getProjType() == PROJECTILE_TYPE::CHAIN)
 			{
-				BaseEnemy* enemy = enemiesList[j];
-				if (areCirclesIntersecting(projectileList[i]->GetLocation(), projectileList[i]->GetRadius(), enemy->GetLocation(), enemy->GetSpriteSize() / 2.0f))
-				{
-					//enemy->SetHealth(enemy->GetHealth() - projectileList[i]->getProjectileDamage());
-					if (projectileList[i]->getProjType() == PROJECTILE_TYPE::CHAIN)
-					{
-						projectileList[i]->chainHit(enemiesList, enemy);
-					}
-					else
-						projectileList[i]->onHit(enemy);
-
-					if (projectileList[i]->getProjType() != PROJECTILE_TYPE::DAMAGEOVERTIME)
-					{
-						BaseProjectile* proj = projectileList[i];
-						projectileList.erase(projectileList.begin() + i);
-					}
-					//delete proj;
-
-					break;
-				}
-
+				LightningProjectile* lp = dynamic_cast<LightningProjectile*>(proj);
+				if (lp)
+					lp->chainHit(enemiesList, enemy);
 			}
-		}
+			// DOT or normal projectile
+			else
+			{
+				proj->onHit(enemy);
+			}
 
+			// Handle projectile deletion
+			LightningProjectile* lp = dynamic_cast<LightningProjectile*>(proj);
+			if (lp)
+			{
+				// Only erase LightningProjectile after particles finished
+				if (lp->GetLifespan() <= 0.f)
+					projectileList.erase(projectileList.begin() + i);
+			}
+			else
+			{
+				if (proj->getProjType() != PROJECTILE_TYPE::DAMAGEOVERTIME)
+					projectileList.erase(projectileList.begin() + i);
+			}
+
+			break; // stop checking other enemies for this projectile
+		}
 	}
+
+
 
 	if (game.shouldShowWinscreen() || game.shouldShowLosescreen())
 	{

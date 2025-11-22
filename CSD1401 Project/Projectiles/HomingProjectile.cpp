@@ -54,4 +54,45 @@ void HomingProjectile::Update()
 			}
 		}
 	}
+	SpawnParticles();
+
+	for (auto it = particles.begin(); it != particles.end(); )
+	{
+		WindParticle* p = *it;
+		p->Update();
+		if (!p->IsAlive())
+		{
+			delete p;
+			it = particles.erase(it);
+		}
+		else
+			++it;
+	}
+}
+
+HomingProjectile::~HomingProjectile()
+{
+	for (auto p : particles)
+		delete p;
+	particles.clear();
+}
+
+void HomingProjectile::SpawnParticles()
+{
+	for (int i = 0; i < 2; ++i)
+	{
+		CP_Vector vel = CP_Vector_Set(
+			((rand() % 20) - 10) * 0.05f,
+			((rand() % 20) - 10) * 0.05f
+		);
+		particles.push_back(new WindParticle(GetLocation(), vel, 10));
+	}
+}
+
+void HomingProjectile::Render()
+{
+	BaseProjectile::Render();
+
+	for (auto& p : particles)
+		p->Draw();
 }

@@ -1,70 +1,82 @@
-#include "LightningProjectile.h"
-#include "../Utils/Utils.h"
+﻿#include "LightningProjectile.h"
 #include "../System/SoundManager.h"
-#include <stdio.h>
 #include <math.h>
+#include "../Utils/Utils.h"
 
-LightningProjectile::LightningProjectile()
+LightningProjectile::LightningProjectile(CP_Vector pos, CP_Vector dir, float damage, float speed, CP_Color color)
+    : BaseProjectile(pos, dir, damage, speed, color)
 {
-}
-
-LightningProjectile::LightningProjectile(CP_Vector position, CP_Vector direction, float damage, float speed, CP_Color color)
-{
-	setProjDamage(damage);
-	setProjSpeed(speed);
-	setRadius(20.f);
-	setPosition(position);
-	setDirection(direction);
-	setProjColor(color);
-	setProjType(PROJECTILE_TYPE::CHAIN);
-
-	setLifespan(5.0f);
-}
-
-LightningProjectile::~LightningProjectile()
-{
-
+    setProjType(PROJECTILE_TYPE::CHAIN);
+    hasHit = false;
+    lingerTime = 0.15f;
 }
 
 void LightningProjectile::onHit(BaseEnemy* enemy)
 {
-	enemy->SetHealth(enemy->GetHealth() - getProjDamage());
-	SoundManager::GetInstance()->playSFX(TOWER_LIGHTNING_ATTACK_SFX);
+    hasHit = true;
+    setProjSpeed(0); // stop movement
+    lingerTime = 0.15f;
+
+    enemy->SetHealth(enemy->GetHealth() - getProjDamage());
+    SoundManager::GetInstance()->playSFX(TOWER_LIGHTNING_ATTACK_SFX);
+
+    // Spawn visual lightning directly on enemy
+    SpawnLightningLine(GetLocation(), enemy->GetLocation());
 }
 
-void LightningProjectile::chainHit(std::vector<BaseEnemy*> enemyList,BaseEnemy* specificEnemy)
+void LightningProjectile::chainHit(std::vector<BaseEnemy*> enemyList, BaseEnemy* specificEnemy)
 {
-	for (int i = 0; i< enemyList.size();i++)
-	{
-		if (counter < maxChain)
-		{
+    for (BaseEnemy* enemy : enemyList)
+    {
+        if (counter >= maxChain) break;
+        if (!areCirclesIntersecting(specificEnemy->GetLocation(), chainRadius,
+            enemy->GetLocation(), enemy->GetSpriteSize() / 2.0f))
+            continue;
 
-			if (!areCirclesIntersecting(specificEnemy->GetLocation(), chainRadius, enemyList[i]->GetLocation(), enemyList[i]->GetSpriteSize() / 2.0f))
-			{
-				continue;
-			}
-			else if (areCirclesIntersecting(specificEnemy->GetLocation(), chainRadius, enemyList[i]->GetLocation(), enemyList[i]->GetSpriteSize() / 2.0f))
-			{
-				onHit(enemyList[i]);
-				specificEnemy = enemyList[i];
-				counter++;
-
-				float angle = atan2f(specificEnemy->GetLocation().y - GetLocation().y, specificEnemy->GetLocation().x - GetLocation().x);
-				angle = CP_Math_Degrees(angle);
-				printf("%f\n", angle);
-
-				CP_Settings_Fill(CP_Color_Create(255, 255, 0, 255));
-				CP_Settings_RectMode(CP_POSITION_CORNER);
-				CP_Graphics_DrawRectAdvanced(GetLocation().x, GetLocation().y, CP_Vector_Distance(GetLocation(), specificEnemy->GetLocation()), 10.f, angle, 10.f);
-				CP_Settings_RectMode(CP_POSITION_CENTER);
-				
-			}
-		}
-		if (counter >= maxChain)
-		{
-			break;
-		}
-	}
+        onHit(enemy); // damage + lightning
+        SpawnLightningLine(specificEnemy->GetLocation(), enemy->GetLocation());
+        specificEnemy = enemy;
+        counter++;
+    }
 }
 
+void LightningProjectile::SpawnLightningLine(CP_Vector start, CP_Vector end)
+{
+    float dx = end.x - start.x;
+    float dy = end.y - start.y;
+    float len = sqrtf(dx * dx + dy * dy);
+    float ang = atan2f(dy, dx);
 
+    particles.emplace_back(start, len, ang, 5); // short-lived streak
+}
+
+void LightningProjectile::Update()
+{
+    if (!hasHit)
+        BaseProjectile::Update();
+
+    // Update particles
+    for (int i = (int)particles.size() - 1; i >= 0; i--)
+    {
+        particles[i].Update();
+        if (particles[i].life <= 0)
+            particles.erase(particles.begin() + i);
+    }
+
+    // Destroy projectile after linger time
+    if (hasHit)
+    {
+        lingerTime -= CP_System_GetDt();
+        if (lingerTime <= 0.f && particles.empty())
+            setLifespan(0.f);
+    }
+}
+
+void LightningProjectile::Render()
+{
+    // Optionally hide the projectile itself
+    // BaseProjectile::Render();
+
+    for (auto& p : particles)
+        p.Draw();
+}
