@@ -52,6 +52,7 @@ protected:
 	float cooldown = 2.0f;
 	float cooldownTime = 0.0f;
 	CP_Color color;
+
 	float projSpeed = 150;
 	float baseCooldown;
 	bool isSlowed = false;

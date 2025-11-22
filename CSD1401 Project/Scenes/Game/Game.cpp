@@ -388,6 +388,28 @@ void gameUpdate(void)
 			game.drawText(costs.c_str(), game.uiElements[i].pos.x + 10, game.uiElements[i].pos.y + 35);
 			CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_LEFT, CP_TEXT_ALIGN_V_MIDDLE);
 		}
+
+		std::string info = "Base Costs: " + std::to_string(game.uiElements[i].towerCost) + "\n";
+		if (game.currSelect == game.uiElements[i].selection)
+		{
+			switch (game.currSelect)
+			{
+			case FIRETOWER:
+				info += "\nProjectile Damage: 1\nFirerate: 1 Proj/s\nBullet speed: 500m/s\nSpecial Effect: Does burning damage\n over time that stacks\n";
+				break;
+			case ICETOWER:
+				info += "\nProjectile Damage: 2\nFirerate: 1 Proj/s\nBullet speed: 100m/s\nSpecial Effect: Slows enemies, Slow scales with level\n";
+				break;
+			case LIGHTNINGTOWER:
+				info += "\nProjectile Damage: 3\nFirerate: 1 Proj/2s\nBullet speed: 500m/s\nSpecial Effect: Hits chains to nearby enemies, up to 3 at a time\n";
+				break;
+			case WINDTOWER:
+				info += "\nProjectile Damage: 0.25\nFirerate: 1 Proj/s, shoots faster it levels up\nBullet speed: 500m/s\nSpecial Effect: None, just shoots REALLY fast\n";
+				break;
+			}
+			CP_Font_DrawTextBox(info.c_str(), 1325, 400,275);
+		}
+		
 	}
 
 	// MOUSE DOWN
@@ -608,7 +630,6 @@ void gameUpdate(void)
 					}
 				}
 			}
-			//game.currSelect = NONE_TOWER;
 		}
 
 		else if (game.grabbingTower)
