@@ -944,16 +944,13 @@ void gameUpdate(void)
 		}
 	}
 
-	// projectile collision
 	for (int i = (int)projectileList.size() - 1; i >= 0; i--)
 	{
 		BaseProjectile* proj = projectileList[i];
 
-		// Update and render
 		proj->Update();
 		proj->Render();
 
-		// Erase if out of bounds or lifespan ended
 		if (proj->GetLifespan() <= 0.f ||
 			proj->GetLocation().x < 0 || proj->GetLocation().y < 0 ||
 			proj->GetLocation().x >= gameMap->getTileSize() * mapSize.x ||
@@ -962,8 +959,6 @@ void gameUpdate(void)
 			projectileList.erase(projectileList.begin() + i);
 			continue;
 		}
-
-		// Collision with enemies
 		for (int j = 0; j < enemiesList.size(); j++)
 		{
 			BaseEnemy* enemy = enemiesList[j];
@@ -971,20 +966,18 @@ void gameUpdate(void)
 				enemy->GetLocation(), enemy->GetSpriteSize() / 2.0f))
 				continue;
 
-			// Chain lightning
 			if (proj->getProjType() == PROJECTILE_TYPE::CHAIN)
 			{
 				LightningProjectile* lp = dynamic_cast<LightningProjectile*>(proj);
 				if (lp)
 					lp->chainHit(enemiesList, enemy);
 			}
-			// DOT or normal projectile
+
 			else
 			{
 				proj->onHit(enemy);
 			}
 
-			// Handle projectile deletion
 			LightningProjectile* lp = dynamic_cast<LightningProjectile*>(proj);
 			if (lp)
 			{
@@ -998,7 +991,7 @@ void gameUpdate(void)
 					projectileList.erase(projectileList.begin() + i);
 			}
 
-			break; // stop checking other enemies for this projectile
+			break;
 		}
 	}
 

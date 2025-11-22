@@ -14,13 +14,12 @@ LightningProjectile::LightningProjectile(CP_Vector pos, CP_Vector dir, float dam
 void LightningProjectile::onHit(BaseEnemy* enemy)
 {
     hasHit = true;
-    setProjSpeed(0); // stop movement
+    setProjSpeed(0);
     lingerTime = 0.15f;
 
     enemy->SetHealth(enemy->GetHealth() - getProjDamage());
     SoundManager::GetInstance()->playSFX(TOWER_LIGHTNING_ATTACK_SFX);
 
-    // Spawn visual lightning directly on enemy
     SpawnLightningLine(GetLocation(), enemy->GetLocation());
 }
 
@@ -33,7 +32,7 @@ void LightningProjectile::chainHit(std::vector<BaseEnemy*> enemyList, BaseEnemy*
             enemy->GetLocation(), enemy->GetSpriteSize() / 2.0f))
             continue;
 
-        onHit(enemy); // damage + lightning
+        onHit(enemy);
         SpawnLightningLine(specificEnemy->GetLocation(), enemy->GetLocation());
         specificEnemy = enemy;
         counter++;
@@ -47,7 +46,7 @@ void LightningProjectile::SpawnLightningLine(CP_Vector start, CP_Vector end)
     float len = sqrtf(dx * dx + dy * dy);
     float ang = atan2f(dy, dx);
 
-    particles.emplace_back(start, len, ang, 5); // short-lived streak
+    particles.emplace_back(start, len, ang, 5);
 }
 
 void LightningProjectile::Update()
@@ -55,7 +54,6 @@ void LightningProjectile::Update()
     if (!hasHit)
         BaseProjectile::Update();
 
-    // Update particles
     for (int i = (int)particles.size() - 1; i >= 0; i--)
     {
         particles[i].Update();
@@ -63,7 +61,6 @@ void LightningProjectile::Update()
             particles.erase(particles.begin() + i);
     }
 
-    // Destroy projectile after linger time
     if (hasHit)
     {
         lingerTime -= CP_System_GetDt();
@@ -74,9 +71,6 @@ void LightningProjectile::Update()
 
 void LightningProjectile::Render()
 {
-    // Optionally hide the projectile itself
-    // BaseProjectile::Render();
-
     for (auto& p : particles)
         p.Draw();
 }

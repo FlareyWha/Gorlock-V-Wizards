@@ -3,7 +3,6 @@
 
 LavaWall::LavaWall(CP_Vector position, CP_Vector direction, float damage, float speed, CP_Color color)
 {
-    // Load the particle image once
     FireParticle::LoadImage("Assets/Particles/Fire.png");
 
     setPosition(position);
@@ -15,8 +14,8 @@ LavaWall::LavaWall(CP_Vector position, CP_Vector direction, float damage, float 
 
     setProjType(PROJECTILE_TYPE::DAMAGEOVERTIME);
 
-    sfxTimer = 0.f;       // initialize sound timer
-    sfxMaxTimer = 0.5f;   // sound cooldown
+    sfxTimer = 0.f;
+    sfxMaxTimer = 0.5f;
 }
 
 LavaWall::~LavaWall()
@@ -52,18 +51,16 @@ void LavaWall::Update()
 
 void LavaWall::Render()
 {
-    // Draw the LavaWall itself
     CP_Settings_Fill(getProjColor());
     float angle = CP_Math_Degrees(atan2f(this->getDirection().y, this->getDirection().x));
     CP_Graphics_DrawRectAdvanced(this->GetLocation().x, this->GetLocation().y, 15.f, 50.f, angle, 10.f);
 
-    // Draw particles using the Fire.png image
     for (auto& p : particles)
     {
-        p->Draw(); // FireParticle::Draw() should use the loaded image
+        p->Draw();
     }
 
-    CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255)); // reset
+    CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 }
 
 void LavaWall::onHit(BaseEnemy* enemy)
@@ -80,7 +77,6 @@ void LavaWall::onHit(BaseEnemy* enemy)
 
 void LavaWall::SpawnParticles()
 {
-    // Spawn multiple particles for visual density
     for (int i = 0; i < 5; ++i)
     {
         CP_Vector vel = CP_Vector_Set(
@@ -88,7 +84,7 @@ void LavaWall::SpawnParticles()
             ((rand() % 20) - 10) * 0.05f
         );
 
-        FireParticle* p = new FireParticle(GetLocation(), vel, 60); // lifespan = 100
+        FireParticle* p = new FireParticle(GetLocation(), vel, 60);
         particles.push_back(p);
     }
 }

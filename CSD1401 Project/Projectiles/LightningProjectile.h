@@ -11,7 +11,7 @@ protected:
     float lingerTime = 0.1f;
     int counter = 0;
     const int maxChain = 3;
-    float chainRadius = 100.f; // max distance between chained enemies
+    float chainRadius = 100.f;
 
 public:
     LightningProjectile(CP_Vector pos, CP_Vector dir, float damage, float speed, CP_Color color);

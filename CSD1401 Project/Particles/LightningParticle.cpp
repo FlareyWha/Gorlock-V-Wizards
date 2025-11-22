@@ -1,7 +1,7 @@
 #include "LightningParticle.h"
 #include <math.h>
 #include <cmath>
-#include <cstdlib> // Add this include at the top of the file for rand()
+#include <cstdlib>
 
 const float PI = 3.14159265359f;
 
@@ -12,15 +12,14 @@ LightningParticle::LightningParticle(const CP_Vector& start, float len, float an
 
 void LightningParticle::Update()
 {
-    life--; // reduce lifetime
+    life--;
 }
 
 void LightningParticle::Draw() const
 {
     if (life <= 0) return;
 
-    // Draw lightning
-    CP_Settings_Stroke(CP_Color_Create(255, 255, 0, 255)); // yellow
+    CP_Settings_Stroke(CP_Color_Create(255, 255, 0, 255));
 
     int segments = 5;
     CP_Vector prev = start;
@@ -44,7 +43,6 @@ void LightningParticle::Draw() const
         prev = next;
     }
 
-    // Reset stroke to default (white) for everything else
     CP_Settings_Stroke(CP_Color_Create(0, 0, 0, 255));
 }
 
