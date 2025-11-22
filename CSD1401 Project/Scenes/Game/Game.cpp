@@ -105,7 +105,7 @@ void Game::drawMoneys(float x, float y)
 	std::string money = ": " + std::to_string(game.getMoneys());
 	CP_Image_Draw(game.moneysImage, x, y, 16 * imageScaling, 16 * imageScaling, 255);
 	CP_Settings_TextSize(35.f);
-	game.drawText(money.c_str(), x+60, y);
+	game.drawText(money.c_str(), x+45, y);
 	CP_Settings_TextSize(20.f);
 }
 
@@ -278,7 +278,7 @@ void gameInit(void)
 	game.moneysImage = CP_Image_Load("./Assets/UI/money.png");
 
 	game.fireTowerUI.image = CP_Image_Load("./Assets/Towers/fireTower.png");
-	game.fireTowerUI.pos = CP_Vector_Set(1500, 200);
+	game.fireTowerUI.pos = CP_Vector_Set(1400, 200);
 	game.fireTowerUI.selection = FIRETOWER;
 	game.fireTowerUI.towerCost = 100;
 
@@ -288,7 +288,7 @@ void gameInit(void)
 	game.windTowerUI.towerCost = 150;
 
 	game.iceTowerUI.image = CP_Image_Load("./Assets/Towers/iceTower.png");
-	game.iceTowerUI.pos = CP_Vector_Add(game.windTowerUI.pos, CP_Vector_Set(0, 100));
+	game.iceTowerUI.pos = CP_Vector_Add(game.fireTowerUI.pos, CP_Vector_Set(100, 0));
 	game.iceTowerUI.selection = ICETOWER;
 	game.iceTowerUI.towerCost = 125;
 
@@ -298,14 +298,19 @@ void gameInit(void)
 	game.lightningTowerUI.towerCost = 200;
 
 	game.levelUpUI.image = CP_Image_Load("./Assets/UI/levelup.png");
-	game.levelUpUI.pos = CP_Vector_Set(1500, 800);
+	game.levelUpUI.pos = CP_Vector_Set(1500, 750);
 	game.levelUpUI.selection = LEVELUP;
 	game.levelUpUI.towerCost = 0;
 
 	game.mergeUI.image = CP_Image_Load("./Assets/UI/merge.png");
-	game.mergeUI.pos = CP_Vector_Set(1400, 800);
+	game.mergeUI.pos = CP_Vector_Set(1400, 750);
 	game.mergeUI.selection = MERGE;
 	game.mergeUI.towerCost = 0;
+
+	game.sellingUI.image = CP_Image_Load("./Assets/UI/money.png");
+	game.sellingUI.pos = CP_Vector_Set(1500, 650);
+	game.sellingUI.selection = SELLING;
+	game.sellingUI.towerCost = 0;
 
 	game.uiElements[0] = game.fireTowerUI;
 	game.uiElements[1] = game.windTowerUI;
@@ -313,6 +318,7 @@ void gameInit(void)
 	game.uiElements[3] = game.lightningTowerUI;
 	game.uiElements[4] = game.levelUpUI;
 	game.uiElements[5] = game.mergeUI;
+	game.uiElements[6] = game.sellingUI;
 	CP_Settings_TextSize(game.getFontSize());
 
 
@@ -329,6 +335,8 @@ void gameUpdate(void)
 {
 	CP_Graphics_ClearBackground(CP_Color_Create(132, 198, 105, 255));
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+	game.drawHeart(1525, 100.0f);
+	game.drawMoneys(1350, 100.0f);
 
 	SoundManager::GetInstance()->Update();
 	gameMap->renderMap();
@@ -373,7 +381,7 @@ void gameUpdate(void)
 		else
 			game.uiElements[i].opacity = 255;
 		CP_Image_Draw(game.uiElements[i].image, game.uiElements[i].pos.x, game.uiElements[i].pos.y, game.uiElements[i].size, game.uiElements[i].size, game.uiElements[i].opacity);
-		if (game.uiElements[i].selection != LEVELUP && game.uiElements[i].selection != MERGE)
+		if (i < 4)
 		{
 			std::string costs = std::to_string(game.uiElements[i].towerCost);
 			CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_RIGHT, CP_TEXT_ALIGN_V_MIDDLE);
@@ -443,6 +451,17 @@ void gameUpdate(void)
 					CP_Image_Draw(game.currentTower->getImage(), CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
 			}
 			break;
+		case SELLING:
+			for (int i = 0; i < towerList.size(); i++)
+			{
+				float distance = CP_Vector_Distance(towerList[i]->getPosition(), CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY()));
+				if (distance <= 24.f)
+				{
+					game.gainMoneys(towerList[i]->getSaleAmt());
+					towerList.erase(towerList.begin() + i);
+				}
+			}
+			break;
 		case NONE_TOWER:
 			if ((CP_Input_GetMouseX() >= 0 && CP_Input_GetMouseX() <= gameMap->getTileSize() * mapSize.x)
 				&& (CP_Input_GetMouseY() >= 0 && CP_Input_GetMouseY() <= gameMap->getTileSize() * mapSize.y))
@@ -471,7 +490,7 @@ void gameUpdate(void)
 	// MOUSE RELEASED
 	if (CP_Input_MouseReleased(MOUSE_BUTTON_1))
 	{
-		if (game.currSelect != NONE_TOWER && game.currSelect != LEVELUP && game.currSelect != MERGE)
+		if (game.currSelect <= LIGHTNINGTOWER )
 		{
 			if ((CP_Input_GetMouseX() >= 0 && CP_Input_GetMouseX() <= gameMap->getTileSize() * mapSize.x)
 				&& (CP_Input_GetMouseY() >= 0 && CP_Input_GetMouseY() <= gameMap->getTileSize() * mapSize.y))
@@ -589,7 +608,7 @@ void gameUpdate(void)
 					}
 				}
 			}
-			game.currSelect = NONE_TOWER;
+			//game.currSelect = NONE_TOWER;
 		}
 
 		else if (game.grabbingTower)
@@ -686,7 +705,6 @@ void gameUpdate(void)
 				{
 					tower->setOpacity(255.f);
 				}
-
 			}
 			else if (game.currSelect == NONE_TOWER)
 			{
@@ -694,9 +712,7 @@ void gameUpdate(void)
 			}
 		}
 	}
-	game.drawHeart(1500, 700.0f);
-	game.drawMoneys(1350, 100.0f);
-
+	
 	std::string waveString = "Wave " + std::to_string(game.waveManager->getWaveId() - 1) + "/" + std::to_string(game.waveManager->getMaxWaves());
 
 	CP_Settings_TextSize(game.getFontSize() * 2);
@@ -709,14 +725,6 @@ void gameUpdate(void)
 	{
 		game.takeDamage(1);
 	}
-	if (CP_Input_MouseTriggered(MOUSE_BUTTON_2))
-	{
-		game.gainMoneys(100);
-	}
-
-	game.drawHeart(1500, 700.0f);
-	game.drawMoneys(1350, 100.0f);
-
 
 	game.waveManager->Update(&enemiesList);
 
@@ -906,10 +914,12 @@ void gameUpdate(void)
 
 			}
 		}
-		//else if (game.currSelect != LEVELUP)
-		//{
-		//	tower->setOpacity(255);
-		//}
+		else if (game.currSelect == SELLING)
+		{
+			tower->setOpacity(255);
+			std::string sale = std::to_string(tower->getSaleAmt());
+			game.drawText(sale.c_str(), tower->getPosition().x, tower->getPosition().y);
+		}
 	}
 
 	// projectile collision

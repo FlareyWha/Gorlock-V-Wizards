@@ -58,6 +58,8 @@ protected:
 	int levelUpCosts = 150;
 	int towerOpacity = 255;
 
+	int baseSaleCosts = 0;
+	int saleCosts = 0;
 	float maxSecondaryCooldown = 2.f;
 	float secondaryCooldown = 0.f;
 
@@ -95,6 +97,10 @@ public:
 	int getUpgradeCosts();
 	void setUpgradeCosts(int cost);
 
+	int getBaseSaleAmt() const;
+	void setBaseSaleAmt(int amt);
+	int getSaleAmt() const;
+	void setSaleAmt(int amt);
 	void setOpacity(int opacity);
 	
 	void setColor(CP_Color color);

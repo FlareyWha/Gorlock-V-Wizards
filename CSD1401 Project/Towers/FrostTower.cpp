@@ -12,6 +12,7 @@ FrostTower::FrostTower(CP_Vector position)
 	towerSprite = CP_Image_Load("Assets/Towers/frostTower.png");
 	setCooldown(1.0f);
 	setTowerType(TOWER_TYPE::FROSTTOWER);
+	this->setSaleAmt(750 * 2 * 0.85);
 }
 
 FrostTower::~FrostTower()

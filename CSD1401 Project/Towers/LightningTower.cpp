@@ -9,6 +9,9 @@ LightningTower::LightningTower(CP_Vector position)
 	towerSprite = CP_Image_Load("Assets/Towers/lightningTower.png");
 	setCooldown(2.f);
 	setTowerType(TOWER_TYPE::LIGHTNINGTOWER);
+	setUpgradeCosts(125);
+	this->setBaseSaleAmt(200);//put their base costs inside here
+	this->setSaleAmt(this->getBaseSaleAmt() * 0.85);
 }
 
 LightningTower::~LightningTower()

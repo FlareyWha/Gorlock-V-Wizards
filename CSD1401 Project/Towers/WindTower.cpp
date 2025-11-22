@@ -12,6 +12,8 @@ WindTower::WindTower(CP_Vector position)
 	setCooldown(0.25f);
 	setTowerType(TOWER_TYPE::WINDTOWER);
 	setUpgradeCosts(200);
+	this->setBaseSaleAmt(150);
+	this->setSaleAmt(this->getBaseSaleAmt() * 0.85);
 }
 
 WindTower::~WindTower()

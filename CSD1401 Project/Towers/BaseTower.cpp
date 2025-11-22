@@ -140,6 +140,7 @@ void BaseTower::levelUp()
 	if (level != maxLevel)
 	{
 		this->level++;
+		this->setSaleAmt((this->getBaseSaleAmt() + this->getUpgradeCosts()) * 0.9);
 		this->setUpgradeCosts(levelUpCosts * level);
 		CP_Math_ClampInt(level, 1, maxLevel);
 	}
@@ -163,6 +164,26 @@ int BaseTower::getUpgradeCosts()
 void BaseTower::setUpgradeCosts(int cost)
 {
 	this->levelUpCosts = cost;
+}
+
+int BaseTower::getBaseSaleAmt() const
+{
+	return this->baseSaleCosts;
+}
+
+void BaseTower::setBaseSaleAmt(int amt)
+{
+	this->baseSaleCosts = amt;
+}
+
+int BaseTower::getSaleAmt() const
+{
+	return saleCosts;
+}
+
+void BaseTower::setSaleAmt(int amt)
+{
+	this->saleCosts = amt;
 }
 
 void BaseTower::setOpacity(int opacity)

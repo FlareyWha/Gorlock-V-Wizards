@@ -35,7 +35,7 @@ protected:
 	float maxBurnTimer = 5.f;
 	bool burned = false;
 	bool isBurning = false;
-	float burnDamage = 0.25f;
+	float burnDamage = 0.1f;
 	int burnStacks = 0;
 public:
 	float GetHealth(void);

@@ -11,6 +11,7 @@ StormTower::StormTower(CP_Vector position)
 	towerSprite = CP_Image_Load("Assets/Towers/stormTower.png");
 	setCooldown(2.f);
 	setTowerType(TOWER_TYPE::STORMTOWER);
+	setSaleAmt(575 * 2 * 0.85);
 }
 
 StormTower::~StormTower()

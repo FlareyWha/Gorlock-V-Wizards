@@ -11,12 +11,13 @@
 #include "../../Utils/Button.h"
 #include <string>
 enum currSelected {
-	FIRETOWER,
+	FIRETOWER = 0,
 	WINDTOWER,
 	ICETOWER,
 	LIGHTNINGTOWER,
 	LEVELUP,
 	MERGE,
+	SELLING,
 	NONE_TOWER
 };
 typedef struct TowerUIs {
@@ -88,12 +89,13 @@ public:
 	Tower lightningTowerUI;
 	Tower levelUpUI;
 	Tower mergeUI;
+	Tower sellingUI;
 
 	bool grabbingTower = false;
 
 	BaseTower* currentTower = nullptr;
 
-	Tower uiElements[6];
+	Tower uiElements[7];
 
 	WaveManager* waveManager;
 	Button* nextWave;
