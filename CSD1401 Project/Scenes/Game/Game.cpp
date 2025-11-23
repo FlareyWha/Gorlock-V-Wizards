@@ -308,7 +308,7 @@ void gameInit(void)
 	game.mergeUI.selection = MERGE;
 	game.mergeUI.towerCost = 0;
 
-	game.sellingUI.image = CP_Image_Load("./Assets/UI/money.png");
+	game.sellingUI.image = CP_Image_Load("./Assets/UI/store.png");
 	game.sellingUI.pos = CP_Vector_Set(1500, 650);
 	game.sellingUI.selection = SELLING;
 	game.sellingUI.towerCost = 0;
@@ -390,22 +390,22 @@ void gameUpdate(void)
 			CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_LEFT, CP_TEXT_ALIGN_V_MIDDLE);
 		}
 
-		std::string info = "Base Costs: " + std::to_string(game.uiElements[i].towerCost) + "\n";
+		std::string info = "Base Costs: " + std::to_string(game.uiElements[i].towerCost) + " Coins\n";
 		if (game.currSelect == game.uiElements[i].selection)
 		{
 			switch (game.currSelect)
 			{
 			case FIRETOWER:
-				info += "\nProjectile Damage: 1\nFirerate: 1 Proj/s\nBullet speed: 500m/s\nSpecial Effect: Does burning damage\n over time that stacks\n";
+				info += "\nProjectile Damage: Low\nFirerate: Slow\nBullet speed: Medium\nSpecial Effect: Does burning damage\n over time that stacks\n";
 				break;
 			case ICETOWER:
-				info += "\nProjectile Damage: 2\nFirerate: 1 Proj/s\nBullet speed: 100m/s\nSpecial Effect: Slows enemies, Slow scales with level\n";
+				info += "\nProjectile Damage: Medium\nFirerate: Slow\nBullet speed: Slow\nSpecial Effect: Slows enemies, Slow scales with level\n";
 				break;
 			case LIGHTNINGTOWER:
-				info += "\nProjectile Damage: 3\nFirerate: 1 Proj/2s\nBullet speed: 500m/s\nSpecial Effect: Hits chains to nearby enemies, up to 3 at a time\n";
+				info += "\nProjectile Damage: High\nFirerate: Medium\nBullet speed: Fast\nSpecial Effect: Hits chains to nearby enemies, up to 3 at a time\n";
 				break;
 			case WINDTOWER:
-				info += "\nProjectile Damage: 0.25\nFirerate: 1 Proj/s, shoots faster it levels up\nBullet speed: 500m/s\nSpecial Effect: None, just shoots REALLY fast\n";
+				info += "\nProjectile Damage: Very low\nFirerate: Fast\nBullet speed: Fast\nSpecial Effect: None, just shoots REALLY fast\n";
 				break;
 			}
 			CP_Font_DrawTextBox(info.c_str(), 1325, 400,275);
