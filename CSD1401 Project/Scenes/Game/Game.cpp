@@ -49,7 +49,6 @@ std::vector<BaseTower*> towerList;
 std::vector<BaseProjectile*> projectileList;
 
 
-
 void Game::drawRect(float posX, float posY, float rectWidth, float rectHeight, float angle, float cornerRadius, CP_Color rectColor)
 {
 	CP_Settings_Fill(rectColor);
@@ -205,10 +204,86 @@ void Game::setLose(bool lose)
 	loseScreen = lose;
 }
 
+void Game::updateHowToPlayScreen(void)
+{
+	switch (howToPlayCurrentIndex)
+	{
+	case 0:
+		if (howToPlayNext->IsClicked())
+		{
+			howToPlayCurrentIndex++;
+		}
+		break;
+
+	case HOW_TO_PLAY_SIZE - 1:
+		if (howToPlayEnd->IsClicked())
+		{
+			disableHowToPlayScreen();
+		}
+		break;
+
+	default:
+		if (howToPlayNext->IsClicked())
+		{
+			howToPlayCurrentIndex++;
+		}
+		if (howToPlayBack->IsClicked())
+		{
+			howToPlayCurrentIndex--;
+		}
+		break;
+	}
+
+	if (howToPlayActive)
+	{
+		renderHowToPlayScreen();
+	}
+}
+
+void Game::renderHowToPlayScreen(void)
+{
+	//Draw background
+	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 200));
+	CP_Graphics_DrawRect(800, 450, 1600, 900);
+	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+
+	CP_Image_Draw(howToPlayImages[howToPlayCurrentIndex], 800, 450, 1350, 725, 255);
+
+	switch (howToPlayCurrentIndex)
+	{
+	case 0:
+		howToPlayNext->Draw();
+		break;
+
+	case HOW_TO_PLAY_SIZE - 1:
+		howToPlayEnd->Draw();
+		howToPlayBack->Draw();
+		break;
+
+	default:
+		howToPlayNext->Draw();
+		howToPlayBack->Draw();
+		break;
+	}
+}
+
+void Game::disableHowToPlayScreen(void)
+{
+	howToPlayActive = false;
+
+	delete howToPlayBack;
+	delete howToPlayEnd;
+	delete howToPlayNext;
+}
+
 void Game::ButtonInit()
 {
 	nextWave = new Button(1380, 850, 130, 50, "Next Wave");
 	back = new Button(CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.5f, 260, 100, "Back");
+
+	howToPlayNext = new Button(1525, 850, 130, 50, "Next");
+	howToPlayBack = new Button(75, 850, 130, 50, "Back");
+	howToPlayEnd = new Button(1525, 850, 130, 50, "End");
 }
 
 void Game::ButtonDraw()
@@ -322,7 +397,11 @@ void gameInit(void)
 	game.uiElements[6] = game.sellingUI;
 	CP_Settings_TextSize(game.getFontSize());
 
-
+	for (int i = 0; i < HOW_TO_PLAY_SIZE; i++)
+	{
+		std::string filePath = "./Assets/UI/How To Play Images/howToPlay" + std::to_string(i) + ".png";
+		game.howToPlayImages[i] = CP_Image_Load(filePath.c_str());
+	}
 
 	game.waveManager = new WaveManager(gameMap->getSpawnpoint());
 
@@ -341,6 +420,13 @@ void gameUpdate(void)
 
 	SoundManager::GetInstance()->Update();
 	gameMap->renderMap();
+
+	//Putting this here cus the below godfile is honestly uneditable
+	if (game.howToPlayActive)
+	{
+		game.updateHowToPlayScreen();
+		return;
+	}
 
 	if (CP_Input_KeyTriggered(KEY_ESCAPE)) {
 		SceneManager::GetInstance()->ChangeScenes(Scenes::PAUSE_MENU_SCENE);
