@@ -15,7 +15,7 @@ IceTower::IceTower(CP_Vector position)
 	setTowerType(TOWER_TYPE::ICETOWER);
 	setUpgradeCosts(125);
 	this->setBaseSaleAmt(125);
-	this->setSaleAmt(this->getBaseSaleAmt() * 0.85);
+	this->setSaleAmt((int)(this->getBaseSaleAmt() * 0.85));
 }
 
 IceTower::~IceTower()

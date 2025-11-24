@@ -443,7 +443,7 @@ void gameUpdate(void)
 		for (int i = 0; i < towerList.size(); i++)
 		{
 			BaseTower* tower = towerList[i];
-			tower->setOpacity(255.f);
+			tower->setOpacity(255);
 		}
 	}
 
@@ -552,7 +552,7 @@ void gameUpdate(void)
 					//tower->setOpacity(255.f);
 					if (game.currentTower->getTowerType() != tower->getTowerType() && game.currentTower->getTowerType() != TOWER_TYPE::BASETOWER)
 					{
-						tower->setOpacity(155.f);
+						tower->setOpacity(155);
 
 					}
 				}
@@ -745,7 +745,7 @@ void gameUpdate(void)
 						}
 
 						// Erase both current and target towers zzzzzzzz
-						for (int i = towerList.size() - 1; i >= 0; --i)
+						for (int i = (int)(towerList.size() - 1); i >= 0; --i)
 						{
 							if (towerList[i] == dragged || towerList[i] == target)
 							{
@@ -769,11 +769,11 @@ void gameUpdate(void)
 			{
 				if (tower->getUpgradeCosts() > game.getMoneys())
 				{
-					tower->setOpacity(155.f);
+					tower->setOpacity(155);
 				}
 				else
 				{
-					tower->setOpacity(255.f);
+					tower->setOpacity(255);
 				}
 			}
 			else if (game.currSelect == MERGE)
@@ -781,16 +781,16 @@ void gameUpdate(void)
 
 				if (towerList[i]->getLevel() != towerList[i]->getMaxLevel())
 				{
-					tower->setOpacity(155.f);
+					tower->setOpacity(155);
 				}
 				else
 				{
-					tower->setOpacity(255.f);
+					tower->setOpacity(255);
 				}
 			}
 			else if (game.currSelect == NONE_TOWER)
 			{
-				tower->setOpacity(255.f);
+				tower->setOpacity(255);
 			}
 		}
 	}

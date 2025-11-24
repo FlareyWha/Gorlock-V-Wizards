@@ -12,7 +12,7 @@ HurricaneTower::HurricaneTower(CP_Vector position)
 	setCooldown(0.1f);
 	setTowerType(TOWER_TYPE::HURRICANETOWER);
 	this->setMaxSecondaryCD(getCooldown() * 3.f);
-	this->setSaleAmt(750 *2* 0.85);
+	this->setSaleAmt((int)(750 * 2 * 0.85));
 }
 
 HurricaneTower::~HurricaneTower()

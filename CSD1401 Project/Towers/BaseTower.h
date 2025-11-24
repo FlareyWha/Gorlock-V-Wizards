@@ -67,7 +67,7 @@ protected:
 public:
 	CP_Image towerSprite;
 
-	//BaseTower();
+	BaseTower();
 	//~BaseTower();
 
 	// Getters

@@ -13,7 +13,7 @@ LavaTower::LavaTower(CP_Vector position)
 	this->setMaxSecondaryCD(5.f);
 	setCooldown(1.0f);
 	setTowerType(TOWER_TYPE::LAVATOWER);
-	this->setSaleAmt(700 * 2 * 0.85);
+	this->setSaleAmt((int)(700 * 2 * 0.85));
 	
 }
 

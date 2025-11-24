@@ -14,7 +14,7 @@ FireTower::FireTower(CP_Vector position)
 	setMaxLevel(3);
 	setUpgradeCosts(200);
 	this->setBaseSaleAmt(100);
-	this->setSaleAmt(this->getBaseSaleAmt() * 0.85);
+	this->setSaleAmt((int)(this->getBaseSaleAmt() * 0.85));
 }
 
 FireTower::~FireTower()

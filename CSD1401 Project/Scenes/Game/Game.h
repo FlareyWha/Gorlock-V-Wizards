@@ -26,6 +26,7 @@ enum currSelected {
 	SELLING,
 	NONE_TOWER
 };
+
 typedef struct TowerUIs {
 	int towerCost = 0;
 	CP_Vector pos = CP_Vector_Set(0,0);
@@ -35,6 +36,7 @@ typedef struct TowerUIs {
 	currSelected selection = currSelected::NONE_TOWER;
 	int opacity = 255;
 }Tower;
+
 class Game
 {
 private:

@@ -13,7 +13,7 @@ WindTower::WindTower(CP_Vector position)
 	setTowerType(TOWER_TYPE::WINDTOWER);
 	setUpgradeCosts(200);
 	this->setBaseSaleAmt(150);
-	this->setSaleAmt(this->getBaseSaleAmt() * 0.85);
+	this->setSaleAmt((int)(this->getBaseSaleAmt() * 0.85));
 }
 
 WindTower::~WindTower()

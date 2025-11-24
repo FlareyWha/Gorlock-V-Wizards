@@ -9,11 +9,13 @@
 #include "../Projectiles/BaseProjectile.h"
 
 //// Constructor
-//BaseTower::BaseTower()
-//{
-//	//towerSprite = CP_Image_Load("Assets/Towers/fireTower.png");
-//	position = CP_Vector_Set(0, 0);
-//}
+BaseTower::BaseTower()
+{
+	towerSprite = CP_Image_Load("Assets/Towers/fireTower.png");
+	position = CP_Vector_Set(0, 0);
+	baseCooldown = 0.f;
+	color = CP_Color_Create(0, 0, 0, 255);
+}
 //
 //BaseTower::~BaseTower()
 //{
@@ -140,7 +142,7 @@ void BaseTower::levelUp()
 	if (level != maxLevel)
 	{
 		this->level++;
-		this->setSaleAmt((this->getBaseSaleAmt() + this->getUpgradeCosts()) * 0.9);
+		this->setSaleAmt(this->getBaseSaleAmt() + (int)(this->getUpgradeCosts() * 0.9));
 		this->setUpgradeCosts(levelUpCosts * level);
 		CP_Math_ClampInt(level, 1, maxLevel);
 	}

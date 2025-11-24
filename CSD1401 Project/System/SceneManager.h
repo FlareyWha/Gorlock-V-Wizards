@@ -21,8 +21,8 @@ class SceneManager : public SingletonTemplate<SceneManager>
 {
 	friend class SingletonTemplate<SceneManager>;
 private:
-	Scenes currentScene;
-	Scenes previousScene;
+	Scenes currentScene = Scenes::MAIN_MENU_SCENE;
+	Scenes previousScene = Scenes::MAIN_MENU_SCENE;
 public:
 	void ChangeScenes(Scenes scene);
 	Scenes GetPreviousScene() const { return previousScene; }

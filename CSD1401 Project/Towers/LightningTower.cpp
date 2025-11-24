@@ -11,7 +11,7 @@ LightningTower::LightningTower(CP_Vector position)
 	setTowerType(TOWER_TYPE::LIGHTNINGTOWER);
 	setUpgradeCosts(125);
 	this->setBaseSaleAmt(200);//put their base costs inside here
-	this->setSaleAmt(this->getBaseSaleAmt() * 0.85);
+	this->setSaleAmt((int)(this->getBaseSaleAmt() * 0.85));
 }
 
 LightningTower::~LightningTower()

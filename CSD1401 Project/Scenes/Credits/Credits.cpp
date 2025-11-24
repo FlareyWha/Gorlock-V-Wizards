@@ -11,7 +11,7 @@ float scrollSpeed = 100;
 void creditsInit(void)
 {
 	creditsImage = CP_Image_Load("../../Assets/Credits/Credits.png");
-	yPos = CP_System_GetWindowHeight();
+	yPos = (float)CP_System_GetWindowHeight();
 	scenery = SceneManager::GetInstance();
 	creditsFont = CP_Font_Load("./Assets/Fonts/KenneyFonts/Kenney Mini.ttf");
 	backButton = Button(150, 850, 150, 50, "Back");
@@ -29,7 +29,7 @@ void creditsUpdate(void)
 	yPos -= scrollSpeed * CP_System_GetDt();
 
 	CP_Settings_ImageMode(CP_POSITION_CORNER);
-	CP_Image_Draw(creditsImage,0, yPos,CP_Image_GetWidth(creditsImage),CP_Image_GetHeight(creditsImage),255);
+	CP_Image_Draw(creditsImage,0, yPos, (float)CP_Image_GetWidth(creditsImage), (float)CP_Image_GetHeight(creditsImage), 255);
 	CP_Settings_ImageMode(CP_POSITION_CENTER);
 	backButton.Draw();
 	if(backButton.IsClicked()) {  // dot, not arrow
