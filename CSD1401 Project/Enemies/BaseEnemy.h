@@ -1,3 +1,9 @@
+/*!
+@file       BaseEnemy.h
+@author     Tai Yang Tat Bryson (t.yangtatbryson)
+@brief      This file contains declarations of functions related to the base enemy
+*//*_______________________________________________________________________*/
+
 #pragma once
 #include "cprocessing.h"
 #include "../System/Map.h"
@@ -22,7 +28,6 @@ protected:
 	int pathId = 0;
 	int reward;
 	EnemyType type;
-	bool turn = false;
 
 	float slowTimer = 0.f;
 	float maxSlowTimer = 3.f;
@@ -74,9 +79,16 @@ public:
 	EnemyType GetEnemyType(void);
 	void SetEnemyType(EnemyType type);
 
-	void RandomizeTurn(void);
-
+	/**
+	 @brief Move the enemy depending on the direction it is going
+	 @param map Pointer to a map class
+	 @return void
+	 */
 	void Move(Map* map);
+	/**
+	 @brief Render the enemy
+	 @return void
+	 */
 	virtual void Render(void);
 };
 

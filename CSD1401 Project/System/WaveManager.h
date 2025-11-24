@@ -1,3 +1,9 @@
+/*!
+@file       WaveManager.h
+@author     Tai Yang Tat Bryson (t.yangtatbryson)
+@brief      This file contains declarations of functions related to Wave management
+*//*_______________________________________________________________________*/
+
 #pragma once
 #include "cprocessing.h"
 #include "../Enemies/BaseEnemy.h"
@@ -29,10 +35,29 @@ private:
 	bool bossSpawned = false;
 
 public:
+	// Constructor
 	WaveManager(CP_Vector spawnLocation);
+	// Destructor
 	~WaveManager();
+
+	/**
+	@brief Update wavemanager related timers
+	@param enemyList List of enemies
+	@return void
+	*/
 	void Update(std::vector<BaseEnemy*>* enemyList);
+	/**
+	@brief Init wave info from a text file
+	@param file File to read from
+	@param spawnLocation Location for enemies to spawn
+	@return void
+	*/
 	void ReadWaveFile(std::ifstream *file, CP_Vector spawnLocation);
+	/**
+	@brief Spawn the next wave
+	@param spawnLocation Location for enemies to spawn
+	@return void
+	*/
 	void SpawnWave(CP_Vector spawnLocation);
 	bool GetWaveInProgress(void);
 	int getWaveId(void);

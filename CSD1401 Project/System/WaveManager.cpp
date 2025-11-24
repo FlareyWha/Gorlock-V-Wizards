@@ -1,3 +1,9 @@
+/*!
+@file       WaveManager.cpp
+@author     Tai Yang Tat Bryson (t.yangtatbryson)
+@brief      This file contains definitions of functions related to Wave management
+*//*_______________________________________________________________________*/
+
 #include "WaveManager.h"
 
 #include <iostream>
@@ -17,6 +23,11 @@ WaveManager::~WaveManager()
 	delete enemyQueue;
 }
 
+/**
+@brief Update wavemanager related timers
+@param enemyList List of enemies
+@return void
+*/
 void WaveManager::Update(std::vector<BaseEnemy*>* enemyList)
 {
 	spawnCooldown -= 1.f * CP_System_GetDt();
@@ -42,11 +53,19 @@ void WaveManager::Update(std::vector<BaseEnemy*>* enemyList)
 		waveInProgress = false;
 }
 
+/**
+@brief Init wave info from a text file
+@param file File to read from
+@param spawnLocation Location for enemies to spawn
+@return void
+*/
 void WaveManager::ReadWaveFile(std::ifstream *file, CP_Vector spawnLocation)
 {
+	// Read the file line-by-line
 	std::string buffer;
 	while (std::getline(*file, buffer))
 	{
+		// Split buffer into waveNo and enemy number and types
 		int waveNo = std::stoi(buffer.substr(0, buffer.find(':')));
 		buffer.erase(0, buffer.find(':') + 1);
 		WaveInfo info;
@@ -66,6 +85,7 @@ void WaveManager::ReadWaveFile(std::ifstream *file, CP_Vector spawnLocation)
 			int noOfEnemies = std::stoi(enemiesInfo.substr(0, enemiesInfo.length() - 1));
 			enemiesInfo.erase(0, enemiesInfo.length() - 1);
 			char enemyType = enemiesInfo.at(0);
+			// Push enemies into the queue
 			for (int i = 0; i < noOfEnemies; ++i)
 			{
 				switch (enemyType)
@@ -86,9 +106,15 @@ void WaveManager::ReadWaveFile(std::ifstream *file, CP_Vector spawnLocation)
 	}
 }
 
+/**
+@brief Spawn the next wave
+@param spawnLocation Location for enemies to spawn
+@return void
+*/
 void WaveManager::SpawnWave(CP_Vector spawnLocation)
 {
 	if (waveInProgress) return;
+	// Check if next wave is boss wave
 	if (waveId > waveMap.size())
 	{
 		if (bossSpawned) return;
@@ -100,6 +126,7 @@ void WaveManager::SpawnWave(CP_Vector spawnLocation)
 		return;
 	}
 
+	// Push next wave into queue
 	WaveInfo info = waveMap.at(waveId++);
 	enemyQueue = info.waveQueue;
 	waveInProgress = true;
