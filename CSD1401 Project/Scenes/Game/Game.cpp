@@ -215,12 +215,12 @@ void Game::updateHowToPlayScreen(void)
 		}
 		break;
 
-	/*case HOW_TO_PLAY_SIZE - 1:
+	case HOW_TO_PLAY_SIZE - 1:
 		if (howToPlayEnd->IsClicked())
 		{
 			disableHowToPlayScreen();
 		}
-		break;*/
+		break;
 
 	default:
 		if (howToPlayNext->IsClicked())
@@ -233,16 +233,21 @@ void Game::updateHowToPlayScreen(void)
 		}
 		break;
 	}
+
+	if (howToPlayActive)
+	{
+		renderHowToPlayScreen();
+	}
 }
 
 void Game::renderHowToPlayScreen(void)
 {
 	//Draw background
-	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 150));
+	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 200));
 	CP_Graphics_DrawRect(800, 450, 1600, 900);
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 
-	CP_Image_Draw(howToPlayImages[howToPlayCurrentIndex], 800, 450, 1580, 980, 255);
+	CP_Image_Draw(howToPlayImages[howToPlayCurrentIndex], 800, 450, 1350, 725, 255);
 
 	switch (howToPlayCurrentIndex)
 	{
@@ -250,10 +255,10 @@ void Game::renderHowToPlayScreen(void)
 		howToPlayNext->Draw();
 		break;
 
-	/*case HOW_TO_PLAY_SIZE - 1:
+	case HOW_TO_PLAY_SIZE - 1:
 		howToPlayEnd->Draw();
 		howToPlayBack->Draw();
-		break;*/
+		break;
 
 	default:
 		howToPlayNext->Draw();
@@ -277,7 +282,7 @@ void Game::ButtonInit()
 	back = new Button(CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.5f, 260, 100, "Back");
 
 	howToPlayNext = new Button(1525, 850, 130, 50, "Next");
-	howToPlayBack = new Button(50, 850, 130, 50, "Back");
+	howToPlayBack = new Button(75, 850, 130, 50, "Back");
 	howToPlayEnd = new Button(1525, 850, 130, 50, "End");
 }
 
@@ -394,7 +399,7 @@ void gameInit(void)
 
 	for (int i = 0; i < HOW_TO_PLAY_SIZE; i++)
 	{
-		std::string filePath = "./Assets/UI/howtoplay" + std::to_string(i) + ".png";
+		std::string filePath = "./Assets/UI/How To Play Images/howToPlay" + std::to_string(i) + ".png";
 		game.howToPlayImages[i] = CP_Image_Load(filePath.c_str());
 	}
 
@@ -420,7 +425,6 @@ void gameUpdate(void)
 	if (game.howToPlayActive)
 	{
 		game.updateHowToPlayScreen();
-		game.renderHowToPlayScreen();
 		return;
 	}
 

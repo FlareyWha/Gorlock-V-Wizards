@@ -13,7 +13,7 @@
 
 enum
 {
-	HOW_TO_PLAY_SIZE = 1,
+	HOW_TO_PLAY_SIZE = 8,
 };
 
 enum currSelected {
@@ -113,7 +113,7 @@ public:
 	Button* howToPlayBack;
 	Button* howToPlayEnd;
 
-	bool howToPlayActive = false;
+	bool howToPlayActive = true;
 	int howToPlayCurrentIndex = 0;
 
 	bool shouldShowWinscreen(void);
