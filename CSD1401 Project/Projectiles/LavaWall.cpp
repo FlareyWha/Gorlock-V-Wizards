@@ -84,7 +84,7 @@ void LavaWall::SpawnParticles()
             ((rand() % 20) - 10) * 0.05f
         );
 
-        FireParticle* p = new FireParticle(GetLocation(), vel, 60);
+        FireParticle* p = new FireParticle(GetLocation(), vel, 20);
         particles.push_back(p);
     }
 }

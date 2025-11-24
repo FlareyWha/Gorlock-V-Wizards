@@ -31,7 +31,7 @@ void FireParticle::Draw() const
     if (t > 1.0f) t = 1.0f;
 
     
-    float size = 25.0f * (2.0f - t) + 4.0f;
+    float size = 50.0f * (2.0f - t) + 4.0f;
 
     CP_Image_Draw(particleImage, position.x, position.y, size, size, (int)(255 * t));
 }
