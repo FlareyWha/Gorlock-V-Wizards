@@ -10,6 +10,12 @@
 #include "../../Towers/BaseTower.h"	
 #include "../../Utils/Button.h"
 #include <string>
+
+enum
+{
+	HOW_TO_PLAY_SIZE = 1,
+};
+
 enum currSelected {
 	FIRETOWER = 0,
 	WINDTOWER,
@@ -29,7 +35,8 @@ typedef struct TowerUIs {
 	currSelected selection = currSelected::NONE_TOWER;
 	int opacity = 255;
 }Tower;
-class Game{
+class Game
+{
 private:
 	int maxHealth = 3;
 	int health = 3;
@@ -42,6 +49,7 @@ private:
 	bool winScreen = false;
 	bool loseScreen = false;
 	bool paused = false;
+
 public:
 	void PauseGame() { paused = true; }
 	void ResumeGame() { paused = false; }
@@ -81,6 +89,7 @@ public:
 	CP_Image healthImage;
 	CP_Image emptyHeartImage;
 	CP_Image moneysImage;
+	CP_Image howToPlayImages[HOW_TO_PLAY_SIZE];
 	currSelected currSelect = currSelected::NONE_TOWER;
 
 	Tower fireTowerUI;
@@ -100,11 +109,22 @@ public:
 	WaveManager* waveManager;
 	Button* nextWave;
 	Button* back;
+	Button* howToPlayNext;
+	Button* howToPlayBack;
+	Button* howToPlayEnd;
+
+	bool howToPlayActive = false;
+	int howToPlayCurrentIndex = 0;
 
 	bool shouldShowWinscreen(void);
 	bool shouldShowLosescreen(void);
 	void setWin(bool win);
 	void setLose(bool lose);
+
+	void updateHowToPlayScreen(void);
+	void renderHowToPlayScreen(void);
+
+	void disableHowToPlayScreen(void);
 };
 void gameInit(void);
 void gameUpdate(void);
