@@ -390,9 +390,9 @@ void gameUpdate(void)
 			CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_LEFT, CP_TEXT_ALIGN_V_MIDDLE);
 		}
 
-		std::string info = "Base Costs: " + std::to_string(game.uiElements[i].towerCost) + " Coins\n";
-		if (game.currSelect == game.uiElements[i].selection)
+		if (game.currSelect == game.uiElements[i].selection && i < LIGHTNINGTOWER)
 		{
+			std::string info = "Base Costs: " + std::to_string(game.uiElements[i].towerCost) + " Coins\n";
 			switch (game.currSelect)
 			{
 			case FIRETOWER:
@@ -602,32 +602,6 @@ void gameUpdate(void)
 							game.currSelect = NONE_TOWER;
 							SoundManager::GetInstance()->playSFX(TOWER_PLACE_SFX);
 						}
-						//else
-						//{
-						//	// Merging
-						//	BaseTower* toDelete = towerList[mergeId];
-						//	towerList.erase(towerList.begin() + mergeId);
-						//	//delete toDelete;
-						//	toDelete = nullptr;
-						//
-						//	switch (game.currSelect)
-						//	{
-						//	case FIRETOWER:
-						//		towerList.push_back(new LavaTower(tempPos));
-						//		break;
-						//	case ICETOWER:
-						//		towerList.push_back(new FrostTower(tempPos));
-						//		break;
-						//	case LIGHTNINGTOWER:
-						//		towerList.push_back(new LightningTower(tempPos)); // REPLACE WITH STORMTOWER WHEN TOWER CLASS IS MADE
-						//		break;
-						//	case WINDTOWER:
-						//		towerList.push_back(new WindTower(tempPos)); // REPLACE WITH HURRICANETOWER WHEN TOWER CLASS IS MADE
-						//		break;
-						//	}
-						//
-						//	SoundManager::GetInstance()->playSFX(TOWER_MERGE_SFX);
-						//}
 					}
 				}
 			}
@@ -741,7 +715,7 @@ void gameUpdate(void)
 	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 	CP_Font_DrawText(waveString.c_str(), 1350, 25);
 	CP_Settings_TextSize(game.getFontSize());
-	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
+	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 
 	if (CP_Input_KeyReleased(KEY_H))
 	{
