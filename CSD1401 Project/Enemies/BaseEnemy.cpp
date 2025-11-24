@@ -1,3 +1,9 @@
+/*!
+@file       BaseEnemy.cpp
+@author     Tai Yang Tat Bryson (t.yangtatbryson)
+@brief      This file contains definitions of functions related to the base enemy
+*//*_______________________________________________________________________*/
+
 #include "BaseEnemy.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -141,11 +147,11 @@ void BaseEnemy::SetEnemyType(EnemyType type)
     this->type = type;
 }
 
-void BaseEnemy::RandomizeTurn(void)
-{
-    turn = rand() % 2;
-}
-
+/**
+@brief Move the enemy depending on the direction it is going
+@param map Pointer to a map class
+@return void
+*/
 void BaseEnemy::Move(Map* map)
 {
     dotTimer += -1 * CP_System_GetDt();
@@ -178,6 +184,7 @@ void BaseEnemy::Move(Map* map)
     else if (directionVector.y < 0)
         tileType = map->getTile(location.x, location.y + spriteSize * 0.5f).tileType;
 
+    // Change direction depending on tile under enemy
     switch (tileType)
     {
     case CORNER_TOP_LEFT_ROAD:
@@ -216,7 +223,6 @@ void BaseEnemy::Move(Map* map)
 
     if (burned == true)
     {
-        //dotTimer = maxDOTTimer;
         burnStacks++;
         burnTimer = maxBurnTimer;
         isBurning = true;
@@ -237,13 +243,19 @@ void BaseEnemy::Move(Map* map)
     }
 }
 
+/**
+@brief Render the enemy
+@return void
+*/
 void BaseEnemy::Render(void)
 {
+    // Draw sprite based on direction enemy is moving
     if (directionVector.x >= 0)
         CP_Image_Draw(sprite, location.x, location.y, spriteSize, spriteSize, 255);
     else if (directionVector.x <= 0)
         CP_Image_Draw(spriteLeft, location.x, location.y, spriteSize, spriteSize, 255);
 
+    // Draw health bar
     CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
     CP_Graphics_DrawRect(location.x, location.y - spriteSize * 0.5f, (float)health / (float)maxHealth * 50.f, 10.f);
     CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));

@@ -24,6 +24,11 @@ private:
 	Scenes currentScene;
 	Scenes previousScene;
 public:
+	/**
+	@brief Changes the current active scene
+	@param scene The next scene
+	@return void
+	*/
 	void ChangeScenes(Scenes scene);
 	Scenes GetPreviousScene() const { return previousScene; }
 	Scenes GetCurrentScene() const { return currentScene; }

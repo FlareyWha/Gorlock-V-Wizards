@@ -1,5 +1,5 @@
 /*!
-@file       SceneManager.h
+@file       SceneManager.cpp
 @author     Tai Yang Tat Bryson (t.yangtatbryson)
 @brief      This file contains helper functions related to Scene management
 *//*_______________________________________________________________________*/
@@ -13,20 +13,18 @@
 #include "../Scenes/Credits/Credits.h"
 #include "../Scenes/PauseMenu/PauseMenu.h"
 
-/*!
-@brief      Changes the current active scene
-
-This function changes the current active scene based on the scene
-in the parameters.
-
-@param      Scenes scene
-@return     void
+/**
+@brief Changes the current active scene
+@param scene The next scene
+@return void
 */
 void SceneManager::ChangeScenes(Scenes scene)
 {
+    // Set previous and current scene
     previousScene = currentScene;
     currentScene = scene;
 
+    // Switch depending on scene
     switch (scene)
     {
     case Scenes::MAIN_MENU_SCENE:

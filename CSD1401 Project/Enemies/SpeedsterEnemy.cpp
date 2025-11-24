@@ -1,7 +1,14 @@
+/*!
+@file       SpeedsterEnemy.cpp
+@author     Tai Yang Tat Bryson (t.yangtatbryson)
+@brief      This file contains definitions of functions related to the speedster enemy
+*//*_______________________________________________________________________*/
+
 #include "SpeedsterEnemy.h"
 
 SpeedsterEnemy::SpeedsterEnemy(CP_Vector location)
 {
+	// Set default params
 	SetLocation(location);
 	SetHealth(5.f);
 	SetMaxHealth(5.f);
@@ -11,11 +18,11 @@ SpeedsterEnemy::SpeedsterEnemy(CP_Vector location)
 	SetSpriteLeft(CP_Image_Load("Assets/Enemies/Speedster_Left.png"));
 	SetReward(50);
 	SetEnemyType(EnemyType::SPEEDSTER);
-	RandomizeTurn();
 }
 
 SpeedsterEnemy::SpeedsterEnemy(CP_Vector location, float speed)
 {
+	// Set default params
 	SetLocation(location);
 	SetHealth(5.f);
 	SetMaxHealth(5.f);
@@ -25,10 +32,10 @@ SpeedsterEnemy::SpeedsterEnemy(CP_Vector location, float speed)
 	SetSpriteLeft(CP_Image_Load("Assets/Enemies/Speedster_Left.png"));
 	SetReward(50);
 	SetEnemyType(EnemyType::SPEEDSTER);
-	RandomizeTurn();
 }
 
 SpeedsterEnemy::~SpeedsterEnemy()
 {
+	// Free sprite
 	CP_Image_Free(GetSprite());
 }
