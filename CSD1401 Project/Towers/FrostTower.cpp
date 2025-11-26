@@ -27,10 +27,9 @@ void FrostTower::Update()
 
 	if (trackedEnemy)
 	{
-		//printf("%f %f\n", trackedEnemy->GetLocation().x, trackedEnemy->GetLocation().y);
-		
 		CP_Vector unNormDirection = CP_Vector_Set(trackedEnemy->GetLocation().x - getPosition().x, trackedEnemy->GetLocation().y - getPosition().y);
 		CP_Vector direction = CP_Vector_Normalize(CP_Vector_Set(trackedEnemy->GetLocation().x - getPosition().x, trackedEnemy->GetLocation().y - getPosition().y));
+		//printf("%f %f\n", trackedEnemy->GetLocation().x, trackedEnemy->GetLocation().y);
 		beamAngle = CP_Math_Degrees(atan2f(direction.y, direction.x));		
 
 		beamLength = CP_Vector_Length(unNormDirection);
@@ -40,6 +39,11 @@ void FrostTower::Update()
 		if (beamLength <= getDetectionDistance() + 25.f)
 			CP_Graphics_DrawRectAdvanced(this->getPosition().x, this->getPosition().y, beamLength, 10.f, beamAngle, 10.f);
 		CP_Settings_RectMode(CP_POSITION_CENTER);
+
+		if (trackedEnemy->GetHealth() <= 0.f)
+		{
+			trackedEnemy = nullptr;
+		}
 	}
 }
 
@@ -56,7 +60,7 @@ void FrostTower::TrackEnemy(std::vector<BaseEnemy*>& enemyList)
 {
 	bool withinRange = false;
 	beamLength = 0.f;
-	if (trackedEnemy)
+	if (trackedEnemy != nullptr)
 	{
 		for (BaseEnemy* enemy : enemyList)
 		{
@@ -67,10 +71,8 @@ void FrostTower::TrackEnemy(std::vector<BaseEnemy*>& enemyList)
 			}
 		}
 	}
-
-	if (!withinRange)
+	else if (!withinRange)
 	{
-		trackedEnemy = nullptr;
 		for (BaseEnemy* enemy : enemyList)
 		{
 			if (CP_Vector_Distance(getPosition(), enemy->GetLocation()) <= 150.f)
@@ -82,5 +84,4 @@ void FrostTower::TrackEnemy(std::vector<BaseEnemy*>& enemyList)
 
 		}
 	}
-
 }
