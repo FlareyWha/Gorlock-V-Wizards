@@ -18,4 +18,6 @@ public:
 
 	float beamLength = 0.f;
 	float beamAngle = 0.f;
+
+	bool withinRange = false;
 };
