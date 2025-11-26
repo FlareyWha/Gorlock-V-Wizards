@@ -9,7 +9,6 @@ HurricaneProjectile::HurricaneProjectile(CP_Vector position, CP_Vector direction
 	setPosition(position);
 	setDirection(direction);
 	setProjColor(color);
-
 	setLifespan(3.0f);
 }
 

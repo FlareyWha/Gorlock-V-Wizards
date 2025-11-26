@@ -17,7 +17,6 @@ WindProjectile::~WindProjectile()
 
 void WindProjectile::onHit(BaseEnemy* enemy)
 {
-    printf("Curr Damage: %f", this->getProjDamage());
     enemy->SetHealth(enemy->GetHealth() - getProjDamage());
 }
 

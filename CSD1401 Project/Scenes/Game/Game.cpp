@@ -28,6 +28,7 @@
 #include "../../Projectiles/BaseProjectile.h"
 #include "../../Utils/Utils.h"
 #include "../../Projectiles/LightningProjectile.h"
+#include "../../Projectiles/HomingProjectile.h"
 
 /*!
 @file       Game.cpp
@@ -438,7 +439,7 @@ void gameUpdate(void)
 	}
 	if (CP_Input_MouseTriggered(MOUSE_BUTTON_2))
 	{
-		//game.gainMoneys(10000);
+		game.gainMoneys(10000);
 		game.currSelect = NONE_TOWER;
 		for (int i = 0; i < towerList.size(); i++)
 		{
@@ -476,7 +477,7 @@ void gameUpdate(void)
 			CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_LEFT, CP_TEXT_ALIGN_V_MIDDLE);
 		}
 
-		if (game.currSelect == game.uiElements[i].selection && i < LIGHTNINGTOWER)
+		if (game.currSelect == game.uiElements[i].selection && i <= LIGHTNINGTOWER)
 		{
 			std::string info = "Base Costs: " + std::to_string(game.uiElements[i].towerCost) + " Coins\n";
 			switch (game.currSelect)
@@ -857,6 +858,17 @@ void gameUpdate(void)
 				SoundManager::GetInstance()->stopBGM();
 				game.setWin(true);
 				break;
+			}
+			for (int i = 0; i < projectileList.size(); i++)
+			{
+				if (projectileList[i]->getProjType() == PROJECTILE_TYPE::HOMING)
+				{
+					if (((HomingProjectile*)(projectileList[i]))->trackingEnemy == enemy)
+					{
+						((HomingProjectile*)(projectileList[i]))->trackingEnemy = nullptr;
+						printf("hit");
+					}
+				}
 			}
 			delete enemy;
 		}

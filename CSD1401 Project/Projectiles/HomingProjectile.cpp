@@ -1,5 +1,6 @@
 #include "HomingProjectile.h"
-
+#include<stdio.h>
+#include <string.h>
 void HomingProjectile::setHomingSpeed(float speed)
 {
 	this->homingSpeed = speed;
@@ -19,6 +20,7 @@ HomingProjectile::HomingProjectile(BaseEnemy* specificEnemy, std::vector<BaseEne
 	this->setProjSpeed(speed / 2.f);
 	setHomingSpeed(speed);
 	this->setProjColor(CP_Color_Create(255, 0, 255, 255));
+	this->setProjType(PROJECTILE_TYPE::HOMING);
 	timer = initialTimer;
 	this->enemyList = enemyList;
 	setLifespan(10.f);
@@ -28,33 +30,41 @@ HomingProjectile::HomingProjectile(BaseEnemy* specificEnemy, std::vector<BaseEne
 void HomingProjectile::Update()
 {
 	BaseProjectile::Update();
+	//std::string locations = "Enemy X: " + std::to_string(trackingEnemy->GetLocation().y) + "\nEnemy Y:" + std::to_string(trackingEnemy->GetLocation().y);
+	//CP_Font_DrawTextBox(locations.c_str(), 600, 600, 100);
 	timer += -1 * CP_System_GetDt();
 	if (timer <= 0)
 	{
 		setProjSpeed(getHomingSpeed());
-		if (trackingEnemy != nullptr)
+		if (enemyList->empty())
+		{
+			this->setLifespan(0);
+		}
+		if (this->trackingEnemy != nullptr)
 		{
 			CP_Vector direction = CP_Vector_Normalize(CP_Vector_Set(trackingEnemy->GetLocation().x - GetLocation().x, trackingEnemy->GetLocation().y - GetLocation().y));
 			setDirection(direction);
-			if (trackingEnemy->GetLocation().x < 0)
+			if (this->trackingEnemy->GetLocation().x == this->GetLocation().x && this->trackingEnemy->GetLocation().y == this->GetLocation().y)
 			{
-				trackingEnemy = nullptr;
+				this->trackingEnemy = nullptr;
+				printf("X: %f Y: %f\n", trackingEnemy->GetLocation().x, trackingEnemy->GetLocation().y);
 			}
 		}
-		else if(trackingEnemy == nullptr)
+		else if(this->trackingEnemy == nullptr)
 		{
+			
 			for (BaseEnemy* enemy : *enemyList)
 			{
-				
-				trackingEnemy = enemy;
-				printf("%f,%f\n", trackingEnemy->GetLocation().x, trackingEnemy->GetLocation().y);
-				break;
-				
-
+				if (CP_Vector_Distance(enemy->GetLocation(), this->GetLocation()) <= 1000)
+				{
+					this->trackingEnemy = enemy;
+					break;
+				}
 			}
+
 		}
 	}
-	SpawnParticles();
+	//SpawnParticles();
 
 	for (auto it = particles.begin(); it != particles.end(); )
 	{
