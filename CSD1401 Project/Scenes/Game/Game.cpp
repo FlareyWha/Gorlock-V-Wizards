@@ -438,7 +438,7 @@ void gameUpdate(void)
 	}
 	if (CP_Input_MouseTriggered(MOUSE_BUTTON_2))
 	{
-		game.gainMoneys(10000);
+		//game.gainMoneys(10000);
 		game.currSelect = NONE_TOWER;
 		for (int i = 0; i < towerList.size(); i++)
 		{
