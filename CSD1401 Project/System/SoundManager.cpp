@@ -132,16 +132,16 @@ std::string SoundManager::getBGMFilePath(BGM_TYPE bgmType)
 	switch (bgmType)
 	{
 	case MAIN_MENU_BGM:
-		filePath += "music_main.wav";
+		filePath += "music_main.mp3";
 		break;
 	case GAME_00_BGM:
-		filePath += "music_00.wav";
+		filePath += "music_00.mp3";
 		break;
 	case GAME_01_BGM:
-		filePath += "music_01.wav";
+		filePath += "music_01.mp3";
 		break;
 	case GAME_02_BGM:
-		filePath += "music_02.wav";
+		filePath += "music_02.mp3";
 		break;
 	default:
 		break;
