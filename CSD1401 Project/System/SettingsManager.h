@@ -19,7 +19,7 @@ private:
 
 	//Value from 0-100
 	float sfxVolume = 100;
-	float bgmVolume = 100;
+	float bgmVolume = 70;
 
 public:
 
