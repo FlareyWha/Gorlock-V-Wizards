@@ -1,7 +1,15 @@
+/*!
+@file       BaseProjectile.h
+@author     Bay Yeok Hao (yeokhao.bay)
+@brief		Contains definitions of functions, overrides and variables used by BaseProjectile
+			All other projectiles will inherit from this class
+*//*_______________________________________________________________________*/
+
 #pragma once
 #include "cprocessing.h"
 #include "../Enemies/BaseEnemy.h"
 #include <vector>
+
 enum class PROJECTILE_TYPE
 {
 	PROJECTILE = 0,
@@ -18,20 +26,18 @@ protected:
 	PROJECTILE_TYPE projectile = PROJECTILE_TYPE::PROJECTILE;
 	CP_Vector direction;
 	CP_Vector position;
-	float radius;
+	float radius = 20.f;;
 
-	CP_Color projColor;
-	float damage;
-	float projectileSpeed;
-	float lifespan;
+	CP_Color projColor = CP_Color_Create(255.f, 255.f, 255.f, 255.f);
+	float damage = 1.f;
+	float projectileSpeed = 1.f;
+	float lifespan = 2.0f;
 public:
+	// Constructor, overloaded version for easy spawning by tower
 	BaseProjectile();
 	BaseProjectile(CP_Vector position, CP_Vector direction,float damage,float speed = 150.f, CP_Color color = CP_Color_Create(255, 255, 255, 255));
 
-	void Init();
-	virtual void Update();
-	virtual void Render();
-
+	// Getters
 	float getProjDamage();
 	float getProjectileDamage();
 	float GetLifespan(void);
@@ -41,6 +47,7 @@ public:
 	PROJECTILE_TYPE getProjType();
 	CP_Vector getDirection();
 	
+	// Setters
 	void setProjType(PROJECTILE_TYPE type);
 	void setProjDamage(float damage);
 	void setProjSpeed(float speed);
@@ -49,6 +56,11 @@ public:
 	void setProjColor(CP_Color color);
 	void setDirection(CP_Vector dir);
 	void setLifespan(float lifespan);
+
+	// Other functions
+	void Init();
+	virtual void Update();
+	virtual void Render();
 	void virtual onHit(BaseEnemy* enemy);
 	void virtual chainHit(std::vector<BaseEnemy*> enemyList,BaseEnemy* specificEnemy);
 };

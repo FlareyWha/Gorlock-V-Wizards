@@ -1,6 +1,15 @@
+/*!
+@file       FireTower.cpp
+@author     Bay Yeok Hao (yeokhao.bay)
+@co-author	
+@brief		Contains definitions of functions, overrides and variables used by FireTower
+*//*_______________________________________________________________________*/
+
 #include "FireTower.h"
 #include "../Projectiles/BaseProjectile.h"
 #include "../Projectiles/FireProjectile.h"
+
+// Constructor & Deconstructor
 FireTower::FireTower(CP_Vector position)
 {
 	setPos(position.x, position.y);
@@ -22,6 +31,7 @@ FireTower::~FireTower()
 	CP_Image_Free(towerSprite);
 }
 
+// Attack is overriden to spawn FireProjectile that deals damage over time to enemy
 BaseProjectile* FireTower::Attack(BaseEnemy* enemy)
 {
 	CP_Vector direction = CP_Vector_Normalize(CP_Vector_Set(enemy->GetLocation().x - getPosition().x, enemy->GetLocation().y - getPosition().y));
