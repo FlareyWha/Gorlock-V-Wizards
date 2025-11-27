@@ -3,17 +3,42 @@
 #include <cmath>
 #include <cstdlib>
 
+/*!
+@file       LightningParticle.cpp
+@author     Chee Kang(l.cheekang)
+@brief      This file contains the implementation of the LightningParticle class
+*//*_______________________________________________________________________*/
+
 const float PI = 3.14159265359f;
+
+/**
+ @brief This will construct a lightning particle
+ @param start The starting position of the lightning
+ @param len The length of the lightning
+ @param ang The angle of the lightning
+ @param lifetime The lifetime of the lightning
+ @return void
+ */
 
 LightningParticle::LightningParticle(const CP_Vector& start, float len, float ang, int lifetime)
     : start(start), length(len), angle(ang), life(lifetime)
 {
 }
 
+/**
+ @brief Updates the lightning particle
+ @return void
+ */
+
 void LightningParticle::Update()
 {
     life--;
 }
+
+/**
+ @brief Draws the lightning particle which are light streaks of lightnings
+ @return void
+ */
 
 void LightningParticle::Draw() const
 {

@@ -1,6 +1,12 @@
 #include "BossEnemy.h"
 #include "cprocessing.h"
 
+/*!
+@file       BossEnemy.cpp
+@author     Chee Kang(l.cheekang)
+@brief      This file contains the function definitions for the BossEnemy class
+*//*_______________________________________________________________________*/
+
 BossEnemy::BossEnemy(CP_Vector location)
 {
 	SetLocation(location);
@@ -13,6 +19,12 @@ BossEnemy::BossEnemy(CP_Vector location)
 	SetReward(10000);
 	SetEnemyType(EnemyType::BOSS);
 }
+
+/**
+ @brief Will render the boss enemy
+ @param void
+ @return void
+ */
 
 void BossEnemy::Render(void)
 {
@@ -27,6 +39,10 @@ void BossEnemy::Render(void)
 	CP_Graphics_DrawCircle(location.x, location.y, 155);
 }
 
+/**
+ @brief	Frees the memory allocated for the boss enemy sprite
+ @return void
+ */
 BossEnemy::~BossEnemy()
 {
 	CP_Image_Free(GetSprite());

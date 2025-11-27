@@ -2,6 +2,12 @@
 #include "Particle.h"
 #include "cprocessing.h"
 
+/*!
+@file       FireParticle.h
+@author     Chee Kang(l.cheekang)
+@brief      This file contains the declaration of the FireParticle class
+*//*_______________________________________________________________________*/
+
 class FireParticle : public Particle
 {
 private:
