@@ -10,7 +10,7 @@
 #include "../Enemies/BaseEnemy.h"
 #include <vector>
 
-enum class PROJECTILE_TYPE
+enum class PROJECTILE_TYPE //different types of projectiles
 {
 	PROJECTILE = 0,
 	BEAM,
@@ -24,11 +24,11 @@ class BaseProjectile
 {
 protected:
 	PROJECTILE_TYPE projectile = PROJECTILE_TYPE::PROJECTILE;
-	CP_Vector direction;
-	CP_Vector position;
+	CP_Vector direction = CP_Vector_Set(0.f,0.f);
+	CP_Vector position = CP_Vector_Set(0.f, 0.f);
 	float radius = 20.f;;
 
-	CP_Color projColor = CP_Color_Create(255.f, 255.f, 255.f, 255.f);
+	CP_Color projColor = CP_Color_Create(255, 255, 255, 255);
 	float damage = 1.f;
 	float projectileSpeed = 1.f;
 	float lifespan = 2.0f;
@@ -61,7 +61,7 @@ public:
 	void Init();
 	virtual void Update();
 	virtual void Render();
-	void virtual onHit(BaseEnemy* enemy);
-	void virtual chainHit(std::vector<BaseEnemy*> enemyList,BaseEnemy* specificEnemy);
+	void virtual onHit(BaseEnemy* enemy);//on hit function to easily call when projectile touches enemy
+	void virtual chainHit(std::vector<BaseEnemy*> enemyList,BaseEnemy* specificEnemy);//specifically for lightning projectile
 };
 

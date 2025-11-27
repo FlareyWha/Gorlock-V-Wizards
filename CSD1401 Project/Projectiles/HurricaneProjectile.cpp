@@ -1,5 +1,9 @@
 #include "HurricaneProjectile.h"
-
+/*!
+@file       HurricaneProjectile.cpp
+@author     Chew Zavier (c.zavier)
+@brief		Contains definition of functions, overrides and variables used by Hurricane Projectiles
+*//*_______________________________________________________________________*/
 HurricaneProjectile::HurricaneProjectile(CP_Vector position, CP_Vector direction, float damage, float speed, CP_Color color)
 {
 	HurricaneParticle::LoadImage("Assets/Particles/Wind.png");

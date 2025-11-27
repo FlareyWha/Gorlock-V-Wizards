@@ -1,6 +1,6 @@
 /*!
 @file       IceTower.h
-@author     
+@author     Chew Zavier(c.zavier)
 @co-author
 @brief		Contains declarations of functions, overrides and variables used by IceTower
 *//*_______________________________________________________________________*/

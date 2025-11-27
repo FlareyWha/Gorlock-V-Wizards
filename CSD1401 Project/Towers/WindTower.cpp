@@ -2,6 +2,12 @@
 #include "../Projectiles/WindProjectile.h"
 #include "../Projectiles/BaseProjectile.h"
 #include <stdio.h>
+/*!
+@file		WindTower.cpp
+@author     Chew Zavier (c.zavier)
+@brief		Contains definitions of functions, overrides and variables used by Wind Tower
+*//*_______________________________________________________________________*/
+//constructor
 WindTower::WindTower(CP_Vector position)
 {
 	this->setColor(CP_Color_Create(0, 255, 0, 255));
@@ -16,11 +22,12 @@ WindTower::WindTower(CP_Vector position)
 	this->setSaleAmt((int)(this->getBaseSaleAmt() * 0.85));
 }
 
+//destructor
 WindTower::~WindTower()
 {
 	CP_Image_Free(towerSprite);
 }
-
+//overrided attack to spawn windprojectile
 BaseProjectile* WindTower::Attack(BaseEnemy* enemy)
 {
 	CP_Vector direction = CP_Vector_Normalize(CP_Vector_Set(enemy->GetLocation().x - getPosition().x, enemy->GetLocation().y - getPosition().y));
@@ -28,7 +35,7 @@ BaseProjectile* WindTower::Attack(BaseEnemy* enemy)
 	SoundManager::GetInstance()->playSFX(TOWER_WIND_ATTACK_SFX);
 	return new WindProjectile(getPosition(), direction, this->getDamage(),this->getSpeed(), this->getColor());
 }
-
+//overrided levelup to change damage and further increase attackspeed
 void WindTower::levelUp()
 {
 	BaseTower::levelUp();

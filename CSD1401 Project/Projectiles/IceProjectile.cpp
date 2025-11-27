@@ -1,9 +1,14 @@
 #include "IceProjectile.h"
-
+/*!
+@file       IceProjectile.cpp
+@author     Chew Zavier (c.zavier)
+@brief		Contains definitions of functions, overrides and variables used by Ice Projectiles 
+*//*_______________________________________________________________________*/
+//default constructor
 IceProjectile::IceProjectile()
 {
 }
-
+//constructor for easier spawning
 IceProjectile::IceProjectile(CP_Vector position, CP_Vector direction, float damage, float speed, CP_Color color,int level)
 {
 	SnowParticle::LoadImage("Assets/Particles/Snow.png");
@@ -16,23 +21,23 @@ IceProjectile::IceProjectile(CP_Vector position, CP_Vector direction, float dama
 	this->level = level;
 	setLifespan(5.0f);
 }
-
+//destructor
 IceProjectile::~IceProjectile()
 {
 	for (auto p : particles)
 		delete p;
 	particles.clear();
 }
-
+//overrided onhit to be able to slow enemies
 void IceProjectile::onHit(BaseEnemy* enemy)
 {
-	enemy->SetHealth(enemy->GetHealth() - this->getProjDamage());
-	if (enemy->IsSlowed() == false)
+	enemy->SetHealth(enemy->GetHealth() - this->getProjDamage());//damaged
+	if (enemy->IsSlowed() == false)//slow the enemy
 	{ 
-		switch (this->level)
+		switch (this->level)//based on tower level
 		{
 		case 1:
-			slowFactor = 1.0f;
+			slowFactor = 0.75f;
 			break;
 		case 2:
 			slowFactor = 0.5f;

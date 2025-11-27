@@ -2,7 +2,12 @@
 #include "../System/SoundManager.h"
 #include <math.h>
 #include "../Utils/Utils.h"
-
+/*!
+@file       LightningProjectile.cpp
+@author     Chew Zavier (c.zavier)
+@brief		Contains definitions of functions, overrides and variables used by Lightning Projectiles
+*//*_______________________________________________________________________*/
+//constructor
 LightningProjectile::LightningProjectile(CP_Vector pos, CP_Vector dir, float damage, float speed, CP_Color color)
     : BaseProjectile(pos, dir, damage, speed, color)
 {
@@ -10,14 +15,14 @@ LightningProjectile::LightningProjectile(CP_Vector pos, CP_Vector dir, float dam
     hasHit = false;
     lingerTime = 0.15f;
 }
-
+//overrided on hit 
 void LightningProjectile::onHit(BaseEnemy* enemy)
 {
     hasHit = true;
     setProjSpeed(0);
     lingerTime = 0.15f;
 
-    enemy->SetHealth(enemy->GetHealth() - getProjDamage());
+    enemy->SetHealth(enemy->GetHealth() - getProjDamage());//damage
     SoundManager::GetInstance()->playSFX(TOWER_LIGHTNING_ATTACK_SFX);
 
     SpawnLightningLine(GetLocation(), enemy->GetLocation());
@@ -27,12 +32,12 @@ void LightningProjectile::chainHit(std::vector<BaseEnemy*> enemyList, BaseEnemy*
 {
     for (BaseEnemy* enemy : enemyList)
     {
-        if (counter >= maxChain) break;
-        if (!areCirclesIntersecting(specificEnemy->GetLocation(), chainRadius,
+        if (counter >= maxChain) break;//if its alr max chained
+        if (!areCirclesIntersecting(specificEnemy->GetLocation(), chainRadius,//else just check if theyre within range
             enemy->GetLocation(), enemy->GetSpriteSize() / 2.0f))
             continue;
 
-        onHit(enemy);
+        onHit(enemy);//hit them
         SpawnLightningLine(specificEnemy->GetLocation(), enemy->GetLocation());
         specificEnemy = enemy;
         counter++;

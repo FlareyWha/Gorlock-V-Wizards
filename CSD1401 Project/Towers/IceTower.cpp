@@ -1,6 +1,6 @@
 /*!
 @file       IceTower.cpp
-@author     
+@author     Chew Zavier (c.zavier)
 @brief		Contains definitions of functions, overrides and variables used by IceTower
 *//*_______________________________________________________________________*/
 
