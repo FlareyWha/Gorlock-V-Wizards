@@ -1,8 +1,15 @@
+/*!
+@file       FrostTower.cpp
+@author     Bay Yeok Hao (yeokhao.bay)
+@brief		Contains definitions of functions, overrides and variables used by FrostTower
+*//*_______________________________________________________________________*/
+
 #include "FrostTower.h"
 #include "../Projectiles/IceProjectile.h"
 #include "../Projectiles/BaseProjectile.h"
 #include "../System/SoundManager.h"
 
+// Constructor & Deconstructor
 FrostTower::FrostTower(CP_Vector position)
 {
 	this->setColor(CP_Color_Create(0, 0, 255, 255));
@@ -21,6 +28,7 @@ FrostTower::~FrostTower()
 	CP_Image_Free(towerSprite);
 }
 
+// Update is overriden since FrostTower needs to draw the beam between the enemy and itself every frame
 void FrostTower::Update()
 {
 	cooldownTime -= 1.f * CP_System_GetDt();
@@ -47,6 +55,7 @@ void FrostTower::Update()
 	}
 }
 
+// Attack is overriden to spawn IceProjectile that slows enemies on hit
 BaseProjectile* FrostTower::Attack(BaseEnemy* enemy)
 {
 	CP_Vector direction = CP_Vector_Normalize(CP_Vector_Set(enemy->GetLocation().x - getPosition().x, enemy->GetLocation().y - getPosition().y));
@@ -56,6 +65,7 @@ BaseProjectile* FrostTower::Attack(BaseEnemy* enemy)
 	return new IceProjectile(enemy->GetLocation(), direction, this->getDamage(), this->getSpeed(), this->getColor() , 3);
 }
 
+// TrackEnemy is called every game update to have the beam follow the current enemy
 void FrostTower::TrackEnemy(std::vector<BaseEnemy*>& enemyList)
 {
 	bool withinRange = false;

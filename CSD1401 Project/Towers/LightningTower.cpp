@@ -1,5 +1,13 @@
+/*!
+@file       LightningTower.cpp
+@author		
+@brief		Contains definitions of functions, overrides and variables used by LightningTower
+*//*_______________________________________________________________________*/
+
 #include "LightningTower.h"
 #include "../Projectiles/LightningProjectile.h"
+
+// Constructor & Deconstructor
 LightningTower::LightningTower(CP_Vector position)
 {
 	this->setColor(CP_Color_Create(255, 255, 0, 255));
@@ -10,7 +18,7 @@ LightningTower::LightningTower(CP_Vector position)
 	setCooldown(2.f);
 	setTowerType(TOWER_TYPE::LIGHTNINGTOWER);
 	setUpgradeCosts(125);
-	this->setBaseSaleAmt(200);//put their base costs inside here
+	this->setBaseSaleAmt(200);
 	this->setSaleAmt((int)(this->getBaseSaleAmt() * 0.85));
 }
 
@@ -19,6 +27,7 @@ LightningTower::~LightningTower()
 	CP_Image_Free(towerSprite);
 }
 
+// Attack is overridden to spawn LightningProjectile that chains to nearby enemies
 BaseProjectile* LightningTower::Attack(BaseEnemy* enemy)
 {
 

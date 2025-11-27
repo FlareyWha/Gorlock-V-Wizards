@@ -1,3 +1,9 @@
+/*!
+@file       Game.cpp
+@author     Team The Hardest Thing
+@brief      This file contains the declarations of Game and the main game loop logic
+*//*_______________________________________________________________________*/
+
 #include "Game.h"
 #include "cprocessing.h"
 #include <iostream>
@@ -29,12 +35,6 @@
 #include "../../Utils/Utils.h"
 #include "../../Projectiles/LightningProjectile.h"
 #include "../../Projectiles/HomingProjectile.h"
-
-/*!
-@file       Game.cpp
-@author     Chew Zavier(c.zavier)
-@brief      This file contains the definitions of functions to draw the game.
-*//*_______________________________________________________________________*/
 
 CP_Font font;
 
@@ -534,7 +534,7 @@ void gameUpdate(void)
 			if ((CP_Input_GetMouseX() >= 0 && CP_Input_GetMouseX() <= gameMap->getTileSize() * mapSize.x)
 				&& (CP_Input_GetMouseY() >= 0 && CP_Input_GetMouseY() <= gameMap->getTileSize() * mapSize.y))
 			{
-				// unholy fuck ahh code that should not exist
+				// unholy code that should not exist I LOVE SPAGHETTI CODE
 				for (BaseTower* tower : towerList)
 				{
 
@@ -550,7 +550,6 @@ void gameUpdate(void)
 							game.grabbingTower = true;
 						}
 					}
-					//tower->setOpacity(255.f);
 					if (game.currentTower->getTowerType() != tower->getTowerType() && game.currentTower->getTowerType() != TOWER_TYPE::BASETOWER)
 					{
 						tower->setOpacity(155);
@@ -649,6 +648,7 @@ void gameUpdate(void)
 					}
 					else
 					{
+						// spawn a tower from dragging
 						int mergeId;
 						for (int i = 0; i < towerList.size(); ++i)
 						{
@@ -694,6 +694,7 @@ void gameUpdate(void)
 			}
 		}
 
+		// if grabbing existing tower for merging purposes
 		else if (game.grabbingTower)
 		{
 			BaseTower* dragged = game.currentTower;
@@ -760,7 +761,6 @@ void gameUpdate(void)
 				}
 				game.grabbingTower = false;
 				game.currentTower = new BaseTower();
-				//game.currentTower->setImage(NULL);
 			}
 		}
 		for (int i = 0; i < towerList.size(); i++)
@@ -811,7 +811,7 @@ void gameUpdate(void)
 
 	game.waveManager->Update(&enemiesList);
 
-	//game.waveManager->SpawnWave(game.getSpawnLocation());
+	// debug buttons for spawning enemies for testing
 	if (CP_Input_KeyReleased(KEY_1))
 		enemiesList.push_back(new BasicEnemy(gameMap->getSpawnpoint()));
 	if (CP_Input_KeyReleased(KEY_2))
@@ -887,6 +887,8 @@ void gameUpdate(void)
 
 		bool bossNearby = false;
 
+		// theres probably a better way to do this than to manually check for specifically if its class is of type frostTower but haha no
+		// meant for updating the tracking of the beam, and updating to next enemy in case the current one dies
 		FrostTower* frostTower = dynamic_cast<FrostTower*>(tower);
 		if (frostTower && !enemiesList.empty())
 		{
@@ -914,6 +916,7 @@ void gameUpdate(void)
 		}
 		else
 		{
+			// run update function fo all other towers
 			tower->Update();
 
 
@@ -924,7 +927,10 @@ void gameUpdate(void)
 					enemy->GetLocation(), enemy->GetSpriteSize() / 2.0f) &&
 					tower->getCooldownTime() <= 0.f)
 				{
+					// shoot projectile at tracked enemy
 					projectileList.push_back(tower->Attack(enemy));
+
+					// additional projectiles spawn based on type of tower
 					if (tower->getTowerType() == TOWER_TYPE::HURRICANETOWER)
 					{
 						if (tower->getSecondaryCD() <= 0.f)
@@ -953,9 +959,10 @@ void gameUpdate(void)
 				}
 			}
 		}
+		// render all towers
 		tower->Render();
 
-		if (bossNearby != tower->slowed())
+		if (bossNearby != tower->getSlowed())
 		{
 			if (bossNearby)
 			{
@@ -1016,6 +1023,7 @@ void gameUpdate(void)
 		}
 	}
 
+	// update code for all projectiles
 	for (int i = (int)projectileList.size() - 1; i >= 0; i--)
 	{
 		BaseProjectile* proj = projectileList[i];
@@ -1031,6 +1039,7 @@ void gameUpdate(void)
 			projectileList.erase(projectileList.begin() + i);
 			continue;
 		}
+		// delete itself and damage enemy if colliding
 		for (int j = 0; j < enemiesList.size(); j++)
 		{
 			BaseEnemy* enemy = enemiesList[j];

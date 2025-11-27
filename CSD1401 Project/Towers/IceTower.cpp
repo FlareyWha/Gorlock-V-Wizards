@@ -1,9 +1,16 @@
+/*!
+@file       IceTower.cpp
+@author     
+@brief		Contains definitions of functions, overrides and variables used by IceTower
+*//*_______________________________________________________________________*/
+
+#include <math.h>
 #include "IceTower.h"
 #include "../Projectiles/IceProjectile.h"
 #include "../Projectiles/BaseProjectile.h"
 #include "../System/SoundManager.h"
 
-#include <math.h>
+// Constructor & Deconstructor
 IceTower::IceTower(CP_Vector position)
 {
 	this->setColor(CP_Color_Create(0, 0, 255, 255));
@@ -23,17 +30,10 @@ IceTower::~IceTower()
 	CP_Image_Free(towerSprite);
 }
 
+// Attack is overridden to spawn IceProjectile
 BaseProjectile* IceTower::Attack(BaseEnemy* enemy)
 {
 	CP_Vector direction = CP_Vector_Normalize(CP_Vector_Set(enemy->GetLocation().x - getPosition().x, enemy->GetLocation().y - getPosition().y));
-	
-	//CP_Vector unNormDirection = CP_Vector_Set(enemy->GetLocation().x - getPosition().x, enemy->GetLocation().y - getPosition().y);
-	//float angle = CP_Math_Degrees(atan2f(direction.y, direction.x));
-	//printf("%f\n", angle);
-	//CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255));
-	//CP_Settings_RectMode(CP_POSITION_CORNER);
-	//CP_Graphics_DrawRectAdvanced(this->getPosition().x, this->getPosition().y, CP_Vector_Length(unNormDirection), 10.f, angle, 10.f);
-	//CP_Settings_RectMode(CP_POSITION_CENTER);
 	
 	SoundManager::GetInstance()->playSFX(TOWER_ICE_ATTACK_SFX);
 	setCooldownTime(getCooldown());

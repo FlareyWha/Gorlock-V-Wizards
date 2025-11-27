@@ -1,7 +1,8 @@
 /*!
 @file       BaseTower.h
 @author     Bay Yeok Hao (yeokhao.bay)
-@brief      This file contains functions to create a Base Tower which other towers will inherit from
+@co-author
+@brief      This file contains function definitions which child towers will inherit from
 *//*_______________________________________________________________________*/
 
 #pragma once
@@ -64,11 +65,11 @@ protected:
 	float maxSecondaryCooldown = 2.f;
 	float secondaryCooldown = 0.f;
 
-public:
 	CP_Image towerSprite;
-
+public:
+	// Constructor & Deconstructor
 	BaseTower();
-	//~BaseTower();
+	~BaseTower();
 
 	// Getters
 	CP_Vector getPosition();
@@ -78,94 +79,45 @@ public:
 	float getCooldownTime();
 	float getCooldown();
 	float getDetectionDistance();
-
 	float getDamage();
+	int getLevel();
+	int getMaxLevel();
+	int getUpgradeCosts();
+	int getBaseSaleAmt() const;
+	int getSaleAmt() const;
+	CP_Color getColor();
+	float getSpeed();
+	float getMaxSecondaryCD();
+	float getSecondaryCD();
+	bool getSlowed();
+
 	// Setters
 	void setPos(float xPosition, float yPosition);
 	void setImage(CP_Image inputImage);
 	void setTowerType(TOWER_TYPE type);
 	void setCooldownTime(float time);
 	void setCooldown(float time);
-
 	void setDamage(float damage);
-
 	void setLevel(int level);
 	void setMaxLevel(int level);
-	void virtual levelUp();
-	int getLevel();
-	int getMaxLevel();
-
-	int getUpgradeCosts();
 	void setUpgradeCosts(int cost);
-
-	int getBaseSaleAmt() const;
 	void setBaseSaleAmt(int amt);
-	int getSaleAmt() const;
 	void setSaleAmt(int amt);
 	void setOpacity(int opacity);
-	
 	void setColor(CP_Color color);
-	CP_Color getColor();
-
 	void setSpeed(float speed);
-	float getSpeed();
+	void setMaxSecondaryCD(float maxCD = 2.f);
+	void setSecondaryCD(float cd);
+
 	// Other functions
+	void virtual levelUp();
 	void Init();
 	virtual void Update();
 	virtual BaseProjectile* Attack(BaseEnemy* enemy);
 	virtual BaseProjectile* SpawnSecondary(BaseEnemy* enemy);
 	virtual BaseProjectile* SpawnSecondary(std::vector<BaseEnemy*>* enemyList, BaseEnemy* specificEnemy);
-
-
-	float getMaxSecondaryCD();
-	float getSecondaryCD();
-	void setMaxSecondaryCD(float maxCD = 2.f);
-	void setSecondaryCD(float cd);
-
-
 	void Render(void);
 	void InitCooldown(float time) { baseCooldown = cooldown = time; }
 	void ApplySlowdown(float multiplier);
 	void ResetCooldown();
-	bool slowed();
-
 };
-
-/*
-enum Direction
-{
-	UP = 0,
-	LEFT,
-	RIGHT,
-	DOWN
-};
-
-class BaseEnemy
-{
-private:
-	int health;
-	float speed;
-	CP_Image sprite;
-	CP_Vector location, directionVector;
-	float spriteSize = 48.0f;
-	Direction prevDirection;
-public:
-	int GetHealth(void);
-	void SetHealth(int health);
-	float GetSpeed(void);
-	void SetSpeed(float speed);
-	CP_Image GetSprite(void);
-	void SetSprite(CP_Image sprite);
-	CP_Vector GetLocation(void);
-	void SetLocation(float x, float y);
-	void SetLocation(CP_Vector location);
-	CP_Vector GetDirectionVector(void);
-	void SetDirectionVector(float x, float y);
-	void SetDirectionVector(CP_Vector direction);
-	Direction GetPrevDirection(void);
-	void SetPrevDirection(Direction direction);
-
-	void Move(Map* map);
-	void Render(void);
-};
-*/

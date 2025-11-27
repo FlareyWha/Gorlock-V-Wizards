@@ -1,7 +1,14 @@
+/*!
+@file       StormTower.h
+@author		Bay Yeok Hao (yeokhao.bay)
+@brief		Contains definitions of functions, overrides and variables used by StormTower
+*//*_______________________________________________________________________*/
+
 #include "StormTower.h"
 #include "../Projectiles/LightningProjectile.h"
 #include "../System/SoundManager.h"
 
+// Constructor & Deconstructor
 StormTower::StormTower(CP_Vector position)
 {
 	this->setColor(CP_Color_Create(255, 255, 0, 255));
@@ -19,6 +26,7 @@ StormTower::~StormTower()
 	CP_Image_Free(towerSprite);
 }
 
+// Update is overridden to render additional purple lightning beam that hits nearby enemy
 void StormTower::Update()
 {
 	cooldownTime -= 1.f * CP_System_GetDt();
@@ -32,7 +40,7 @@ void StormTower::Update()
 	}
 }
 
-
+// Attack is overridden to spawn LightningProjectile that chains to nearby enemies
 BaseProjectile* StormTower::Attack(BaseEnemy* enemy)
 {
 	if (CP_Vector_Distance(enemy->GetLocation(), getPosition()) <= getDetectionDistance())
