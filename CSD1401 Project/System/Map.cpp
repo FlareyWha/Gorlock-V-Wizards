@@ -183,6 +183,11 @@ CP_Vector Map::getTilePos(float xPos, float yPos)
 	return CP_Vector_Set((float)rowPos, (float)columnPos);
 }
 
+/*!
+@brief	Gets tile world pos based on tile grid pos
+@param	CP_Vector tilePos - tile grid pos
+@return CP_Vector - tile world pos
+*//*______________________________________________________________*/
 CP_Vector Map::getTileWorldPos(CP_Vector tilePos)
 {
 	Tile tile = map[(int)tilePos.x][(int)tilePos.y];
@@ -318,6 +323,12 @@ bool Map::loadMap(std::string fileName)
 	//Get the map data from reading the file
 	std::vector<std::vector<int>> mapData = CSVManager::read(file, NUM_COLUMN, NUM_ROW);
 
+	//Stop if empty
+	if (mapData.empty())
+	{
+		return false;
+	}
+
 	//Reset the map
 	resetMap(true);
 
@@ -327,12 +338,14 @@ bool Map::loadMap(std::string fileName)
 		for (int j = 0; j < NUM_COLUMN; j++)
 		{
 			//Save the data into the map array from the mapData recieved from reading the csv file.
-			//mapData must be reversed cus the vector is gae
+			//mapData row and column must be reversed for it to show properly
 			map[i][j].tileType = static_cast<TILE_TYPE>(mapData[j][i]);
 			map[i][j].pos = CP_Vector_Set((TILE_WIDTH * 0.5f) + TILE_WIDTH * i, (TILE_HEIGHT * 0.5f) + TILE_HEIGHT * j);
 
 			if (map[i][j].tileType == STARTPOINT)
+			{
 				spawnpoint = map[i][j].pos;
+			}
 		}
 	}
 
@@ -348,6 +361,7 @@ bool Map::saveMap(std::string fileName)
 {
 	std::vector<std::vector<int>> mapData;
 
+	//mapData row and column must be reversed for it to save properly
 	for (int i = 0; i < NUM_COLUMN; i++)
 	{
 		std::vector<int> columnData;
@@ -362,11 +376,8 @@ bool Map::saveMap(std::string fileName)
 
 	if (CSVManager::write(fileName, NUM_ROW, NUM_COLUMN, mapData))
 	{
-		std::cout << "Write sucessful!!!!" << std::endl;
 		return true;
 	}
-
-	std::cout << "Write unsucessful!!!!" << std::endl;
 
 	return false;
 }
@@ -420,7 +431,6 @@ void Map::resetMap(bool clear)
 *//*______________________________________________________________*/
 void Map::clearMap(bool clear)
 {
-	//Clear the map
 	if (clear)
 	{
 		for (int i = 0; i < NUM_ROW; i++)

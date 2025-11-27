@@ -1,6 +1,7 @@
 /*!
 @file       SoundManager.h
 @author     Yap Yu Xuan Daevon (yuxuandaevon.yap)
+@co-author	Tat Yang Tai Bryson (t.yangtatbryson)
 @brief      This file contains declaration of functions and variables
 			used for the SoundManager class
 *//*_______________________________________________________________________*/
@@ -16,7 +17,6 @@
 enum SFX_TYPE
 {
 	NONE_SFX = 0,
-	TEST_SFX = 1,
 	TOWER_PLACE_SFX,
 	TOWER_MERGE_SFX,
 	ENEMY_BASIC_DEATH_SFX,
@@ -38,7 +38,6 @@ enum SFX_TYPE
 enum BGM_TYPE
 {
 	NONE_BGM = 0,
-	TEST_BGM,
 	MAIN_MENU_BGM,
 	GAME_00_BGM,
 	GAME_01_BGM,

@@ -47,7 +47,7 @@ bool CSVManager::write(std::string fileName, const int TILE_ROW_NUM, const int T
 	}
 	catch (std::runtime_error e)
 	{
-		//cout << "Runtime error: " << e.what();
+		//std::cout << "Runtime error: " << e.what();
 		return false;
 	}
 
@@ -72,7 +72,7 @@ bool CSVManager::write(std::string fileName, const int TILE_ROW_NUM, const int T
 					//Insert column value into file
 					file << *columnIterator;
 
-					//Use a tab token to split the values
+					//Use a tab token to split the values only if its not at the end
 					if (columnIterator != (*rowIterator).end())
 						file << '\t';
 				}
@@ -85,8 +85,7 @@ bool CSVManager::write(std::string fileName, const int TILE_ROW_NUM, const int T
 		writeSucessful = true;
 	}
 
-
-	//Closes the file
+	//Close the file
 	file.close();
 
 	return writeSucessful;
@@ -118,7 +117,7 @@ std::vector<std::vector<int>> CSVManager::read(std::string fileName, const int T
 	}
 	catch (std::runtime_error e)
 	{
-		//cout << "Runtime error: " << e.what();
+		//std::cout << "Runtime error: " << e.what();
 		return rowValues;
 	}
 
@@ -145,15 +144,17 @@ std::vector<std::vector<int>> CSVManager::read(std::string fileName, const int T
 				ss.ignore();
 		}
 
-		//Push the whole column into the data vector
+		//Push the whole column into the data vector if column size matches
 		if (columnValues.size() == TILE_COLUMN_NUM)
 		{
 			rowValues.push_back(columnValues);
 		}
 		else
 		{
+			//End loop immediately since this is a gone case alr
 			columnValues.clear();
 			readResult = false;
+			break;
 		}
 	}
 

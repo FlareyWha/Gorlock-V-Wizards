@@ -32,7 +32,7 @@ float SettingsManager::getSFXVolumeLerp(void) const
 }
 
 /*!
-@brief	Sets a new SFX volume
+@brief	Sets a new SFX volume and saves it to file
 @param	float newVolume - the new volume to set
 @return void
 *//*______________________________________________________________*/
@@ -62,14 +62,12 @@ float SettingsManager::getBGMVolume(void) const
 *//*______________________________________________________________*/
 float SettingsManager::getBGMVolumeLerp(void) const
 {
-	//float volumeFloat = CP_Math_LerpFloat(0.0f, 100.0f, bgmVolume);
-
 	float volumeFloat = bgmVolume / 100.f;
 	return volumeFloat;
 }
 
 /*!
-@brief	Sets a new BGM volume
+@brief	Sets a new BGM volume and saves it to file
 @param	float newVolume - the new volume to set
 @return void
 *//*______________________________________________________________*/
@@ -82,6 +80,11 @@ void SettingsManager::setBGMVolume(float newVolume)
 	file.close();
 }
 
+/*!
+@brief	Reads volume settings from files
+@param	void
+@return void
+*//*______________________________________________________________*/
 void SettingsManager::readVolumeSettings(void)
 {
 	std::ifstream currentBGMFile(bgmFile);

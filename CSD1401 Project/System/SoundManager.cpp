@@ -1,6 +1,7 @@
 /*!
 @file       SoundManager.cpp
 @author     Yap Yu Xuan Daevon (yuxuandaevon.yap)
+@co-author	Tat Yang Tai Bryson (t.yangtatbryson)
 @brief      This file contains definitions of functions 
 			used for the SoundManager class
 *//*_______________________________________________________________________*/
@@ -24,6 +25,11 @@ SoundManager::SoundManager()
 	bgm_01_length = 22.f;
 }
 
+/*!
+@brief	Update sound manager
+@param	void
+@return void
+*//*______________________________________________________________*/
 void SoundManager::Update(void)
 {
 	timer += CP_System_GetDt();
@@ -62,9 +68,6 @@ std::string SoundManager::getSFXFilePath(SFX_TYPE sfxType)
 
 	switch (sfxType)
 	{
-	case TEST_SFX:
-		filePath += "duck-toy-sound.mp3";
-		break;
 	case TOWER_PLACE_SFX:
 		filePath += "tower_place.wav";
 		break;
@@ -128,9 +131,6 @@ std::string SoundManager::getBGMFilePath(BGM_TYPE bgmType)
 
 	switch (bgmType)
 	{
-	case TEST_BGM:
-		filePath += "mambo.mp3";
-		break;
 	case MAIN_MENU_BGM:
 		filePath += "music_main.wav";
 		break;
@@ -157,10 +157,10 @@ std::string SoundManager::getBGMFilePath(BGM_TYPE bgmType)
 *//*______________________________________________________________*/
 void SoundManager::loadAllSounds(void)
 {
-	sfxTypeVector = { TEST_SFX, TOWER_PLACE_SFX, TOWER_MERGE_SFX, ENEMY_BASIC_DEATH_SFX, ENEMY_SPEEDSTER_DEATH_SFX, ENEMY_TANK_DEATH_SFX,
+	sfxTypeVector = { TOWER_PLACE_SFX, TOWER_MERGE_SFX, ENEMY_BASIC_DEATH_SFX, ENEMY_SPEEDSTER_DEATH_SFX, ENEMY_TANK_DEATH_SFX,
 					ENEMY_BOSS_DEATH_1_SFX, ENEMY_BOSS_DEATH_2_SFX, TOWER_WIND_ATTACK_SFX, TOWER_FIRE_ATTACK_SFX, TOWER_LIGHTNING_ATTACK_SFX,
 					TOWER_LAVA_ATTACK_SFX, TOWER_ICE_ATTACK_SFX, TOWER_FREEZE_ATTACK_SFX, GAME_WIN_SFX, GAME_LOSE_SFX };
-	bgmTypeVector = { TEST_BGM, MAIN_MENU_BGM, GAME_00_BGM, GAME_01_BGM, GAME_02_BGM };
+	bgmTypeVector = { MAIN_MENU_BGM, GAME_00_BGM, GAME_01_BGM, GAME_02_BGM };
 
 	for (int i = 0; i < sfxTypeVector.size(); i++)
 	{

@@ -21,6 +21,7 @@ Button play(0, 0, 0, 0, "");
 Button startpointSwitch(0, 0, 0, 0, "");
 Button roadSwitch(0, 0, 0, 0, "");
 Button endpointSwitch(0, 0, 0, 0, "");
+
 Map* mapEditorMap;
 CP_Vector currentTilePos = CP_Vector_Zero();
 bool placedTile = false;
@@ -38,16 +39,18 @@ float savedTextTimer = 0.f;
 
 SpeedsterEnemy* testEnemy;
 bool testing = false;
-
 bool playable = false;
 
+/*!
+@brief	Init map editor
+@param	void
+@return void
+*//*______________________________________________________________*/
 void mapEditorInit(void)
 {
 	mapEditorMap = Map::GetInstance();
 	Button::LoadResources();
 	mapEditorFont = CP_Font_Load("Assets/Fonts/KenneyFonts/Kenney Mini.ttf");
-	//map->loadMapTileImages();
-	//mapEditorMap->saveMap("test");
 	mapEditorMap->loadMap("Edit");
 
 	CP_Settings_ImageMode(CP_POSITION_CENTER);
@@ -64,6 +67,11 @@ void mapEditorInit(void)
 	endpointActive = mapEditorMap->testTileActive(&endpointTilePos, ENDPOINT);
 }
 
+/*!
+@brief	Update map editor
+@param	void
+@return void
+*//*______________________________________________________________*/
 void mapEditorUpdate(void)
 {
 	CP_Graphics_ClearBackground(CP_Color_Create(132, 198, 105, 255));
@@ -100,8 +108,6 @@ void mapEditorUpdate(void)
 		currentEditorState = ENDPOINT_EDIT;
 	}
 
-	//TODO: Add checks to switch between different editor modes
-
 	//Only draw roads if in area
 	if (isAreaClicked(CP_Vector_Set(650, 450), 1300, 900, CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY())))
 	{
@@ -136,6 +142,7 @@ void mapEditorUpdate(void)
 
 	CP_Font_Set(mapEditorFont);
 
+	//Draw text for current editor state
 	CP_Settings_TextSize(25.f);
 	CP_Font_DrawText("Current Editor State: ", 1450, 100);
 	switch (currentEditorState)
@@ -156,6 +163,7 @@ void mapEditorUpdate(void)
 		break;
 	}
 
+	//Draw testing and save text
 	if (showSavedText)
 	{
 		if (testing)
@@ -186,6 +194,11 @@ void mapEditorUpdate(void)
 	CP_Settings_TextSize(20.f);
 }
 
+/*!
+@brief	Exit map editor
+@param	void
+@return void
+*//*______________________________________________________________*/
 void mapEditorExit(void)
 {
 	mapEditorMap->resetMap(true);
@@ -238,6 +251,7 @@ void setNewMapTile(void)
 				mapEditorMap->setTile(GROUND, endpointTilePos.x, endpointTilePos.y);
 				checkRoadTileChanges(endpointTilePos, false);
 			}
+			//Set the new endpoint, endpointTilePos and endpointActive
 			mapEditorMap->setTile(ENDPOINT, tempTilePos.x, tempTilePos.y);
 			endpointTilePos = tempTilePos;
 			endpointActive = true;
@@ -257,7 +271,7 @@ void setNewMapTile(void)
 }
 
 /*!
-@brief	Deletes new map tile based on the current editor state
+@brief	Deletes new map tile
 @param	void
 @return void
 *//*______________________________________________________________*/
@@ -266,20 +280,19 @@ void deleteMapTile(void)
 	//Get the tile pos of the tile that the mouse is at
 	CP_Vector tempTilePos = mapEditorMap->getTilePos(CP_Input_GetMouseX(), CP_Input_GetMouseY());
 
+	//Set new tile and update roads
 	mapEditorMap->setTile(GROUND, tempTilePos.x, tempTilePos.y);
 	checkRoadTileChanges(tempTilePos, false);
 
-	//Special cases for different editor states
-	switch (currentEditorState)
+	//Special cases for different tile types
+	Tile tile = mapEditorMap->getTileFromTilePos(tempTilePos.x, tempTilePos.y);
+	switch (tile.tileType)
 	{
-	case STARTPOINT_EDIT:
+	case STARTPOINT:
 		startpointActive = false;
 		break;
 
-	case ROAD_EDIT:
-		break;
-
-	case ENDPOINT_EDIT:
+	case ENDPOINT:
 		endpointActive = false;
 		break;
 
@@ -314,12 +327,9 @@ void checkRoadTileChanges(CP_Vector tilePos, bool checkInitial)
 
 	std::map<TILE_RELATIVE_POSITION, Tile> surroundingTiles = mapEditorMap->getSurroundingTiles(tilePos);
 
-	std::cout << "Surrounding tiles: ";
-
+	//Get the 4 tiles surrounding the surrounding tiles
 	for (std::map<TILE_RELATIVE_POSITION, Tile>::iterator it = surroundingTiles.begin(); it != surroundingTiles.end(); it++)
 	{
-		std::cout << it->first << " | " << it->second.tileType << ", ";
-
 		CP_Vector tempTilePos = mapEditorMap->getTilePos(it->second.pos.x, it->second.pos.y);
 
 		std::map<TILE_RELATIVE_POSITION, Tile> relativeSurroundingTiles = mapEditorMap->getSurroundingTiles(tempTilePos);
@@ -327,12 +337,12 @@ void checkRoadTileChanges(CP_Vector tilePos, bool checkInitial)
 		setUpdatedRoadTile(tempTilePos, relativeSurroundingTiles);
 	}
 
+	//This check is to prevent start and end point from being overriden 
+	//(as roads will morph around them as well)
 	if (checkInitial)
 	{
 		setUpdatedRoadTile(tilePos, surroundingTiles);
 	}
-
-	std::cout << std::endl;
 }
 
 /*!
@@ -351,10 +361,11 @@ void setUpdatedRoadTile(CP_Vector initialTilePos, std::map<TILE_RELATIVE_POSITIO
 		return;
 	}
 
-	//Tile arrangement
-	// -0- 
-	// 1-2
-	// -3-
+	/*Tile arrangement
+	* -0- 
+	* 1#2
+	* -3-
+	*/
 
 	//Sets corresponding bool active to true if tile exists
 	for (std::map<TILE_RELATIVE_POSITION, Tile>::iterator it = surroundingTiles.begin(); it != surroundingTiles.end(); it++)
@@ -362,7 +373,8 @@ void setUpdatedRoadTile(CP_Vector initialTilePos, std::map<TILE_RELATIVE_POSITIO
 		active[(int)it->first] = true;
 	}
 	
-	//Choose which road tile to set to
+	/*Unholy if statement to choose which road tile to set to
+	(If there is a better way my brain is not big enough to think of it mb)*/
 	if (active[0] && active[1] && active[2] && active[3])
 	{
 		mapEditorMap->setTile(JUNCTION_MIDDLE_ROAD, initialTilePos.x, initialTilePos.y);
@@ -429,19 +441,30 @@ void setUpdatedRoadTile(CP_Vector initialTilePos, std::map<TILE_RELATIVE_POSITIO
 	}
 }
 
+/*!
+@brief	Enable testing of map by spawning test enemy to see if it can get from start to end
+@param	void
+@return void
+*//*______________________________________________________________*/
 void testMap(void)
 {
 	mapEditorMap->setSpawnpoint(mapEditorMap->getTileWorldPos(startpointTilePos));
 
-	testEnemy = new SpeedsterEnemy(mapEditorMap->getSpawnpoint(), 1000.f);
+	testEnemy = new SpeedsterEnemy(mapEditorMap->getSpawnpoint(), 1200.f);
 
 	testing = true;
 }
 
+/*!
+@brief	Update test enemy movement
+@param	void
+@return void
+*//*______________________________________________________________*/
 void updateTestEnemy(void)
 {
 	if (mapEditorMap->getTile(testEnemy->GetLocation().x, testEnemy->GetLocation().y).tileType == TILE_TYPE::ENDPOINT)
 	{
+		//Stop testing and save map as testing is sucessful
 		testing = false;
 
 		delete testEnemy;
@@ -450,6 +473,7 @@ void updateTestEnemy(void)
 	}
 	else if (mapEditorMap->getTile(testEnemy->GetLocation().x, testEnemy->GetLocation().y).tileType == TILE_TYPE::GROUND)
 	{
+		//Stop testing but testing is unsucessful due as enemy cannot reach the end
 		testing = false;
 
 		delete testEnemy;
@@ -458,8 +482,8 @@ void updateTestEnemy(void)
 	}
 	else
 	{
+		//Update and render test enemy
 		testEnemy->Move(mapEditorMap);
 		testEnemy->Render();
 	}
-
 }
