@@ -1,3 +1,9 @@
+/*!
+@file       Game.cpp
+@author     Team The Hardest Thing
+@brief      This file contains the declarations of Game and the main game loop logic
+*//*_______________________________________________________________________*/
+
 #include "Game.h"
 #include "cprocessing.h"
 #include <iostream>
@@ -29,12 +35,6 @@
 #include "../../Utils/Utils.h"
 #include "../../Projectiles/LightningProjectile.h"
 #include "../../Projectiles/HomingProjectile.h"
-
-/*!
-@file       Game.cpp
-@author     Chew Zavier(c.zavier)
-@brief      This file contains the definitions of functions to draw the game.
-*//*_______________________________________________________________________*/
 
 CP_Font font;
 
