@@ -1,10 +1,12 @@
 /*!
 @file       LavaTower.h
-@author     Chew Zavier(c.zavier)
+@author     Chew Zavier (c.zavier)
 @brief		Contains declarations of functions, overrides and variables used by Lava Tower
 *//*_______________________________________________________________________*/
+
 #pragma once
 #include "BaseTower.h"
+
 class LavaTower : public BaseTower
 {
 public:

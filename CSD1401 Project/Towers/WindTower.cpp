@@ -3,10 +3,12 @@
 @author     Chew Zavier (c.zavier)
 @brief		Contains definitions of functions, overrides and variables used by Wind Tower
 *//*_______________________________________________________________________*/
+
 #include "WindTower.h"
 #include "../Projectiles/WindProjectile.h"
 #include "../Projectiles/BaseProjectile.h"
 #include <stdio.h>
+
 //constructor
 WindTower::WindTower(CP_Vector position)
 {
