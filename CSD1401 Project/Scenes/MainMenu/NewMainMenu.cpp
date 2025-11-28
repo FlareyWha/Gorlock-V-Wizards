@@ -133,6 +133,14 @@ void NewMainMenu::Exit()
 }
 
 /**
+ @brief Constructor
+ */
+NewMainMenu::NewMainMenu()
+{
+	startButton = settingsButton = mapEditorButton = creditsButton = quitButton = nullptr;
+}
+
+/**
  @brief Initialize the main menu
  @param void
  @return void

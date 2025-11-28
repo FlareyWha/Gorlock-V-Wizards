@@ -53,6 +53,8 @@ private:
 	bool paused = false;
 
 public:
+	Game();
+
 	void PauseGame() { paused = true; }
 	void ResumeGame() { paused = false; }
 	void SetPaused(bool p) { paused = p; }

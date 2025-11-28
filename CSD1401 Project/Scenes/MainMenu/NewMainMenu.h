@@ -29,9 +29,12 @@ protected:
     float buttonHeight = 70;
 
 	// Button animation positions
-    float buttonTargetX;
-    float buttonTopY, buttonBottomY, buttonLeftX, buttonRightX;
-    float buttonY1, buttonY2, buttonY3, buttonY4 , buttonY5;
+    float buttonTargetX = 0.f;
+    float buttonTopY = 0.f, buttonBottomY = 0.f, buttonLeftX = 0.f, buttonRightX = 0.f;
+    float buttonY1 = 0.f, buttonY2 = 0.f, buttonY3 = 0.f, buttonY4 = 0.f, buttonY5 = 0.f;
+
+public:
+	NewMainMenu(); //Constructor
 };
 
 void mainMenuInit(void);

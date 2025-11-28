@@ -297,6 +297,18 @@ void Game::ButtonDraw()
 	nextWave->Draw();
 }
 
+Game::Game()
+{
+	back = howToPlayBack = howToPlayEnd = howToPlayNext = nextWave = quit = settings = nullptr;
+
+	for (int i = 0; i < HOW_TO_PLAY_SIZE; i++)
+	{
+		howToPlayImages[i] = nullptr;
+	}
+
+	waveManager = nullptr;
+}
+
 void Game::CleanUpGame() {
 	// Delete all enemies
 	for (BaseEnemy* enemy : enemiesList) {

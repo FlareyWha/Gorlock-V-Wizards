@@ -53,7 +53,7 @@ void LightningParticle::Draw() const
     for (int i = 1; i <= segments; i++)
     {
         float t = i / (float)segments;
-        CP_Vector next;
+        CP_Vector next = CP_Vector_Zero();
         next.x = start.x + cos(angle) * length * t;
         next.y = start.y + sin(angle) * length * t;
 

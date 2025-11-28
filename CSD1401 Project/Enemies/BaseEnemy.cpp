@@ -8,6 +8,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+BaseEnemy::BaseEnemy()
+{
+    directionVector = CP_Vector_Zero();
+    health = 0.f;
+    location = CP_Vector_Zero();
+    maxHealth = 0;
+    maxSpeed = 0;
+    reward = 0;
+    speed = 0;
+    sprite = nullptr;
+    spriteLeft = nullptr;
+    type = BASIC;
+}
+
 float BaseEnemy::GetHealth(void)
 {
     return health;
