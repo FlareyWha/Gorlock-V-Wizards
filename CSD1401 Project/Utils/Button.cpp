@@ -100,6 +100,8 @@ void Button::FreeResources() { // Free image and font resources
 
 /**
  @brief sets new button position
+ @param newX - new x position
+ @param newY - new y position
  @return void
  */
 void Button::SetPosition(float newX, float newY) { // Set button position
