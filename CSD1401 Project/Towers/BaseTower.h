@@ -67,7 +67,7 @@ protected:
 
 	CP_Image towerSprite;
 public:
-	// Constructor & Deconstructor
+	// Constructor & Destructor
 	BaseTower();
 	~BaseTower();
 

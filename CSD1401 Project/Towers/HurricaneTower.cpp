@@ -1,12 +1,14 @@
 /*!
 @file       HurricaneTower.cpp
 @author     Chew Zavier (c.zavier)
-@brief		Contains definition of functions, overrides and variables used by HurricaneTower.cpp
+@brief		Contains definitions of functions, overrides and variables used by HurricaneTower
 *//*_______________________________________________________________________*/
+
 #include "HurricaneTower.h"
 #include "../Projectiles/BaseProjectile.h"
 #include "../Projectiles/HurricaneProjectile.h"
 #include "../Projectiles/HomingProjectile.h"
+
 //Constructor
 HurricaneTower::HurricaneTower(CP_Vector position)
 {

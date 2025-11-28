@@ -1,11 +1,13 @@
 /*!
 @file       HurricaneTower.h
 @author     Chew Zavier (c.zavier)
-@brief		Contains declaration of functions, overrides and variables used by HurricaneTower.cpp
+@brief		Contains declarations of functions, overrides and variables used by HurricaneTower
 *//*_______________________________________________________________________*/
+
 #pragma once
 #include "BaseTower.h"
 #include "cprocessing.h"
+
 class HurricaneTower : public BaseTower
 {
 private: 

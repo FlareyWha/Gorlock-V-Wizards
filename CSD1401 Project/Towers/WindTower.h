@@ -1,11 +1,13 @@
-#pragma once
-#include "BaseTower.h"
-#include "../Projectiles/BaseProjectile.h"
 /*!
 @file		WindTower.h
 @author     Chew Zavier (c.zavier)
-@brief		Contains declaration of functions, overrides and variables used by WindTower.cpp
+@brief		Contains declarations of functions, overrides and variables used by WindTower
 *//*_______________________________________________________________________*/
+
+#pragma once
+#include "BaseTower.h"
+#include "../Projectiles/BaseProjectile.h"
+
 class WindTower : public BaseTower
 {
 private:

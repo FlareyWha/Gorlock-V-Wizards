@@ -1,12 +1,14 @@
 /*!
-@file       LavaTower.h
-@author     Chew Zavier(c.zavier)
+@file       LavaTower.cpp
+@author     Chew Zavier (c.zavier)
 @brief		Contains definitions of functions, overrides and variables used by LavaTower
 *//*_______________________________________________________________________*/
+
 #include "LavaTower.h"
 #include "../Projectiles/BaseProjectile.h"
 #include "../Projectiles/FireProjectile.h"
 #include "../Projectiles/LavaWall.h"
+
 //constructor
 LavaTower::LavaTower(CP_Vector position)
 {

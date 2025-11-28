@@ -1,13 +1,13 @@
 /*!
 @file       IceTower.h
-@author     Chew Zavier(c.zavier)
-@co-author
+@author     Chew Zavier (c.zavier)
 @brief		Contains declarations of functions, overrides and variables used by IceTower
 *//*_______________________________________________________________________*/
 
 #pragma once
 #include "BaseTower.h"
 #include "../Projectiles/BaseProjectile.h"
+
 class IceTower: public BaseTower
 {
 public:
