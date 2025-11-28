@@ -1,14 +1,16 @@
+/*!
+@file       IceProjectile.h
+@author     Chew Zavier (c.zavier)
+@brief		Contains declarations of functions, overrides and variables used by IceProjectiles
+*//*_______________________________________________________________________*/
+
 #pragma once
 #include "BaseProjectile.h"
 #include "../Enemies/BaseEnemy.h"
 #include "IceProjectile.h"
 #include "../Particles/SnowParticle.h"
 #include <cstdlib>
-/*!
-@file       IceProjectile.h
-@author     Chew Zavier (c.zavier)
-@brief		Contains declarations of functions, overrides and variables used by IceProjectiles.cpp
-*//*_______________________________________________________________________*/
+
 class IceProjectile: public BaseProjectile
 {
 private:

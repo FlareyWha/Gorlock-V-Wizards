@@ -1,12 +1,14 @@
+/*!
+@file       LightningProjectile.h
+@author     Chew Zavier (c.zavier)
+@brief		Contains declaration of functions, overrides and variables used by LightningProjectile
+*//*_______________________________________________________________________*/
+
 #pragma once
 #include "../Particles/LightningParticle.h"
 #include "BaseProjectile.h"
 #include <vector>
-/*!
-@file       LightningProjectile.h
-@author     Chew Zavier (c.zavier)
-@brief		Contains declaration of functions, overrides and variables used by Lightning Projectiles
-*//*_______________________________________________________________________*/
+
 class LightningProjectile : public BaseProjectile
 {
 protected:

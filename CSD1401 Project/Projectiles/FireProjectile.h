@@ -1,13 +1,15 @@
+/*!
+@file       FireProjectile.h
+@author     Chew Zavier (c.zavier)
+@brief		Contains declarations of functions, overrides and variables used by FireProjectile
+*//*_______________________________________________________________________*/
+
 #pragma once
 #include "BaseProjectile.h"
 #include "../Particles/FireParticle.h"
 #include "cprocessing.h"
 #include <vector>
-/*!
-@file       FireProjectile.h
-@author     Chew Zavier (c.zavier)
-@brief		Contains declaration of functions, overrides and variables used by FireProjectile.cpp
-*//*_______________________________________________________________________*/
+
 class FireProjectile : public BaseProjectile
 {
 private:

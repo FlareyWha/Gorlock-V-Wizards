@@ -1,3 +1,9 @@
+/*!
+@file       WindProjectile.cpp
+@author     Chew Zavier (c.zavier)
+@brief		Contains definitions of functions, overrides and variables used by WindProjectile
+*//*_______________________________________________________________________*/
+
 #include "WindProjectile.h"
 #include <cstdlib> // for rand()
 

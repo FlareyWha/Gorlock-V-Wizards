@@ -1,12 +1,14 @@
-﻿#include "LightningProjectile.h"
-#include "../System/SoundManager.h"
-#include <math.h>
-#include "../Utils/Utils.h"
-/*!
+﻿/*!
 @file       LightningProjectile.cpp
 @author     Chew Zavier (c.zavier)
 @brief		Contains definitions of functions, overrides and variables used by Lightning Projectiles
 *//*_______________________________________________________________________*/
+
+#include "LightningProjectile.h"
+#include "../System/SoundManager.h"
+#include <math.h>
+#include "../Utils/Utils.h"
+
 //constructor
 LightningProjectile::LightningProjectile(CP_Vector pos, CP_Vector dir, float damage, float speed, CP_Color color)
     : BaseProjectile(pos, dir, damage, speed, color)

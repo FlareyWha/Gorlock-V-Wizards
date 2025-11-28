@@ -1,10 +1,12 @@
-#include "LavaWall.h"
-#include "../System/SoundManager.h"
 /*!
 @file       LavaWall.cpp
 @author     Chew Zavier (c.zavier)
 @brief		Contains definitions of functions, overrides and variables used by LavaWall
 *//*_______________________________________________________________________*/
+
+#include "LavaWall.h"
+#include "../System/SoundManager.h"
+
 //Constructor
 LavaWall::LavaWall(CP_Vector position, CP_Vector direction, float damage, float speed, CP_Color color)
 {

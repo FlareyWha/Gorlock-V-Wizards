@@ -604,39 +604,44 @@ void gameUpdate(void)
 	{
 		if (game.currSelect <= LIGHTNINGTOWER )
 		{
+			// if mouse position is within map grid
 			if ((CP_Input_GetMouseX() >= 0 && CP_Input_GetMouseX() <= gameMap->getTileSize() * mapSize.x)
 				&& (CP_Input_GetMouseY() >= 0 && CP_Input_GetMouseY() <= gameMap->getTileSize() * mapSize.y))
 			{
+				// if clicking on ground tiles that towers can be placed on
 				if (gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).tileType >= TILE_TYPE::GROUND
 					&& gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).tileType <= TILE_TYPE::GRASS)
 				{
 					CP_Vector tempPos = gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).pos;
 					bool notOverlapping = true;
 
+					// singular edge case for if no towers have been spawned yet
+					// this is just to make towerList not empty because other parts of this godfile check for towers in towerList
 					if (towerList.empty())
 					{
+						// spawn the first tower and push into towerList
 						switch (game.currSelect)
 						{
-						case FIRETOWER:
-						{
-							towerList.push_back(new FireTower(tempPos));
-							break;
-						}
-						case WINDTOWER:
-						{
-							towerList.push_back(new WindTower(tempPos));
-							break;
-						}
-						case ICETOWER:
-						{
-							towerList.push_back(new IceTower(tempPos));
-							break;
-						}
-						case LIGHTNINGTOWER:
-						{
-							towerList.push_back(new LightningTower(tempPos));
-							break;
-						}
+							case FIRETOWER:
+							{
+								towerList.push_back(new FireTower(tempPos));
+								break;
+							}
+							case WINDTOWER:
+							{
+								towerList.push_back(new WindTower(tempPos));
+								break;
+							}
+							case ICETOWER:
+							{
+								towerList.push_back(new IceTower(tempPos));
+								break;
+							}
+							case LIGHTNINGTOWER:
+							{
+								towerList.push_back(new LightningTower(tempPos));
+								break;
+							}
 						}
 						for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]); i++)
 						{
@@ -651,7 +656,7 @@ void gameUpdate(void)
 					}
 					else
 					{
-						// spawn a tower from dragging
+						// spawn a tower from dragging the ui element and releasing on the map grid
 						int mergeId;
 						for (int i = 0; i < towerList.size(); ++i)
 						{
@@ -664,22 +669,23 @@ void gameUpdate(void)
 							}
 						}
 
+						// towers cannot be spawned on top of existing towers (there is logic for merging existing towers elsewhere)
 						if (notOverlapping)
 						{
 							switch (game.currSelect)
 							{
-							case FIRETOWER:
-								towerList.push_back(new FireTower(tempPos));
-								break;
-							case ICETOWER:
-								towerList.push_back(new IceTower(tempPos));
-								break;
-							case WINDTOWER:
-								towerList.push_back(new WindTower(tempPos));
-								break;
-							case LIGHTNINGTOWER:
-								towerList.push_back(new LightningTower(tempPos));
-								break;
+								case FIRETOWER:
+									towerList.push_back(new FireTower(tempPos));
+									break;
+								case ICETOWER:
+									towerList.push_back(new IceTower(tempPos));
+									break;
+								case WINDTOWER:
+									towerList.push_back(new WindTower(tempPos));
+									break;
+								case LIGHTNINGTOWER:
+									towerList.push_back(new LightningTower(tempPos));
+									break;
 							}
 							for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]); i++)
 							{
@@ -700,11 +706,13 @@ void gameUpdate(void)
 		// if grabbing existing tower for merging purposes
 		else if (game.grabbingTower)
 		{
+			// keep track of initial dragged tower
 			BaseTower* dragged = game.currentTower;
 			if (game.currentTower)
 			{
 				int targetId = -1;
 
+				// get exact tile on map that initial tower is at
 				CP_Vector tempPos = gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).pos;
 
 				for (int i = 0; i < towerList.size(); i++)
@@ -713,6 +721,7 @@ void gameUpdate(void)
 					if (tower == game.currentTower)
 						continue;
 
+					// if it is the current tracked tower, do not do anything with it
 					float distance = CP_Vector_Distance(tower->getPosition(), tempPos);
 					if (distance <= 24.f)
 					{
@@ -735,21 +744,21 @@ void gameUpdate(void)
 
 						switch (type)
 						{
-						case TOWER_TYPE::FIRETOWER:
-							towerList.push_back(new LavaTower(mergedPos));
-							break;
-						case TOWER_TYPE::ICETOWER:
-							towerList.push_back(new FrostTower(mergedPos));
-							break;
-						case TOWER_TYPE::LIGHTNINGTOWER:
-							towerList.push_back(new StormTower(mergedPos));
-							break;
-						case TOWER_TYPE::WINDTOWER:
-							towerList.push_back(new HurricaneTower(mergedPos));
-							break;
+							case TOWER_TYPE::FIRETOWER:
+								towerList.push_back(new LavaTower(mergedPos));
+								break;
+							case TOWER_TYPE::ICETOWER:
+								towerList.push_back(new FrostTower(mergedPos));
+								break;
+							case TOWER_TYPE::LIGHTNINGTOWER:
+								towerList.push_back(new StormTower(mergedPos));
+								break;
+							case TOWER_TYPE::WINDTOWER:
+								towerList.push_back(new HurricaneTower(mergedPos));
+								break;
 						}
 
-						// Erase both current and target towers zzzzzzzz
+						// Erase both current and target towers from towerList once merged tower has been spawned
 						for (int i = (int)(towerList.size() - 1); i >= 0; --i)
 						{
 							if (towerList[i] == dragged || towerList[i] == target)
@@ -758,8 +767,6 @@ void gameUpdate(void)
 								towerList.erase(towerList.begin() + i);
 							}
 						}
-
-
 					}
 				}
 				game.grabbingTower = false;
@@ -814,7 +821,7 @@ void gameUpdate(void)
 
 	game.waveManager->Update(&enemiesList);
 
-	// debug buttons for spawning enemies for testing
+	// debug buttons for spawning enemies for testing purposes
 	if (CP_Input_KeyReleased(KEY_1))
 		enemiesList.push_back(new BasicEnemy(gameMap->getSpawnpoint()));
 	if (CP_Input_KeyReleased(KEY_2))
@@ -886,7 +893,6 @@ void gameUpdate(void)
 	// render and update towers, check for nearby enemies and target them
 	for (BaseTower* tower : towerList)
 	{
-
 		bool bossNearby = false;
 
 		// theres probably a better way to do this than to manually check for specifically if its class is of type frostTower but haha no
@@ -897,11 +903,11 @@ void gameUpdate(void)
 			frostTower->TrackEnemy(enemiesList);
 			frostTower->Update();
 
+			// frostTower-specific attack
 			if (frostTower->getCooldownTime() <= 0.f && frostTower->trackedEnemy)
 			{
 				projectileList.push_back(frostTower->Attack(frostTower->trackedEnemy));
 			}
-
 
 			// Boss check for FrostTower
 			for (BaseEnemy* enemy : enemiesList)
@@ -921,10 +927,9 @@ void gameUpdate(void)
 			// run update function fo all other towers
 			tower->Update();
 
-
 			for (BaseEnemy* enemy : enemiesList)
 			{
-
+				// if enemy is within detection distance of tower
 				if (areCirclesIntersecting(tower->getPosition(), tower->getDetectionDistance(),
 					enemy->GetLocation(), enemy->GetSpriteSize() / 2.0f) &&
 					tower->getCooldownTime() <= 0.f)
@@ -933,7 +938,7 @@ void gameUpdate(void)
 					projectileList.push_back(tower->Attack(enemy));
 
 					// additional projectiles spawn based on type of tower
-					//definitely got better way to do this but nuh uh
+					//definitely got better way to do this but the brain not work
 					if (tower->getTowerType() == TOWER_TYPE::HURRICANETOWER)//for hurricane
 					{
 						if (tower->getSecondaryCD() <= 0.f)
@@ -1031,9 +1036,11 @@ void gameUpdate(void)
 	{
 		BaseProjectile* proj = projectileList[i];
 
+		// update and render all projectiles
 		proj->Update();
 		proj->Render();
-
+		
+		// delete projectile if lifespan reaches 0 or it goes outside of map tile boundaries
 		if (proj->GetLifespan() <= 0.f ||
 			proj->GetLocation().x < 0 || proj->GetLocation().y < 0 ||
 			proj->GetLocation().x >= gameMap->getTileSize() * mapSize.x ||
@@ -1078,8 +1085,6 @@ void gameUpdate(void)
 			break;
 		}
 	}
-
-
 
 	if (game.shouldShowWinscreen() || game.shouldShowLosescreen())
 	{

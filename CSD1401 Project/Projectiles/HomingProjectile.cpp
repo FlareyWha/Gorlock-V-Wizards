@@ -1,11 +1,13 @@
-#include "HomingProjectile.h"
-#include<stdio.h>
-#include <string.h>
 /*!
 @file       HomingProjectile.cpp
 @author     Chew Zavier (c.zavier)
-@brief		Contains defintion of functions, overrides and variables used by HomingProjectile
+@brief		Contains defintions of functions, overrides and variables used by HomingProjectile
 *//*_______________________________________________________________________*/
+
+#include "HomingProjectile.h"
+#include<stdio.h>
+#include <string.h>
+
 void HomingProjectile::setHomingSpeed(float speed)// for setting homing speed
 {
 	this->homingSpeed = speed;
