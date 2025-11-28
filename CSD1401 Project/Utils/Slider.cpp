@@ -136,6 +136,36 @@ float Slider::getThumbHeight(void)
 }
 
 /*!
+@brief	Get position of the tracker
+@param	void
+@return CP_Vector - position of the tracker
+*//*______________________________________________________________*/
+CP_Vector Slider::getTrackerPosition(void)
+{
+	return trackerPosition;
+}
+
+/*!
+@brief	Get tracker width
+@param	void
+@return float - tracker width
+*//*______________________________________________________________*/
+float Slider::getTrackerWidth(void)
+{
+	return trackerWidth;
+}
+
+/*!
+@brief	Get tracker height
+@param	void
+@return float - tracker height
+*//*______________________________________________________________*/
+float Slider::getTrackerHeight(void)
+{
+	return trackerHeight;
+}
+
+/*!
 @brief	Render the slider
 @param	CP_POSITION_MODE previousMode - the previous rendering mode
 @return void

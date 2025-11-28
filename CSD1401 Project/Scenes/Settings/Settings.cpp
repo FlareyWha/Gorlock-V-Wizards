@@ -1,3 +1,10 @@
+/*!
+@file       Settings.cpp
+@author     Yap Yu Xuan Daevon (yuxuandaevon.yap)
+@brief      This file contains definition of functions and variables
+			used for the settings scene
+*//*_______________________________________________________________________*/
+
 #include "cprocessing.h"
 #include "Settings.h"
 #include "../Game/Game.h"
@@ -7,18 +14,19 @@
 #include "../../System/SoundManager.h"
 #include "../../System/SceneManager.h"
 #include "../../Utils/Button.h"
-#include <iostream>
 #include <stdlib.h>
 
 CP_Font myFont;
 
-
 //Volume and SFX slider
 Slider slider[2];
 int currentActiveSliderIndex = -1;
+
+//Managers
 SceneManager* scenes;
 SettingsManager* settings;
 SoundManager* sound;
+
 Button Backbutton(0, 0, 0, 0, "");
 
 void settingsInit(void)
@@ -56,7 +64,7 @@ void settingsUpdate(void)
 		{
 			CP_Vector mousePos = CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY());
 
-			if (currentActiveSliderIndex == -1 && isAreaClicked(slider[i].getThumbPosition(), slider[i].getThumbWidth(), slider[i].getThumbHeight(), mousePos))
+			if (currentActiveSliderIndex == -1 && isAreaClicked(slider[i].getTrackerPosition(), slider[i].getTrackerWidth(), slider[i].getTrackerHeight(), mousePos))
 			{
 				currentActiveSliderIndex = i;
 			}
@@ -69,7 +77,6 @@ void settingsUpdate(void)
 				{
 				case 0:
 					settings->setBGMVolume(slider[i].getSliderValue());
-					std::cout << "Volume: " << settings->getBGMVolumeLerp() << std::endl;
 					sound->refreshBGMVolume(settings->getBGMVolumeLerp());
 					break;
 
