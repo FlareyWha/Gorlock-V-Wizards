@@ -1,6 +1,6 @@
 /*!
 @file       LightningTower.h
-@author
+@author		Chew Zavier(c.zavier)
 @brief		Contains declarations of functions, overrides and variables used by LightningTower
 *//*_______________________________________________________________________*/
 

@@ -1,12 +1,12 @@
-#include "HurricaneTower.h"
-#include "../Projectiles/BaseProjectile.h"
-#include "../Projectiles/HurricaneProjectile.h"
-#include "../Projectiles/HomingProjectile.h"
 /*!
 @file       HurricaneTower.cpp
 @author     Chew Zavier (c.zavier)
 @brief		Contains definition of functions, overrides and variables used by HurricaneTower.cpp
 *//*_______________________________________________________________________*/
+#include "HurricaneTower.h"
+#include "../Projectiles/BaseProjectile.h"
+#include "../Projectiles/HurricaneProjectile.h"
+#include "../Projectiles/HomingProjectile.h"
 //Constructor
 HurricaneTower::HurricaneTower(CP_Vector position)
 {
