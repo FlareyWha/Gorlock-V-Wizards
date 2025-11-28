@@ -24,7 +24,6 @@
     <ClCompile Include="Towers\HurricaneTower.cpp" />
     <ClCompile Include="Towers\FrostTower.cpp" />
     <ClCompile Include="Particles\FireParticle.cpp" />
-    <ClCompile Include="Particles\Particle.cpp" />
     <ClCompile Include="Projectiles\LightningProjectile.cpp" />
     <ClCompile Include="Projectiles\FireProjectile.cpp" />
     <ClCompile Include="Projectiles\IceProjectile.cpp" />
