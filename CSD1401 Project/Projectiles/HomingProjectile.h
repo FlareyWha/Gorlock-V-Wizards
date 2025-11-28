@@ -1,14 +1,16 @@
+/*!
+@file       HomingProjectile.h
+@author     Chew Zavier (c.zavier)
+@brief		Contains declarations of functions, overrides and variables used by HomingProjectile
+*//*_______________________________________________________________________*/
+
 #pragma once
 #include "BaseProjectile.h"
 #include "../Enemies/BaseEnemy.h"
 #include "../Particles/WindParticle.h"
 #include "cprocessing.h"
 #include <vector>
-/*!
-@file       HomingProjectile.h
-@author     Chew Zavier (c.zavier)
-@brief		Contains declaration of functions, overrides and variables used by HomingProjectile.cpp
-*//*_______________________________________________________________________*/
+
 class HomingProjectile : public BaseProjectile
 {
 private:

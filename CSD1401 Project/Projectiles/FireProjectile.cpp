@@ -1,3 +1,9 @@
+/*!
+@file       FireProjectile.cpp
+@author     Chew Zavier (c.zavier)
+@brief		Contains definitions of functions, overrides and variables used by FireProjectile
+*//*_______________________________________________________________________*/
+
 #include "FireProjectile.h"
 #include "../Particles/FireParticle.h"
 #include <cstdlib>

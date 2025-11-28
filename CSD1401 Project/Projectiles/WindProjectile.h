@@ -1,13 +1,15 @@
+/*!
+@file       WindProjectile.h
+@author     Chew Zavier (c.zavier)
+@brief		Contains declarations of functions, overrides and variables used by WindProjectile
+*//*_______________________________________________________________________*/
+
 #pragma once
 #include "BaseProjectile.h"
 #include "../Particles/WindParticle.h"
 #include "cprocessing.h"
 #include <vector>
-/*!
-@file       WindProjectile.h
-@author     Chew Zavier (c.zavier)
-@brief		Contains declarations of functions, overrides and variables used by Wind Projectiles
-*//*_______________________________________________________________________*/
+
 class WindProjectile : public BaseProjectile
 {
 private:

@@ -1,9 +1,10 @@
-#include "IceProjectile.h"
 /*!
 @file       IceProjectile.cpp
 @author     Chew Zavier (c.zavier)
-@brief		Contains definitions of functions, overrides and variables used by Ice Projectiles 
+@brief		Contains definitions of functions, overrides and variables used by IceProjectile 
 *//*_______________________________________________________________________*/
+
+#include "IceProjectile.h"
 //default constructor
 IceProjectile::IceProjectile()
 {
