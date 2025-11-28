@@ -429,7 +429,6 @@ void gameUpdate(void)
 	SoundManager::GetInstance()->Update();
 	gameMap->renderMap();
 
-	//Putting this here cus the below godfile is honestly uneditable
 	if (game.howToPlayActive)
 	{
 		game.updateHowToPlayScreen();
