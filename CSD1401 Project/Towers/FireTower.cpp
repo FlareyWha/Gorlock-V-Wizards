@@ -9,7 +9,7 @@
 #include "../Projectiles/BaseProjectile.h"
 #include "../Projectiles/FireProjectile.h"
 
-// Constructor & Deconstructor
+// Constructor & Destructor
 FireTower::FireTower(CP_Vector position)
 {
 	setPos(position.x, position.y);

@@ -10,7 +10,7 @@
 #include "../Projectiles/BaseProjectile.h"
 #include "../System/SoundManager.h"
 
-// Constructor & Deconstructor
+// Constructor & Destructor
 IceTower::IceTower(CP_Vector position)
 {
 	this->setColor(CP_Color_Create(0, 0, 255, 255));

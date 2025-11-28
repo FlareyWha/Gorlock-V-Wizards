@@ -11,7 +11,7 @@
 class IceTower: public BaseTower
 {
 public:
-	// Constructor & Deconstructor
+	// Constructor & Destructor
 	IceTower(CP_Vector position);
 	~IceTower();
 	// Attack is overridden to spawn IceProjectile that slows enemies

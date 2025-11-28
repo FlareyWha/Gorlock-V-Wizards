@@ -11,7 +11,7 @@
 class FireTower : public BaseTower
 {
 public:
-	// Constructor & Deconstructor
+	// Constructor & Destructor
 	FireTower(CP_Vector position);
 	~FireTower();
 	// Attack is overriden to spawn FireProjectile that deals damage over time to enemy
