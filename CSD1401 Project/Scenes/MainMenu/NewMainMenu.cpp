@@ -10,6 +10,13 @@
 #include "../../System/SettingsManager.h"
 #include "../../Utils/Button.h"
 
+/*!
+@file       NewMainMenu.cpp
+@author     Chee Kang(l.cheekang)
+@brief      This file contains the definitions of functions to draw the main menu.
+*//*_______________________________________________________________________*/
+
+// Main menu assets
 CP_Image mainLogo;
 CP_Font mainMenuFont;
 Map* map;
@@ -18,8 +25,13 @@ NewMainMenu menu;
 CP_TEXT_ALIGN_HORIZONTAL center = CP_TEXT_ALIGN_H_CENTER;
 CP_TEXT_ALIGN_VERTICAL vertical = CP_TEXT_ALIGN_V_BASELINE;
 
+/**
+ @brief Button Initialization
+ @return void
+ */
 void NewMainMenu::ButtonInit()
 {
+	// Get window dimensions
 	float windowWidth = (float)CP_System_GetWindowWidth();
 	float windowHeight = (float)CP_System_GetWindowHeight();
 
@@ -44,6 +56,10 @@ void NewMainMenu::ButtonInit()
 	quitButton = new Button(buttonLeftX, buttonBottomY, buttonWidth, buttonHeight, "Quit");
 }
 
+/**
+ @brief Button Drawing and Animation
+ @return void
+ */
 void NewMainMenu::ButtonDraw()
 {
 	float dt = CP_System_GetDt();
@@ -69,8 +85,13 @@ void NewMainMenu::ButtonDraw()
 	quitButton->Draw();
 }
 
+/**
+ @brief Check and handle button clicks
+ @return void
+ */
 void NewMainMenu::HandleClicks()
 {
+	// Handle button clicks
 	if (startButton->IsClicked())
 	{
 		Map::GetInstance()->setLoadEditedMap(false);
@@ -98,20 +119,34 @@ void NewMainMenu::HandleClicks()
 	}
 }
 
+/**
+ @brief When exiting the main menu, free buttons
+ @return void
+ */
 void NewMainMenu::Exit()
 {
+	// Free buttons
 	delete startButton;
 	delete settingsButton;
 	delete mapEditorButton;
 	delete quitButton;
-
-	// Optionally free the static image/font from Button
-	// CP_Image_Free(Button::sprite);
-	// CP_Font_Free(Button::mainMenuFont);
 }
 
+/**
+ @brief Constructor
+ */
+NewMainMenu::NewMainMenu()
+{
+	startButton = settingsButton = mapEditorButton = creditsButton = quitButton = nullptr;
+}
 
+/**
+ @brief Initialize the main menu
+ @param void
+ @return void
+ */
 void mainMenuInit(void) {
+	// Load assets
 	mainMenuFont = CP_Font_Load("./Assets/Fonts/KenneyFonts/Kenney Mini.ttf");
 	mainLogo = CP_Image_Load("Assets/Images/mainmenu_logo.png");
 	menu.ButtonInit();
@@ -119,8 +154,13 @@ void mainMenuInit(void) {
 	SoundManager::GetInstance()->playBGM(MAIN_MENU_BGM);
 }
 
+/**
+ @brief Update the main menu
+ @return void
+ */
 void mainMenuUpdate()
 {
+	// Clear background
 	CP_Graphics_ClearBackground(CP_Color_Create(0, 0, 0, 255));
 
 	CP_Image_Draw(mainLogo, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.25f, 184.f * 4, 104.f * 4, 255);
@@ -134,10 +174,11 @@ void mainMenuUpdate()
 	menu.HandleClicks();
 }
 
+/**
+ @brief Free main menu assets on exit
+ @return void
+ */
 void mainMenuExit(void)
 {
-	//This stuff below should move to anywhere that terminates the game
 	CP_Font_Free(mainMenuFont);
-	
-	//SoundManager::GetInstance()->stopBGM();
 }

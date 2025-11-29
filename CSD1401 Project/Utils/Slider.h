@@ -11,7 +11,6 @@
 class Slider
 {
 private:
-	CP_Image tracker;
 	CP_Image thumb;
 
 	CP_Vector trackerPosition;
@@ -45,6 +44,12 @@ public:
 	float getThumbWidth(void);
 
 	float getThumbHeight(void);
+
+	CP_Vector getTrackerPosition(void);
+
+	float getTrackerWidth(void);
+
+	float getTrackerHeight(void);
 
 	void renderSlider(CP_POSITION_MODE previousMode);
 

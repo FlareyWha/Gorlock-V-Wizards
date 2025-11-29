@@ -52,7 +52,6 @@ Slider::Slider(CP_Vector position, float value)
 *//*______________________________________________________________*/
 void Slider::loadImages(void)
 {
-	//tracker = CP_Image_Load("Assets/Slider/tracker.png");
 	thumb = CP_Image_Load("Assets/Slider/thumb.png");
 }
 
@@ -137,6 +136,36 @@ float Slider::getThumbHeight(void)
 }
 
 /*!
+@brief	Get position of the tracker
+@param	void
+@return CP_Vector - position of the tracker
+*//*______________________________________________________________*/
+CP_Vector Slider::getTrackerPosition(void)
+{
+	return trackerPosition;
+}
+
+/*!
+@brief	Get tracker width
+@param	void
+@return float - tracker width
+*//*______________________________________________________________*/
+float Slider::getTrackerWidth(void)
+{
+	return trackerWidth;
+}
+
+/*!
+@brief	Get tracker height
+@param	void
+@return float - tracker height
+*//*______________________________________________________________*/
+float Slider::getTrackerHeight(void)
+{
+	return trackerHeight;
+}
+
+/*!
 @brief	Render the slider
 @param	CP_POSITION_MODE previousMode - the previous rendering mode
 @return void
@@ -145,8 +174,7 @@ void Slider::renderSlider(CP_POSITION_MODE previousMode)
 {
 	CP_Settings_ImageMode(CP_POSITION_CENTER);
 
-	//CP_Image_Draw(tracker, trackerPosition.x, trackerPosition.y, trackerWidth, trackerHeight, 255);
-
+	//Draw tracker
 	CP_Settings_Fill(CP_Color_Create(223, 43, 72, 255));
 	CP_Graphics_DrawRectAdvanced(trackerPosition.x, trackerPosition.y, trackerWidth, trackerHeight, 0.f, 10.f);
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
@@ -159,10 +187,9 @@ void Slider::renderSlider(CP_POSITION_MODE previousMode)
 /*!
 @brief	Free resources
 @param	void
-@return float - thumb height
+@return void
 *//*______________________________________________________________*/
 void Slider::freeResources(void)
 {
-	//CP_Image_Free(tracker);
 	CP_Image_Free(thumb);
 }

@@ -75,33 +75,18 @@ void Game::drawText(const char* text, float xPos,float yPos)
 	}
 }
 
-void Game::setFontSize(float size)
-{
-	fontSize = size;
-}
-
-float Game::getFontSize()
-{
-	return fontSize;
-}
-int Game::getMoneys()
-{
-	return moneys;
-}
-void Game::setMoneys(int moneyAmt)
-{
-	moneys = moneyAmt;
-}
+//for losing money
 void Game::loseMoneys(int moneyAmt)
 {
 	game.setMoneys(getMoneys() - moneyAmt);
 }
+//for gaining money
 void Game::gainMoneys(int moneyAmt)
 {
 	game.setMoneys(getMoneys() + moneyAmt);
 }
 
-void Game::drawMoneys(float x, float y)
+void Game::drawMoneys(float x, float y)//for drawing currency
 {
 	std::string money = ": " + std::to_string(game.getMoneys());
 	CP_Image_Draw(game.moneysImage, x, y, 16 * imageScaling, 16 * imageScaling, 255);
@@ -110,7 +95,7 @@ void Game::drawMoneys(float x, float y)
 	CP_Settings_TextSize(20.f);
 }
 
-void Game::drawHeart(float x, float y)
+void Game::drawHeart(float x, float y)//for drawing health
 {
 	switch (game.getHealth())
 	{
@@ -155,6 +140,7 @@ void Game::drawHeart(float x, float y)
 	CP_Image_Draw(game.healthImage, x, y, CP_Image_GetWidth(game.healthImage) * imageScaling * heartSize,CP_Image_GetHeight(game.healthImage) * imageScaling * heartSize,255);
 }
 
+//getters
 int Game::getHealth()
 {
 	return health;
@@ -163,6 +149,16 @@ int Game::getMaxHealth()
 {
 	return maxHealth;
 }
+float Game::getFontSize()
+{
+	return fontSize;
+}
+int Game::getMoneys()
+{
+	return moneys;
+}
+
+//setters
 void Game::setMaxHealth(int max)
 {
 	maxHealth = max;
@@ -171,10 +167,19 @@ void Game::setHealth(int hp)
 {
 	health = hp;
 }
-void Game::takeDamage(int hp)
+void Game::setFontSize(float size)
+{
+	fontSize = size;
+}
+void Game::setMoneys(int moneyAmt)
+{
+	moneys = moneyAmt;
+}
+
+void Game::takeDamage(int hp)//for taking damage
 {
 	health -= hp;
-	//CP_Image_Draw(game.healthImage, CP_System_GetWindowWidth() / 2.0, 100, 128, 128, 255);
+	
 	health = CP_Math_ClampInt(health, 0, game.getMaxHealth());
 
 	if (health <= 0 && !game.shouldShowLosescreen())
@@ -292,6 +297,18 @@ void Game::ButtonDraw()
 	nextWave->Draw();
 }
 
+Game::Game()
+{
+	back = howToPlayBack = howToPlayEnd = howToPlayNext = nextWave = quit = settings = nullptr;
+
+	for (int i = 0; i < HOW_TO_PLAY_SIZE; i++)
+	{
+		howToPlayImages[i] = nullptr;
+	}
+
+	waveManager = nullptr;
+}
+
 void Game::CleanUpGame() {
 	// Delete all enemies
 	for (BaseEnemy* enemy : enemiesList) {
@@ -350,6 +367,7 @@ void gameInit(void)
 
 	mapSize = gameMap->getDimensions();
 
+	// start of initialization for ALL UI ELEMENTS
 	game.healthImage = CP_Image_Load("./Assets/UI/full_heart.png");
 	game.emptyHeartImage = CP_Image_Load("./Assets/UI/empty_heart.png");
 	game.moneysImage = CP_Image_Load("./Assets/UI/money.png");
@@ -396,6 +414,7 @@ void gameInit(void)
 	game.uiElements[4] = game.levelUpUI;
 	game.uiElements[5] = game.mergeUI;
 	game.uiElements[6] = game.sellingUI;
+	//end of initialization for UI elements
 	CP_Settings_TextSize(game.getFontSize());
 
 	for (int i = 0; i < HOW_TO_PLAY_SIZE; i++)
@@ -422,7 +441,6 @@ void gameUpdate(void)
 	SoundManager::GetInstance()->Update();
 	gameMap->renderMap();
 
-	//Putting this here cus the below godfile is honestly uneditable
 	if (game.howToPlayActive)
 	{
 		game.updateHowToPlayScreen();
@@ -432,10 +450,6 @@ void gameUpdate(void)
 	if (CP_Input_KeyTriggered(KEY_ESCAPE)) {
 		SceneManager::GetInstance()->ChangeScenes(Scenes::PAUSE_MENU_SCENE);
 		return;
-	}
-	if (CP_Input_KeyReleased(KEY_H))
-	{
-		game.takeDamage(1);
 	}
 	if (CP_Input_MouseTriggered(MOUSE_BUTTON_2))
 	{
@@ -450,7 +464,7 @@ void gameUpdate(void)
 
 	game.ButtonDraw();
 
-	for (int i = 0; i < (sizeof(game.uiElements) / sizeof(game.uiElements[0])); i++)
+	for (int i = 0; i < (sizeof(game.uiElements) / sizeof(game.uiElements[0])); i++)//for drawing the ui elements 
 	{
 		if (CP_Input_MouseTriggered(MOUSE_BUTTON_1))
 		{
@@ -477,7 +491,7 @@ void gameUpdate(void)
 			CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_LEFT, CP_TEXT_ALIGN_V_MIDDLE);
 		}
 
-		if (game.currSelect == game.uiElements[i].selection && i <= LIGHTNINGTOWER)
+		if (game.currSelect == game.uiElements[i].selection && i <= LIGHTNINGTOWER)//info for the towers
 		{
 			std::string info = "Base Costs: " + std::to_string(game.uiElements[i].towerCost) + " Coins\n";
 			switch (game.currSelect)
@@ -495,7 +509,7 @@ void gameUpdate(void)
 				info += "\nProjectile Damage: Very low\nFirerate: Fast\nBullet speed: Fast\nSpecial Effect: None, just shoots REALLY fast\n";
 				break;
 			}
-			CP_Font_DrawTextBox(info.c_str(), 1325, 400,275);
+			CP_Font_DrawTextBox(info.c_str(), 1325, 400,275);//draw the info only when a tower ui is selected
 		}
 		
 	}
@@ -503,7 +517,7 @@ void gameUpdate(void)
 	// MOUSE DOWN
 	if (CP_Input_MouseDown(MOUSE_BUTTON_1))
 	{
-		switch (game.currSelect)
+		switch (game.currSelect)//draw the tower attack radii
 		{
 		case FIRETOWER:
 			CP_Image_Draw(game.fireTowerUI.image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), 50, 50, 155);
@@ -561,10 +575,10 @@ void gameUpdate(void)
 			}
 			break;
 		case SELLING:
-			for (int i = 0; i < towerList.size(); i++)
+			for (int i = 0; i < towerList.size(); i++)//for selling tower
 			{
 				float distance = CP_Vector_Distance(towerList[i]->getPosition(), CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY()));
-				if (distance <= 24.f)
+				if (distance <= 24.f)//if that tile is clicked
 				{
 					game.gainMoneys(towerList[i]->getSaleAmt());
 					towerList.erase(towerList.begin() + i);
@@ -575,7 +589,7 @@ void gameUpdate(void)
 			if ((CP_Input_GetMouseX() >= 0 && CP_Input_GetMouseX() <= gameMap->getTileSize() * mapSize.x)
 				&& (CP_Input_GetMouseY() >= 0 && CP_Input_GetMouseY() <= gameMap->getTileSize() * mapSize.y))
 			{
-				for (BaseTower* tower : towerList)
+				for (BaseTower* tower : towerList)//draw tower attack range again
 				{
 					float dist = CP_Vector_Distance(tower->getPosition(), CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY()));
 					if (dist <= 24.f && !game.grabbingTower)
@@ -601,39 +615,44 @@ void gameUpdate(void)
 	{
 		if (game.currSelect <= LIGHTNINGTOWER )
 		{
+			// if mouse position is within map grid
 			if ((CP_Input_GetMouseX() >= 0 && CP_Input_GetMouseX() <= gameMap->getTileSize() * mapSize.x)
 				&& (CP_Input_GetMouseY() >= 0 && CP_Input_GetMouseY() <= gameMap->getTileSize() * mapSize.y))
 			{
+				// if clicking on ground tiles that towers can be placed on
 				if (gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).tileType >= TILE_TYPE::GROUND
 					&& gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).tileType <= TILE_TYPE::GRASS)
 				{
 					CP_Vector tempPos = gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).pos;
 					bool notOverlapping = true;
 
+					// singular edge case for if no towers have been spawned yet
+					// this is just to make towerList not empty because other parts of this godfile check for towers in towerList
 					if (towerList.empty())
 					{
+						// spawn the first tower and push into towerList
 						switch (game.currSelect)
 						{
-						case FIRETOWER:
-						{
-							towerList.push_back(new FireTower(tempPos));
-							break;
-						}
-						case WINDTOWER:
-						{
-							towerList.push_back(new WindTower(tempPos));
-							break;
-						}
-						case ICETOWER:
-						{
-							towerList.push_back(new IceTower(tempPos));
-							break;
-						}
-						case LIGHTNINGTOWER:
-						{
-							towerList.push_back(new LightningTower(tempPos));
-							break;
-						}
+							case FIRETOWER:
+							{
+								towerList.push_back(new FireTower(tempPos));
+								break;
+							}
+							case WINDTOWER:
+							{
+								towerList.push_back(new WindTower(tempPos));
+								break;
+							}
+							case ICETOWER:
+							{
+								towerList.push_back(new IceTower(tempPos));
+								break;
+							}
+							case LIGHTNINGTOWER:
+							{
+								towerList.push_back(new LightningTower(tempPos));
+								break;
+							}
 						}
 						for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]); i++)
 						{
@@ -648,7 +667,7 @@ void gameUpdate(void)
 					}
 					else
 					{
-						// spawn a tower from dragging
+						// spawn a tower from dragging the ui element and releasing on the map grid
 						int mergeId;
 						for (int i = 0; i < towerList.size(); ++i)
 						{
@@ -661,22 +680,23 @@ void gameUpdate(void)
 							}
 						}
 
+						// towers cannot be spawned on top of existing towers (there is logic for merging existing towers elsewhere)
 						if (notOverlapping)
 						{
 							switch (game.currSelect)
 							{
-							case FIRETOWER:
-								towerList.push_back(new FireTower(tempPos));
-								break;
-							case ICETOWER:
-								towerList.push_back(new IceTower(tempPos));
-								break;
-							case WINDTOWER:
-								towerList.push_back(new WindTower(tempPos));
-								break;
-							case LIGHTNINGTOWER:
-								towerList.push_back(new LightningTower(tempPos));
-								break;
+								case FIRETOWER:
+									towerList.push_back(new FireTower(tempPos));
+									break;
+								case ICETOWER:
+									towerList.push_back(new IceTower(tempPos));
+									break;
+								case WINDTOWER:
+									towerList.push_back(new WindTower(tempPos));
+									break;
+								case LIGHTNINGTOWER:
+									towerList.push_back(new LightningTower(tempPos));
+									break;
 							}
 							for (int i = 0; i < sizeof(game.uiElements) / sizeof(game.uiElements[0]); i++)
 							{
@@ -697,11 +717,13 @@ void gameUpdate(void)
 		// if grabbing existing tower for merging purposes
 		else if (game.grabbingTower)
 		{
+			// keep track of initial dragged tower
 			BaseTower* dragged = game.currentTower;
 			if (game.currentTower)
 			{
 				int targetId = -1;
 
+				// get exact tile on map that initial tower is at
 				CP_Vector tempPos = gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).pos;
 
 				for (int i = 0; i < towerList.size(); i++)
@@ -710,6 +732,7 @@ void gameUpdate(void)
 					if (tower == game.currentTower)
 						continue;
 
+					// if it is the current tracked tower, do not do anything with it
 					float distance = CP_Vector_Distance(tower->getPosition(), tempPos);
 					if (distance <= 24.f)
 					{
@@ -732,21 +755,21 @@ void gameUpdate(void)
 
 						switch (type)
 						{
-						case TOWER_TYPE::FIRETOWER:
-							towerList.push_back(new LavaTower(mergedPos));
-							break;
-						case TOWER_TYPE::ICETOWER:
-							towerList.push_back(new FrostTower(mergedPos));
-							break;
-						case TOWER_TYPE::LIGHTNINGTOWER:
-							towerList.push_back(new StormTower(mergedPos));
-							break;
-						case TOWER_TYPE::WINDTOWER:
-							towerList.push_back(new HurricaneTower(mergedPos));
-							break;
+							case TOWER_TYPE::FIRETOWER:
+								towerList.push_back(new LavaTower(mergedPos));
+								break;
+							case TOWER_TYPE::ICETOWER:
+								towerList.push_back(new FrostTower(mergedPos));
+								break;
+							case TOWER_TYPE::LIGHTNINGTOWER:
+								towerList.push_back(new StormTower(mergedPos));
+								break;
+							case TOWER_TYPE::WINDTOWER:
+								towerList.push_back(new HurricaneTower(mergedPos));
+								break;
 						}
 
-						// Erase both current and target towers zzzzzzzz
+						// Erase both current and target towers from towerList once merged tower has been spawned
 						for (int i = (int)(towerList.size() - 1); i >= 0; --i)
 						{
 							if (towerList[i] == dragged || towerList[i] == target)
@@ -755,8 +778,6 @@ void gameUpdate(void)
 								towerList.erase(towerList.begin() + i);
 							}
 						}
-
-
 					}
 				}
 				game.grabbingTower = false;
@@ -766,7 +787,7 @@ void gameUpdate(void)
 		for (int i = 0; i < towerList.size(); i++)
 		{
 			BaseTower* tower = towerList[i];
-			if (game.currSelect == LEVELUP)
+			if (game.currSelect == LEVELUP)//showing which towers can be leveled 
 			{
 				if (tower->getUpgradeCosts() > game.getMoneys())
 				{
@@ -777,7 +798,7 @@ void gameUpdate(void)
 					tower->setOpacity(255);
 				}
 			}
-			else if (game.currSelect == MERGE)
+			else if (game.currSelect == MERGE)//for showing which towers can be merged
 			{
 
 				if (towerList[i]->getLevel() != towerList[i]->getMaxLevel())
@@ -789,7 +810,7 @@ void gameUpdate(void)
 					tower->setOpacity(255);
 				}
 			}
-			else if (game.currSelect == NONE_TOWER)
+			else if (game.currSelect == NONE_TOWER)//else just make sure all opaque
 			{
 				tower->setOpacity(255);
 			}
@@ -804,14 +825,14 @@ void gameUpdate(void)
 	CP_Settings_TextSize(game.getFontSize());
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 
-	if (CP_Input_KeyReleased(KEY_H))
+	if (CP_Input_KeyReleased(KEY_H))//DEBUG FOR TAKING DAMAGE !! REMOVE WHEN SUBMITTING
 	{
 		game.takeDamage(1);
 	}
 
 	game.waveManager->Update(&enemiesList);
 
-	// debug buttons for spawning enemies for testing
+	// debug buttons for spawning enemies for testing purposes
 	if (CP_Input_KeyReleased(KEY_1))
 		enemiesList.push_back(new BasicEnemy(gameMap->getSpawnpoint()));
 	if (CP_Input_KeyReleased(KEY_2))
@@ -866,7 +887,6 @@ void gameUpdate(void)
 					if (((HomingProjectile*)(projectileList[i]))->trackingEnemy == enemy)
 					{
 						((HomingProjectile*)(projectileList[i]))->trackingEnemy = nullptr;
-						printf("hit");
 					}
 				}
 			}
@@ -884,7 +904,6 @@ void gameUpdate(void)
 	// render and update towers, check for nearby enemies and target them
 	for (BaseTower* tower : towerList)
 	{
-
 		bool bossNearby = false;
 
 		// theres probably a better way to do this than to manually check for specifically if its class is of type frostTower but haha no
@@ -895,11 +914,11 @@ void gameUpdate(void)
 			frostTower->TrackEnemy(enemiesList);
 			frostTower->Update();
 
+			// frostTower-specific attack
 			if (frostTower->getCooldownTime() <= 0.f && frostTower->trackedEnemy)
 			{
 				projectileList.push_back(frostTower->Attack(frostTower->trackedEnemy));
 			}
-
 
 			// Boss check for FrostTower
 			for (BaseEnemy* enemy : enemiesList)
@@ -919,10 +938,9 @@ void gameUpdate(void)
 			// run update function fo all other towers
 			tower->Update();
 
-
 			for (BaseEnemy* enemy : enemiesList)
 			{
-
+				// if enemy is within detection distance of tower
 				if (areCirclesIntersecting(tower->getPosition(), tower->getDetectionDistance(),
 					enemy->GetLocation(), enemy->GetSpriteSize() / 2.0f) &&
 					tower->getCooldownTime() <= 0.f)
@@ -931,14 +949,15 @@ void gameUpdate(void)
 					projectileList.push_back(tower->Attack(enemy));
 
 					// additional projectiles spawn based on type of tower
-					if (tower->getTowerType() == TOWER_TYPE::HURRICANETOWER)
+					//definitely got better way to do this but the brain not work
+					if (tower->getTowerType() == TOWER_TYPE::HURRICANETOWER)//for hurricane
 					{
 						if (tower->getSecondaryCD() <= 0.f)
 						{
 							projectileList.push_back(tower->SpawnSecondary(&enemiesList, enemy));
 						}
 					}
-					else if (tower->getTowerType() == TOWER_TYPE::LAVATOWER)
+					else if (tower->getTowerType() == TOWER_TYPE::LAVATOWER)//for lava
 					{
 						if (tower->getSecondaryCD() <= 0.f)
 						{
@@ -982,31 +1001,31 @@ void gameUpdate(void)
 			std::string cost = std::to_string(tower->getUpgradeCosts());
 			if (tower->getLevel() != tower->getMaxLevel() && tower->getTowerType() != TOWER_TYPE::HURRICANETOWER
 				&& tower->getTowerType() != TOWER_TYPE::LAVATOWER && tower->getTowerType() != TOWER_TYPE::STORMTOWER
-				&& tower->getTowerType() != TOWER_TYPE::FROSTTOWER)
+				&& tower->getTowerType() != TOWER_TYPE::FROSTTOWER)//if its an unmerged tower
 			{
-				game.drawText(cost.c_str(), tower->getPosition().x, tower->getPosition().y);
+				game.drawText(cost.c_str(), tower->getPosition().x, tower->getPosition().y);//draw how much it costs to upgrade this tower
 			}
 			else if (tower->getLevel() == tower->getMaxLevel() || tower->getTowerType() == TOWER_TYPE::HURRICANETOWER
 				|| tower->getTowerType() == TOWER_TYPE::LAVATOWER || tower->getTowerType() == TOWER_TYPE::STORMTOWER
-				|| tower->getTowerType() == TOWER_TYPE::FROSTTOWER)
+				|| tower->getTowerType() == TOWER_TYPE::FROSTTOWER)//else if its a merged or maxxed tower
 			{
 				game.drawText("MAX", tower->getPosition().x, tower->getPosition().y);
 			}
 			if (game.getMoneys() < tower->getUpgradeCosts() || tower->getLevel() == tower->getMaxLevel()
 				|| tower->getTowerType() == TOWER_TYPE::HURRICANETOWER || tower->getTowerType() == TOWER_TYPE::LAVATOWER
-				|| tower->getTowerType() == TOWER_TYPE::STORMTOWER || tower->getTowerType() == TOWER_TYPE::FROSTTOWER)
+				|| tower->getTowerType() == TOWER_TYPE::STORMTOWER || tower->getTowerType() == TOWER_TYPE::FROSTTOWER)//check if player too POOR
 			{
 				tower->setOpacity(100);
 			}
 			else
-			{
+			{//else make it opaque to signal that its available to be upgraded
 				tower->setOpacity(255);
 				CP_Vector tempPos = gameMap->getTile(CP_Input_GetMouseX(), CP_Input_GetMouseY()).pos;
 
 				float dist = CP_Vector_Distance(tower->getPosition(), CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY()));
 				if (dist <= 24.f)
 				{
-					if (CP_Input_MouseTriggered(MOUSE_BUTTON_1))
+					if (CP_Input_MouseTriggered(MOUSE_BUTTON_1))//if its clicked the ugprade it
 					{
 						game.loseMoneys(tower->getUpgradeCosts());
 						tower->levelUp();
@@ -1017,7 +1036,7 @@ void gameUpdate(void)
 		}
 		else if (game.currSelect == SELLING)
 		{
-			tower->setOpacity(255);
+			tower->setOpacity(255);//same as above but for selling
 			std::string sale = std::to_string(tower->getSaleAmt());
 			game.drawText(sale.c_str(), tower->getPosition().x, tower->getPosition().y);
 		}
@@ -1028,9 +1047,11 @@ void gameUpdate(void)
 	{
 		BaseProjectile* proj = projectileList[i];
 
+		// update and render all projectiles
 		proj->Update();
 		proj->Render();
-
+		
+		// delete projectile if lifespan reaches 0 or it goes outside of map tile boundaries
 		if (proj->GetLifespan() <= 0.f ||
 			proj->GetLocation().x < 0 || proj->GetLocation().y < 0 ||
 			proj->GetLocation().x >= gameMap->getTileSize() * mapSize.x ||
@@ -1075,8 +1096,6 @@ void gameUpdate(void)
 			break;
 		}
 	}
-
-
 
 	if (game.shouldShowWinscreen() || game.shouldShowLosescreen())
 	{

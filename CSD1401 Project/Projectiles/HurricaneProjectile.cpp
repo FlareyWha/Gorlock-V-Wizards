@@ -1,3 +1,9 @@
+/*!
+@file       HurricaneProjectile.cpp
+@author     Chew Zavier (c.zavier)
+@brief		Contains definitions of functions, overrides and variables used by HurricaneProjectile
+*//*_______________________________________________________________________*/
+
 #include "HurricaneProjectile.h"
 
 HurricaneProjectile::HurricaneProjectile(CP_Vector position, CP_Vector direction, float damage, float speed, CP_Color color)

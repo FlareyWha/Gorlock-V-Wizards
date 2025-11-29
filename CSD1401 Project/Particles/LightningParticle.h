@@ -1,6 +1,12 @@
 #pragma once
 #include "cprocessing.h"
 
+/*!
+@file       LightningParticle.h
+@author     Chee Kang(l.cheekang)
+@brief      This file contains the declaration of the LightningParticle class
+*//*_______________________________________________________________________*/
+
 class LightningParticle
 {
 

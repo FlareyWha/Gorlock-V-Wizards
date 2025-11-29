@@ -1,17 +1,42 @@
 #include "SnowParticle.h"
 
+/*!
+@file       SnowParticle.cpp
+@author     Chee Kang(l.cheekang)
+@brief      This file contains the implementation of the SnowParticle class
+*//*_______________________________________________________________________*/
+
 CP_Image SnowParticle::particleImage = 0;
+
+/**
+ @brief Will construct a snow particle
+ @param pos The position of the particle
+ @param vel The velocity of the particle
+ @param lifetime The lifetime of the particle
+ @return void
+ */
 
 SnowParticle::SnowParticle(const CP_Vector& pos, const CP_Vector& vel, int lifetime)
     : Particle(pos, vel, lifetime)
 {
 }
 
+/**
+ @brief The image for the snow particle is loaded
+ @param path The file path of the image
+ @return void
+ */
+
 void SnowParticle::LoadImage(const char* path)
 {
     if (particleImage == 0)
         particleImage = CP_Image_Load(path);
 }
+
+/**
+ @brief Will update the snow particle
+ @return void
+ */
 
 void SnowParticle::Update()
 {
@@ -21,6 +46,11 @@ void SnowParticle::Update()
     position = CP_Vector_Add(position, velocity);
     --life;
 }
+
+/**
+ @brief Draws the snow particle
+ @return void
+ */
 
 void SnowParticle::Draw() const
 {

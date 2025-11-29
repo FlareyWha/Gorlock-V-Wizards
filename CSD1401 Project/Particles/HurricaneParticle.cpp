@@ -1,17 +1,42 @@
 #include "HurricaneParticle.h"
 
+/*!
+@file       HurricaneParticle.cpp
+@author     Chee Kang(l.cheekang)
+@brief      This file contains the implementation of the HurricaneParticle class
+*//*_______________________________________________________________________*/
+
 CP_Image HurricaneParticle::particleImage = 0;
+
+/**
+ @brief Will construct a hurricane particle
+ @param pos The position of the particle
+ @param vel The velocity of the particle
+ @param lifetime The lifetime of the particle
+ @return void
+ */
 
 HurricaneParticle::HurricaneParticle(const CP_Vector& pos, const CP_Vector& vel, int lifetime)
     : Particle(pos, vel, lifetime)
 {
 }
 
+/**
+ @brief Will load the image for the hurricane particle
+ @param path The file path of the image
+ @return void
+ */
+
 void HurricaneParticle::LoadImage(const char* path)
 {
     if (particleImage == 0)
         particleImage = CP_Image_Load(path);
 }
+
+/**
+ @brief Updates the hurricane particle
+ @return void
+ */
 
 void HurricaneParticle::Update()
 {
@@ -21,6 +46,11 @@ void HurricaneParticle::Update()
     position = CP_Vector_Add(position, velocity);
     --life;
 }
+
+/**
+ @brief Draws the hurricane particle
+ @return void
+ */
 
 void HurricaneParticle::Draw() const
 {

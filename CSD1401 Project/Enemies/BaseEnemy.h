@@ -43,6 +43,8 @@ protected:
 	float burnDamage = 0.1f;
 	int burnStacks = 0;
 public:
+	BaseEnemy();
+
 	float GetHealth(void);
 	void SetHealth(float health);
 	float GetMaxHealth(void);

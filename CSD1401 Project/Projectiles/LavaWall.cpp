@@ -1,11 +1,18 @@
+/*!
+@file       LavaWall.cpp
+@author     Chew Zavier (c.zavier)
+@brief		Contains definitions of functions, overrides and variables used by LavaWall
+*//*_______________________________________________________________________*/
+
 #include "LavaWall.h"
 #include "../System/SoundManager.h"
 
+//Constructor
 LavaWall::LavaWall(CP_Vector position, CP_Vector direction, float damage, float speed, CP_Color color)
 {
     FireParticle::LoadImage("Assets/Particles/Fire.png");
 
-    setPosition(position);
+    setPosition(position); 
     setDirection(direction);
     setProjDamage(damage);
     setProjSpeed(speed);
@@ -17,7 +24,7 @@ LavaWall::LavaWall(CP_Vector position, CP_Vector direction, float damage, float 
     sfxTimer = 0.f;
     sfxMaxTimer = 0.5f;
 }
-
+//Destructor
 LavaWall::~LavaWall()
 {
     for (auto p : particles)
@@ -25,7 +32,7 @@ LavaWall::~LavaWall()
     particles.clear();
 }
 
-void LavaWall::Update()
+void LavaWall::Update()//Lava Wall overrideds update as it needs its own way of spawning particles
 {
     BaseProjectile::Update();
     SpawnParticles();
@@ -43,13 +50,11 @@ void LavaWall::Update()
         else
             ++it;
     }
-
-    hitCD -= CP_System_GetDt();
     sfxTimer -= CP_System_GetDt();
     sfxTimer = CP_Math_ClampFloat(sfxTimer, 0.f, sfxMaxTimer);
 }
 
-void LavaWall::Render()
+void LavaWall::Render()//override render so to draw the projectile a different way
 {
     CP_Settings_Fill(getProjColor());
     float angle = CP_Math_Degrees(atan2f(this->getDirection().y, this->getDirection().x));
@@ -63,10 +68,9 @@ void LavaWall::Render()
     CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 }
 
-void LavaWall::onHit(BaseEnemy* enemy)
+void LavaWall::onHit(BaseEnemy* enemy)//On hit effects
 {
-    enemy->Burn(true);
-    hitCD = hitMaxCD;
+    enemy->Burn(true);//burning the enemy
 
     if (sfxTimer <= 0.f)
     {

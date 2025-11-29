@@ -12,7 +12,7 @@
 class FrostTower : public BaseTower
 {
 public:
-	// Constructor & Deconstructor
+	// Constructor & Destructor
 	FrostTower(CP_Vector position);
 	~FrostTower();
 

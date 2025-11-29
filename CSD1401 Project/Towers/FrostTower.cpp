@@ -9,7 +9,7 @@
 #include "../Projectiles/BaseProjectile.h"
 #include "../System/SoundManager.h"
 
-// Constructor & Deconstructor
+// Constructor & Destructor
 FrostTower::FrostTower(CP_Vector position)
 {
 	this->setColor(CP_Color_Create(0, 0, 255, 255));
@@ -37,7 +37,6 @@ void FrostTower::Update()
 	{
 		CP_Vector unNormDirection = CP_Vector_Set(trackedEnemy->GetLocation().x - getPosition().x, trackedEnemy->GetLocation().y - getPosition().y);
 		CP_Vector direction = CP_Vector_Normalize(CP_Vector_Set(trackedEnemy->GetLocation().x - getPosition().x, trackedEnemy->GetLocation().y - getPosition().y));
-		//printf("%f %f\n", trackedEnemy->GetLocation().x, trackedEnemy->GetLocation().y);
 		beamAngle = CP_Math_Degrees(atan2f(direction.y, direction.x));		
 
 		beamLength = CP_Vector_Length(unNormDirection);

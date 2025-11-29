@@ -10,7 +10,7 @@
 class StormTower : public BaseTower
 {
 public:
-	// Constructor & Deconstructor
+	// Constructor & Destructor
 	StormTower(CP_Vector position);
 	~StormTower();
 	// Update is overridden to render additional purple lightning beam that hits nearby enemy

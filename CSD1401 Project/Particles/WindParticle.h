@@ -2,6 +2,12 @@
 #include "Particle.h"
 #include "cprocessing.h"
 
+/*!
+@file       WindParticle.h
+@author     Chee Kang(l.cheekang)
+@brief      This file contains the declaration of the WindParticle class
+*//*_______________________________________________________________________*/
+
 class WindParticle : public Particle
 {
 public:

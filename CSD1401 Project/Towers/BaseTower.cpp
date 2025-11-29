@@ -18,6 +18,7 @@ BaseTower::BaseTower()
 	color = CP_Color_Create(0, 0, 0, 255);
 }
 
+// Destructor
 BaseTower::~BaseTower()
 {
 }
@@ -234,6 +235,7 @@ BaseProjectile* BaseTower::SpawnSecondary(BaseEnemy* enemy)
 	setCooldownTime(getCooldown());
 	return new BaseProjectile(this->getPosition(), direction, this->damage, this->projSpeed, this->getColor());
 }
+// Additional projectiles to be spawned if it requires the whole list of enemies instead of just one
 BaseProjectile* BaseTower::SpawnSecondary(std::vector<BaseEnemy*>* enemyList,BaseEnemy* specificEnemy)
 {
 	return nullptr;

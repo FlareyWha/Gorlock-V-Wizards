@@ -1,6 +1,6 @@
 /*!
 @file       LightningTower.h
-@author
+@author		Chew Zavier (c.zavier)
 @brief		Contains declarations of functions, overrides and variables used by LightningTower
 *//*_______________________________________________________________________*/
 
@@ -9,7 +9,7 @@
 class LightningTower : public BaseTower
 {
 public:
-	// Constructor & Deconstructor
+	// Constructor & Destructor
 	LightningTower(CP_Vector position);
 	~LightningTower();
 	// Attack is overridden to spawn LightningProjectile that chains to nearby enemies

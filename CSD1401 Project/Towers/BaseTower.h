@@ -12,7 +12,7 @@
 #include "../Enemies/BaseEnemy.h"
 #include "../Projectiles/BaseProjectile.h"
 #include "../System/SoundManager.h"
-enum class ATTACK_TYPE
+enum class ATTACK_TYPE //the type of attack the tower does
 {
 	PROJECTILE = 0,
 	BEAM,
@@ -21,7 +21,7 @@ enum class ATTACK_TYPE
 	NONE
 };
 
-enum class TOWER_TYPE
+enum class TOWER_TYPE //individual tower types
 {
 	FIRETOWER = 0,
 	ICETOWER,
@@ -60,14 +60,14 @@ protected:
 	int levelUpCosts = 150;
 	int towerOpacity = 255;
 
-	int baseSaleCosts = 0;
-	int saleCosts = 0;
-	float maxSecondaryCooldown = 2.f;
-	float secondaryCooldown = 0.f;
+	int baseSaleCosts = 0; // the base price i.e how much the tower costs * 0.85
+	int saleCosts = 0; // end sale price
+	float maxSecondaryCooldown = 2.f;//max cooldown of secondary spawning of projectiles if needed
+	float secondaryCooldown = 0.f;//actual timer for secondary cooldown
 
 	CP_Image towerSprite;
 public:
-	// Constructor & Deconstructor
+	// Constructor & Destructor
 	BaseTower();
 	~BaseTower();
 
@@ -110,12 +110,12 @@ public:
 	void setSecondaryCD(float cd);
 
 	// Other functions
-	void virtual levelUp();
+	void virtual levelUp();//level up function
 	void Init();
 	virtual void Update();
 	virtual BaseProjectile* Attack(BaseEnemy* enemy);
-	virtual BaseProjectile* SpawnSecondary(BaseEnemy* enemy);
-	virtual BaseProjectile* SpawnSecondary(std::vector<BaseEnemy*>* enemyList, BaseEnemy* specificEnemy);
+	virtual BaseProjectile* SpawnSecondary(BaseEnemy* enemy);// secondary spawning that requires ONLY the specific enemy
+	virtual BaseProjectile* SpawnSecondary(std::vector<BaseEnemy*>* enemyList, BaseEnemy* specificEnemy);//secondary spawning that also requires the entire list of enemies
 	void Render(void);
 	void InitCooldown(float time) { baseCooldown = cooldown = time; }
 	void ApplySlowdown(float multiplier);

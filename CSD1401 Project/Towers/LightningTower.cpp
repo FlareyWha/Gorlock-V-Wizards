@@ -1,13 +1,13 @@
 /*!
 @file       LightningTower.cpp
-@author		
+@author		Chew Zavier (c.zavier)
 @brief		Contains definitions of functions, overrides and variables used by LightningTower
 *//*_______________________________________________________________________*/
 
 #include "LightningTower.h"
 #include "../Projectiles/LightningProjectile.h"
 
-// Constructor & Deconstructor
+// Constructor & Destructor
 LightningTower::LightningTower(CP_Vector position)
 {
 	this->setColor(CP_Color_Create(255, 255, 0, 255));

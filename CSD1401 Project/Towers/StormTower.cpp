@@ -8,7 +8,7 @@
 #include "../Projectiles/LightningProjectile.h"
 #include "../System/SoundManager.h"
 
-// Constructor & Deconstructor
+// Constructor & Destructor
 StormTower::StormTower(CP_Vector position)
 {
 	this->setColor(CP_Color_Create(255, 255, 0, 255));

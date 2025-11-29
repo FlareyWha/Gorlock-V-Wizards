@@ -1,20 +1,26 @@
+/*!
+@file       WindProjectile.cpp
+@author     Chew Zavier (c.zavier)
+@brief		Contains definitions of functions, overrides and variables used by WindProjectile
+*//*_______________________________________________________________________*/
+
 #include "WindProjectile.h"
 #include <cstdlib> // for rand()
 
 WindProjectile::WindProjectile() {}
-
+//constructor
 WindProjectile::WindProjectile(CP_Vector position, CP_Vector direction, float damage, float speed, CP_Color color)
     : BaseProjectile(position, direction, damage, speed, color)
 {
 }
-
+//destructor
 WindProjectile::~WindProjectile()
 {
     for (auto p : particles)
         delete p;
     particles.clear();
 }
-
+//overrided onhits
 void WindProjectile::onHit(BaseEnemy* enemy)
 {
     enemy->SetHealth(enemy->GetHealth() - getProjDamage());
