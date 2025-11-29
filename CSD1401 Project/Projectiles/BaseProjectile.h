@@ -28,7 +28,7 @@ protected:
 	CP_Vector position;
 	float radius = 20.f;;
 
-	CP_Color projColor = CP_Color_Create(255.f, 255.f, 255.f, 255.f);
+	CP_Color projColor = CP_Color_Create(255, 255, 255, 255);
 	float damage = 1.f;
 	float projectileSpeed = 1.f;
 	float lifespan = 2.0f;
